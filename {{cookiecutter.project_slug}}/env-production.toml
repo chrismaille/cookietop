@@ -1,0 +1,6 @@
+[logger]
+level = "WARNING"
+use_json_format = true
+
+[sentry]
+endpoint = ""

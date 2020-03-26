@@ -1,0 +1,52 @@
+[tool.stela]
+default_environment = "test"
+config_file_extension = "TOML"
+
+[tool.black]
+skip-string-normalization = true
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | \venv
+    | \.aws-sam
+    | _build
+    | buck-out
+    | build
+    | dist
+    | node_modules
+  )/
+)
+'''
+
+[tool.poetry]
+name = "noverde-cookiecutter"
+version = "0.1.0"
+description = "This project contains all boilerplate you need to create a new microservice."
+authors = ["Noverde <devs@noverde.com.br>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+cookiecutter = "*"
+toml = "*"
+loguru = "*"
+stela = "*"
+sentry-sdk = "*"
+python-json-logger = "*"
+marshmallow = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-mock = "*"
+black = {version = "*", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

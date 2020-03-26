@@ -1,0 +1,42 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  {%- if cookicutter.use_pre_commit == "y" -%}
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: {{ cookiecutter.python_version }}
+      - name: Check style
+        run: |
+          pip install pre-commit
+          pre-commit run --all-files
+  {% endif %}
+  test:
+    {%- if cookiecutter.use_pre_commit == "y" -%}
+    needs: lint
+    {% endif %}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: {{ cookiecutter.python_version }}
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v1
+      - name: Install Python dependencies
+        run: |
+          make install
+      - name: Run CI Tests
+        run: |
+          make ci
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+          PYTHONPATH: {{ cookiecutter.project_slug }}/
+

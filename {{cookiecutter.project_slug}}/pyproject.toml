@@ -1,0 +1,71 @@
+[tool.stela]
+default_environment = "development"
+config_file_extension = "TOML"
+config_file_prefix = "env-"
+
+[tool.coverage.report]
+fail_under = {{ cookiecutter.min_coverage_threshold }}
+
+[tool.pytest]
+addopts = '--pydocstyle'
+
+[tool.black]
+line-length = {{ cookiecutter.line_length }}
+skip-string-normalization = true
+target-version = ['{{ cookiecutter.black_target_version }}']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | \venv
+    | \.aws-sam
+    | _build
+    | buck-out
+    | build
+    | dist
+    | node_modules
+  )/
+)
+'''
+
+[tool.poetry]
+name = "{{ cookiecutter.project_slug }}"
+version = "0.1.0"
+description = "{{ cookiecutter.project_description }}"
+authors = ["Noverde <devs@noverde.com.br>"]
+
+[tool.poetry.dependencies]
+python = "^{{ cookiecutter.python_version }}"
+sentry-sdk = "*"
+loguru = "*"
+stela = "*"
+python-json-logger = "*"
+marshmallow = "*"
+
+[tool.poetry.dev-dependencies]
+aws-sam-cli = {version = "*", markers = "sys_platform != 'win32'"}
+black = {version = "*", allow-prereleases = true}
+ipdb = "*"
+pytest-black = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pytest-mypy = "*"
+pytest-pydocstyle = "*"
+pytest-xdist ="*"
+pytest-watch = "*"
+poetry = "*"
+wheel = "*"
+{%- if cookicutter.use_pre_commit == "y" -%}
+pre-commit = {version = "*", markers = "sys_platform != 'win32'"}
+flake8 = "*"
+{% endif %}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

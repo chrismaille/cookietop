@@ -1,0 +1,10 @@
+{
+  "project_name": "Noverde Cookiecutter",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "project_description": "This project contains all boilerplate you need to create a new microservice.",
+  "python_version": "3.7",
+  "black_target_version": "{{ 'py' + cookiecutter.python_version.replace('.', '') }}",
+  "line_length": 88,
+  "use_pre_commit": "y",
+  "min_coverage_threshold": 80
+}

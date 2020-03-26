@@ -1,0 +1,9 @@
+[logger]
+level = "DEBUG"
+use_json_format = false
+do_not_read_environment = true
+
+[sentry]
+endpoint = ""
+
+
