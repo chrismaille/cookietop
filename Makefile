@@ -1,4 +1,4 @@
-export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}
+export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:$(PWD)
 
 setup:
 	@git flow init -d
