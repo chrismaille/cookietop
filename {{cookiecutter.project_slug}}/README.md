@@ -6,12 +6,9 @@ cookiecutter.project_slug }}/actions)
 [![Python](https://img.shields.io/badge/python-{{ cookiecutter.python_version }}-green)](https://www.python.org)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 <a href="https://github.com/psf/black"><img alt="Code style: black"
-src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>  
+src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 [![GitFlow](https://img.shields.io/badge/GitFlow-Friendly-brightgreen)](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
-
-{%- if cookiecutter.use_pre_commit == "y" -%}
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-{% endif %}
 
 {{ cookiecutter.project_description }}
 
@@ -29,6 +26,7 @@ in [Notion](https://www.notion.so/noverde)
 * [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 * [Docker](https://www.docker.com)
 * [Poetry](https://python-poetry.org/)
+* [GitFlow](https://github.com/petervanderdoes/gitflow-avh/wiki/Installation)
 
 
 ### Commands
@@ -40,17 +38,20 @@ $ aws configure
 # Install application
 $ make install
 
-# Run Local server
-$ make serve
-
-# Quick-Test Application (suitable for TDD)
+# Quick-Test Application
 $ make test
+
+# Test in watch mode
+$ make watch
+
+# Lint and Test Application
+$ make ci
 
 # Format code
 $ make format
 
-# Lint and Test Application
-$ make ci
+# Run Local server
+$ make serve
 
 # Manual Deploy (check your permissions first)
 $ make deploy
@@ -65,3 +66,4 @@ debug local or remote lambda functions. We strongly recommend his use.
 Please check the following links:
 * [AWS Toolkit for PyCharm](https://aws.amazon.com/pt/pycharm/)
 * [AWS Toolkit for VSCode](https://aws.amazon.com/pt/visualstudiocode/)
+
