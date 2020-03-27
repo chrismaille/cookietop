@@ -2,6 +2,12 @@
 default_environment = "test"
 config_file_extension = "TOML"
 
+[tool.coverage.report]
+fail_under = 25
+
+[tool.pytest]
+addopts = '--pydocstyle'
+
 [tool.black]
 skip-string-normalization = true
 target-version = ['py37']
@@ -44,7 +50,13 @@ marshmallow = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
+pytest-black = "*"
+pytest-cov = "*"
 pytest-mock = "*"
+pytest-mypy = "*"
+pytest-pydocstyle = "*"
+pytest-watch = "*"
+pytest-xdist ="*"
 black = {version = "*", allow-prereleases = true}
 
 [build-system]
