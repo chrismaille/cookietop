@@ -24,6 +24,8 @@ ARTIFACTS    		:= \
 S3_BUCKET       ?= $(suffix "{{cookiecutter.project_slug}}" "_" $(USER))
 STACK_NAME      ?= $(suffix "{{cookiecutter.project_slug}}" "_" $(USER) "_" $(CURRENT_BRANCH))
 
+export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}
+
 .PHONY: install show_config autoenv package build_dependencies deploy serve test ci format
 
 show_config:
