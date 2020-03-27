@@ -60,10 +60,9 @@ deploy: build_dependencies package
 .PHONY: setup
 # Runs setup operations for first install
 setup:
-	git flow init -d
-	{%- if cookiecutter.use_pre_commit == "y" -%}
-  @poetry run pre-commit install
-  {% endif %}
+	@git flow init -d
+	@poetry install
+	@poetry run pre-commit install
 
 .PHONY: install
 # Install application
@@ -99,7 +98,5 @@ format:
 .PHONY: clean
 # Clear created artifacts
 clean:
-	{%- if cookiecutter.use_pre_commit == "y" -%}
 	@poetry run pre-commit uninstall
-	{% endif %}
 	@rm -rf $(ARTIFACTS)

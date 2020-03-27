@@ -42,29 +42,25 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^{{ cookiecutter.python_version }}"
-sentry-sdk = "*"
 loguru = "*"
-stela = "*"
-python-json-logger = "*"
 marshmallow = "*"
+python-json-logger = "*"
+sentry-sdk = "*"
+stela = "*"
 
 [tool.poetry.dev-dependencies]
-aws-sam-cli = {version = "*", markers = "sys_platform != 'win32'"}
+aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
 ipdb = "*"
+pre-commit = "*"
 pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
 pytest-pydocstyle = "*"
-pytest-xdist ="*"
 pytest-watch = "*"
-poetry = "*"
+pytest-xdist ="*"
 wheel = "*"
-{% if cookiecutter.use_pre_commit == "y" %}
-pre-commit = {version = "*", markers = "sys_platform != 'win32'"}
-flake8 = "*"
-{% endif %}
 
 [build-system]
 requires = ["poetry>=0.12"]
