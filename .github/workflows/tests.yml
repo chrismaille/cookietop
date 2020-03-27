@@ -1,0 +1,23 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 3.7
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v1
+      - name: Install Python dependencies
+        run: |
+          make install
+      - name: Run Tests
+        run: |
+          make ci
+
+
+

@@ -1,7 +1,7 @@
 name: tests
 on: [push, pull_request]
 jobs:
-  {%- if cookicutter.use_pre_commit == "y" -%}
+  {% if cookiecutter.use_pre_commit == "y" %}
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +17,7 @@ jobs:
           pre-commit run --all-files
   {% endif %}
   test:
-    {%- if cookiecutter.use_pre_commit == "y" -%}
+    {% if cookiecutter.use_pre_commit == "y" %}
     needs: lint
     {% endif %}
     runs-on: ubuntu-latest

@@ -61,7 +61,7 @@ pytest-xdist ="*"
 pytest-watch = "*"
 poetry = "*"
 wheel = "*"
-{%- if cookicutter.use_pre_commit == "y" -%}
+{% if cookiecutter.use_pre_commit == "y" %}
 pre-commit = {version = "*", markers = "sys_platform != 'win32'"}
 flake8 = "*"
 {% endif %}

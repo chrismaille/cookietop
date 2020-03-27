@@ -25,9 +25,9 @@ Our goal with this project are:
   Functions** machines, if available.
 
 ### What is not:
-* *A mandatory way to work*. We deeply value new ideas, libraries,
-  patterns, services, etc.. - if you want to suggest new features, libs,
-  commands, etc, please look our
+* *This is NOT a mandatory way to work*. We deeply value new ideas,
+  libraries, patterns, services, etc.. - if you want to suggest new
+  features, libs, commands, etc, please look our
   [issues](https://github.com/noverde/noverde_cookiecutter/issues).
 
 ### Requirements
@@ -40,7 +40,16 @@ Our goal with this project are:
 * [Poetry](https://python-poetry.org/)
 * [GitFlow](https://github.com/petervanderdoes/gitflow-avh/wiki/Installation)
 
-### Commands
+### How to use
+```shell
+$ pip install -U --user cookiecutter
+$ cd /path/to/new/microservice
+$ cookiecutter gh:noverde/noverde_cookiecutter
+```
+
+### Developing Cookiecutter
+
+Use the following commands to install and develop our cookiecutter:
 
 ```shell
 # Before first install
@@ -49,6 +58,12 @@ $ make setup
 # Install Project
 $ make install
 
-# Run tests
+# Run tests once (stop a first error)
 $ make test
+
+# Run tests in watch mode
+$ make watch
+
+# Run all tests for CI
+$ make ci
 ```

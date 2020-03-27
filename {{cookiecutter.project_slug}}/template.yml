@@ -9,9 +9,11 @@ Globals:
       - Ref: {{cookiecutter.project_slug}}DepLayer
     Environment:
       Variables:
+        {% raw %}
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOG_LEVEL: '{{resolve:ssm:NoverdeEnvironmentLogLevel:1}}'
-        SENTRY_ENDPOINT: '{{resolve:ssm:/sentry/endpoints/{{cookiecutter.project_slug}}:1}}'
+        SENTRY_ENDPOINT: '{{resolve:ssm:/sentry/endpoints/{% endraw %}{{cookiecutter.project_slug}}{% raw %}:1}}'
+        {% endraw %}
   Api:
     Cors:
       AllowOrigin: "'*'"
