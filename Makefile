@@ -1,3 +1,6 @@
+setup:
+	@git flow init -d
+
 install:
 	@poetry install
 	rm -rf ./src

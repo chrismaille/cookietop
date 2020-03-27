@@ -6,12 +6,12 @@ Globals:
   Function:
     Runtime: python{{ cookiecutter.python_version }}
     Layers:
-      - Ref: {{ cookiecutter.project_slug }}DepLayer
+      - Ref: {{cookiecutter.project_slug}}DepLayer
     Environment:
       Variables:
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOG_LEVEL: '{{resolve:ssm:NoverdeEnvironmentLogLevel:1}}'
-        SENTRY_ENDPOINT: '{{resolve:ssm:/sentry/endpoints/{{ cookiecutter.project_slug }}:1}}'
+        SENTRY_ENDPOINT: '{{resolve:ssm:/sentry/endpoints/{{cookiecutter.project_slug}}:1}}'
   Api:
     Cors:
       AllowOrigin: "'*'"
@@ -22,8 +22,8 @@ Resources:
   HealthCheck:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: {{ cookiecutter.project_slug }}-health-check
-      CodeUri: {{ cookiecutter.project_slug }}
+      FunctionName: {{cookiecutter.project_slug}}-health-check
+      CodeUri: {{cookiecutter.project_slug}}
       Handler: handlers.health.health_check
       Policies:
         - AWSLambdaFullAccess
@@ -36,24 +36,24 @@ Resources:
           Path: /health
           Method: get
           RestApiId:
-            Ref: {{ cookiecutter.project_slug }}Api
+            Ref: {{cookiecutter.project_slug}}Api
 
   # Lambda Layer Configuration
-  {{ cookiecutter.project_slug }}DepLayer:
+  {{cookiecutter.project_slug}}DepLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: sam-{{ cookiecutter.project_slug }}-dependencies
-      Description: Dependencies for sam app [{{ cookiecutter.project_slug }}]
+      LayerName: sam-{{cookiecutter.project_slug}}-dependencies
+      Description: Dependencies for sam app [{{cookiecutter.project_slug}}]
       ContentUri: dependencies
       CompatibleRuntimes:
         - python3.7
       LicenseInfo: 'MIT'
 
   # Api Gateway Configuration
-  {{ cookiecutter.project_slug }}Api:
+  {{cookiecutter.project_slug}}Api:
     Type: AWS::Serverless::Api
     Properties:
-      Name: {{ cookiecutter.project_slug }}-api
+      Name: {{cookiecutter.project_slug}}-api
       OpenApiVersion: "3.0.3"
       TracingEnabled: true
       StageName: v1

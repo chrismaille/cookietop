@@ -38,10 +38,14 @@ Our goal with this project are:
 * [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 * [Docker](https://www.docker.com)
 * [Poetry](https://python-poetry.org/)
+* [GitFlow](https://github.com/petervanderdoes/gitflow-avh/wiki/Installation)
 
 ### Commands
 
 ```shell
+# Before first install
+$ make setup
+
 # Install Project
 $ make install
 

@@ -12,7 +12,7 @@ def initialize_sentry():
         return
 
     current_version = pkg_resources.get_distribution(
-        '{{ cookiecutter.project_slug }}'
+        '{{cookiecutter.project_slug}}'
     ).version
 
     sentry_sdk.init(
