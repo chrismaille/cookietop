@@ -10,19 +10,19 @@
 #	format:		Format code as per Black settings
 
 # Internal variables
-LOCAL_ENV_FILE	:= ./{{ cookiecutter.project_slug }}/local.env
-ENV_FILE     		:= ./{{ cookiecutter.project_slug }}/.env
-PACKAGE_FILE 		:= ./{{ cookiecutter.project_slug }}/packaged.yaml
+LOCAL_ENV_FILE	:= ./{{cookiecutter.project_slug}}/local.env
+ENV_FILE     		:= ./{{cookiecutter.project_slug}}/.env
+PACKAGE_FILE 		:= ./{{cookiecutter.project_slug}}/packaged.yaml
 CURRENT_BRANCH	:= $(shell git rev-parse --abbrev-ref HEAD)
 ARTIFACTS    		:= \
-	./{{ cookiecutter.project_slug }}/.aws-sam \
-	./{{ cookiecutter.project_slug }}/.pytest_cache \
-	./{{ cookiecutter.project_slug }}/.coverage \
-	./{{ cookiecutter.project_slug }}/dependencies/python
+	./{{cookiecutter.project_slug}}/.aws-sam \
+	./{{cookiecutter.project_slug}}/.pytest_cache \
+	./{{cookiecutter.project_slug}}/.coverage \
+	./{{cookiecutter.project_slug}}/dependencies/python
 
 # External variables and his default values
-S3_BUCKET       ?= $(suffix "{{ cookiecutter.project_slug }}" "_" $(USER))
-STACK_NAME      ?= $(suffix "{{ cookiecutter.project_slug }}" "_" $(USER) "_" $(CURRENT_BRANCH))
+S3_BUCKET       ?= $(suffix "{{cookiecutter.project_slug}}" "_" $(USER))
+STACK_NAME      ?= $(suffix "{{cookiecutter.project_slug}}" "_" $(USER) "_" $(CURRENT_BRANCH))
 
 .PHONY: install show_config autoenv package build_dependencies deploy serve test ci format
 
@@ -68,7 +68,7 @@ test:
 	@poetry run ptw -c -w -n
 
 ci:
-	@poetry run pytest --cov=./{{ cookiecutter.project_slug }} --black --mypy --pydocstyle --ignore=migrations
+	@poetry run pytest --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations
 
 format:
 	@poetry run black .

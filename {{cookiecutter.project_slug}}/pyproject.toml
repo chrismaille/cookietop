@@ -35,7 +35,7 @@ exclude = '''
 '''
 
 [tool.poetry]
-name = "{{ cookiecutter.project_slug }}"
+name = "{{cookiecutter.project_slug}}"
 version = "0.1.0"
 description = "{{ cookiecutter.project_description }}"
 authors = ["Noverde <devs@noverde.com.br>"]

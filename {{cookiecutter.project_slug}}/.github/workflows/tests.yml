@@ -38,5 +38,5 @@ jobs:
           make ci
         env:
           AWS_DEFAULT_REGION: us-east-1
-          PYTHONPATH: {{ cookiecutter.project_slug }}/
+          PYTHONPATH: {{cookiecutter.project_slug}}/
 
