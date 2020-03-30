@@ -57,8 +57,6 @@ $ make setup
 $ make test
 ```
 
-**TIP**: Its very important that you use Make commands. This commands will help you to create a new microservice without do the hard work.
-
 ### Developing Cookiecutter
 
 Use the following commands to install and develop our cookiecutter:
