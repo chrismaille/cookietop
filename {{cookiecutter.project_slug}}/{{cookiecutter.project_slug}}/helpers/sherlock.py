@@ -37,7 +37,7 @@ class Sherlock:
         if self.body_data:
             logger.debug(f"Body received: {self.body_data}")
 
-    def inspect(self):
+    def inspect(self) -> None:
         """Do the call of data validation methods.
 
         Methods are:

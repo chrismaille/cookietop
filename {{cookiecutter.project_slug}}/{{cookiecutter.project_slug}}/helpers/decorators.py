@@ -10,7 +10,7 @@ from helpers.sherlock import Sherlock
 from helpers.status_code import StatusCode
 
 
-def handler_view(model_schema: Optional[Type[Schema]] = None):
+def handler_view(model_schema: Optional[Type[Schema]] = None) -> None:
     """Configure Handler View Decorator.
 
     Handler View middleware. Current workflow is:
