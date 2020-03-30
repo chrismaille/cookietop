@@ -6,7 +6,9 @@ from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
 
 
 def initialize_sentry():
-
+    """
+    Function that initialize Sentry monitoring
+    """
     if not settings["sentry.endpoint"]:
         logger.warning(f"Sentry not initialized.")
         return

@@ -6,6 +6,9 @@ from stela import settings
 
 
 def initialize_logger():
+    """
+    Function that initialize logs of application
+    """
     logger.info(f"Initializing Logger...")
     if settings["logger.use_json_format"]:
         log_handler = logging.StreamHandler()
