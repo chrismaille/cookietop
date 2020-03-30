@@ -57,6 +57,8 @@ $ make setup
 $ make test
 ```
 
+**TIP**: Its very important that you use Make commands. This commands will help you to create a new microservice without do the hard work.
+
 ### Developing Cookiecutter
 
 Use the following commands to install and develop our cookiecutter:
@@ -84,11 +86,6 @@ $ make ci
 # called Noverde Test Project
 # in ../noverde_test_project folder
 $ make reload
-```
-
-If you run tests manually, please define your `PYTHONPATH` using the command below:
-```
-$ export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:$(PWD)
 ```
 
 For quick development in cookiecutter, use command `make reload` to
