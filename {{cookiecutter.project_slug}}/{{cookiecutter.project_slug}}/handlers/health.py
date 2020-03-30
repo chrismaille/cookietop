@@ -8,8 +8,7 @@ from helpers.status_code import StatusCode
 
 @handler_view()
 def health_check() -> Dict[str, Any]:
-    """
-    Function that check health status of application
+    """Do the check health status of application.
 
     :return: Dict
     """
