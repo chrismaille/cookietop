@@ -8,6 +8,10 @@ from helpers.status_code import StatusCode
 
 @handler_view()
 def health_check() -> Dict[str, Any]:
+    """Do the check health status of application.
+
+    :return: Dict
+    """
     return {
         "status": "OK",
         "environment": settings.stela_options.current_environment,
