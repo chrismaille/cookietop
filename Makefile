@@ -14,7 +14,7 @@ ci:
 	@echo Running Cookiecutter...
 	@rm -rf ./noverde_cookiecutter
 	@poetry run cookiecutter --no-input .
-	@poetry run pytest --ignore=./{{cookiecutter.project_slug}}
+	@poetry run pytest --pydocstyle --ignore=./{{cookiecutter.project_slug}}
 	@rm -rf ./noverde_cookiecutter
 
 watch:

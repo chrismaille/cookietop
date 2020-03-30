@@ -86,6 +86,11 @@ $ make ci
 $ make reload
 ```
 
+If you run tests manually, please define your `PYTHONPATH` using the command below:
+```
+$ export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:$(PWD)
+```
+
 For quick development in cookiecutter, use command `make reload` to
 install a test project. Every time you run this command it will refresh
 the test project with your modifications in this project.
