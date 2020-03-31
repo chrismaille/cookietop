@@ -20,7 +20,7 @@ jobs:
         uses: Harmon758/postgresql-action@v1.0.0
         with:
           postgresql version: '11'
-          postgresql db: 'test'
+          postgresql db: 'cookiecutter_test'
           postgresql user: 'noverde'
           postgresql password: 'noverde'
       - name: Install Python dependencies
