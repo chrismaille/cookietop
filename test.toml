@@ -2,5 +2,9 @@
 level = "DEBUG"
 use_json_format = false
 
+[database.sql]
+url = "postgres://noverde:noverde@localhost/cookiecutter_test"
+echo = true
+
 [sentry]
 endpoint = ""

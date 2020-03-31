@@ -57,9 +57,9 @@ deploy: build_dependencies package
 		--template-file $(PACKAGE_TMPL) \
 		--stack-name '$$STACK_NAME' \
 
-.PHONY: setup
+.PHONY: first_install
 # Runs setup operations for first install
-setup:
+first_install:
 	@git flow init -d
 	@poetry install
 	@poetry run pre-commit install
@@ -83,12 +83,12 @@ watch:
 .PHONY: test
 # Runs pytest stopping at first error
 test:
-	@poetry run pytest -x
+	@poetry run pytest -x  --disable-warnings
 
 .PHONY: ci
 # Runs pytest for full testing
 ci:
-	@poetry run pytest --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations
+	@poetry run pytest --disable-warnings --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations
 
 .PHONY: format
 # Format code using black
@@ -100,3 +100,22 @@ format:
 clean:
 	@poetry run pre-commit uninstall
 	@rm -rf $(ARTIFACTS)
+
+.PHONY: create_db
+# Create Development Database
+create_db:
+	@echo "Creating database {{cookiecutter.project_slug}}_develop..."
+	@psql postgres -c "DROP DATABASE IF EXISTS {{cookiecutter.project_slug}}_develop;"
+	@sleep 1
+	@psql postgres -c "CREATE DATABASE {{cookiecutter.project_slug}}_develop;"
+
+.PHONY: revision
+# Create new Alembic Migration
+# Usage: make revision message="foo"
+revision:
+	@poetry run alembic revision --autogenerate -m "$(message)"
+
+.PHONY: migrate
+# Run Alembic Migrations
+migrate:
+	@poetry run alembic upgrade head

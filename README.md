@@ -89,3 +89,15 @@ $ make reload
 For quick development in cookiecutter, use command `make reload` to
 install a test project. Every time you run this command it will refresh
 the test project with your modifications in this project.
+
+#### Testing Relational Database
+```shell
+# Create new database
+$ make create_db
+
+# Add new migration
+$ make revision message="foo"
+
+# Migrate Database
+$ make migrate
+```

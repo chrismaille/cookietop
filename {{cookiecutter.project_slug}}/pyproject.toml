@@ -29,6 +29,7 @@ exclude = '''
     | buck-out
     | build
     | dist
+    | migrations
     | node_modules
   )/
 )
@@ -45,18 +46,24 @@ python = "^{{ cookiecutter.python_version }}"
 loguru = "*"
 marshmallow = "*"
 python-json-logger = "*"
+psycopg2 = "*"
 sentry-sdk = "*"
+SQLAlchemy = "*"
 stela = "*"
 
 [tool.poetry.dev-dependencies]
+alembic = "*"
 aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
+factory_boy = "*"
+freezegun = "*"
 ipdb = "*"
 pre-commit = "*"
 pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
+pytest-postgresql = "*"
 pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"

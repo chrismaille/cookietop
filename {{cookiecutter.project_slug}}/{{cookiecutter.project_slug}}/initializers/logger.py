@@ -6,7 +6,17 @@ from stela import settings
 
 
 def initialize_logger() -> None:
-    """Initialize logs of application."""
+    """Initialize application logs.
+
+    More info: https://github.com/Delgan/loguru
+
+    If the settings "logger.use_json_format"
+    or LOGGER_USE_JSON_FORMAT environment is True
+    all logging will be converted to JSON format.
+
+    Otherwise format will be Loguru standard.
+
+    """
     logger.info(f"Initializing Logger...")
     if settings["logger.use_json_format"]:
         log_handler = logging.StreamHandler()
@@ -19,4 +29,4 @@ def initialize_logger() -> None:
                 {"sink": log_handler, "format": "{message}", "serialize": True,},
             ],
         }
-        logger.configure(**config)
+        logger.configure(**config)  # type: ignore

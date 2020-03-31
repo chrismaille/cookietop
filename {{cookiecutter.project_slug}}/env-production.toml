@@ -2,5 +2,9 @@
 level = "WARNING"
 use_json_format = true
 
+[database.sql]
+url = ""
+echo = false
+
 [sentry]
 endpoint = ""

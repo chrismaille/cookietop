@@ -1,5 +1,19 @@
 [[package]]
 category = "dev"
+description = "A database migration tool for SQLAlchemy."
+name = "alembic"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.4.2"
+
+[package.dependencies]
+Mako = "*"
+SQLAlchemy = ">=1.1.0"
+python-dateutil = "*"
+python-editor = ">=0.3"
+
+[[package]]
+category = "dev"
 description = "apipkg: namespace control and lazy-import mechanism"
 name = "apipkg"
 optional = false
@@ -243,12 +257,47 @@ apipkg = ">=1.4"
 testing = ["pre-commit"]
 
 [[package]]
+category = "dev"
+description = "A versatile test fixtures replacement based on thoughtbot's factory_bot for Ruby."
+name = "factory-boy"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2.12.0"
+
+[package.dependencies]
+Faker = ">=0.7.0"
+
+[[package]]
+category = "dev"
+description = "Faker is a Python package that generates fake data for you."
+name = "faker"
+optional = false
+python-versions = ">=3.4"
+version = "4.0.2"
+
+[package.dependencies]
+python-dateutil = ">=2.4"
+text-unidecode = "1.3"
+
+[[package]]
 category = "main"
 description = "A platform independent file lock."
 name = "filelock"
 optional = false
 python-versions = "*"
 version = "3.0.12"
+
+[[package]]
+category = "dev"
+description = "Let your Python tests travel through time"
+name = "freezegun"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "0.3.15"
+
+[package.dependencies]
+python-dateutil = ">=1.0,<2.0 || >2.0"
+six = "*"
 
 [[package]]
 category = "main"
@@ -335,6 +384,21 @@ win32-setctime = ">=1.0.0"
 dev = ["codecov (>=2.0.15)", "colorama (>=0.3.4)", "flake8 (>=3.7.7)", "isort (>=4.3.20)", "tox (>=3.9.0)", "tox-travis (>=0.12)", "pytest (>=4.6.2)", "pytest-cov (>=2.7.1)", "Sphinx (>=2.2.1)", "sphinx-autobuild (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)", "black (>=19.3b0)"]
 
 [[package]]
+category = "dev"
+description = "A super-fast templating language that borrows the  best ideas from the existing templating languages."
+name = "mako"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.1.2"
+
+[package.dependencies]
+MarkupSafe = ">=0.9.2"
+
+[package.extras]
+babel = ["babel"]
+lingua = ["lingua"]
+
+[[package]]
 category = "main"
 description = "Safely add untrusted strings to HTML/XML markup."
 name = "markupsafe"
@@ -355,6 +419,21 @@ dev = ["pytest", "pytz", "simplejson", "mypy (0.761)", "flake8 (3.7.9)", "flake8
 docs = ["sphinx (2.4.3)", "sphinx-issues (1.2.0)", "alabaster (0.7.12)", "sphinx-version-warning (1.1.2)"]
 lint = ["mypy (0.761)", "flake8 (3.7.9)", "flake8-bugbear (20.1.4)", "pre-commit (>=1.20,<3.0)"]
 tests = ["pytest", "pytz", "simplejson"]
+
+[[package]]
+category = "dev"
+description = "Process executor for tests."
+name = "mirakuru"
+optional = false
+python-versions = ">=3.6"
+version = "2.2.0"
+
+[package.dependencies]
+psutil = ">=4.0.0"
+
+[package.extras]
+docs = ["sphinx"]
+tests = ["pytest", "pytest-cov", "python-daemon"]
 
 [[package]]
 category = "dev"
@@ -443,12 +522,40 @@ version = ">=0.12"
 dev = ["pre-commit", "tox"]
 
 [[package]]
+category = "dev"
+description = "Utility that helps with local TCP ports managment. It can find an unused TCP localhost port and remember the association."
+name = "port-for"
+optional = false
+python-versions = "*"
+version = "0.4"
+
+[[package]]
 category = "main"
 description = "A lightweight YAML Parser for Python. 🐓"
 name = "poyo"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.5.0"
+
+[[package]]
+category = "dev"
+description = "Cross-platform lib for process and system monitoring in Python."
+marker = "sys_platform != \"cygwin\""
+name = "psutil"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "5.7.0"
+
+[package.extras]
+enum = ["enum34"]
+
+[[package]]
+category = "main"
+description = "psycopg2 - Python-PostgreSQL Database Adapter"
+name = "psycopg2"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
+version = "2.8.4"
 
 [[package]]
 category = "main"
@@ -564,17 +671,17 @@ pytest = ">=3.1.0"
 
 [[package]]
 category = "dev"
-description = "Thin-wrapper around the mock package for easier use with py.test"
+description = "Thin-wrapper around the mock package for easier use with pytest"
 name = "pytest-mock"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "2.0.0"
+python-versions = ">=3.5"
+version = "3.0.0"
 
 [package.dependencies]
 pytest = ">=2.7"
 
 [package.extras]
-dev = ["pre-commit", "tox"]
+dev = ["pre-commit", "tox", "pytest-asyncio"]
 
 [[package]]
 category = "dev"
@@ -598,6 +705,23 @@ version = ">=0.700"
 [package.dependencies.pytest]
 python = ">=3.5"
 version = ">=3.5"
+
+[[package]]
+category = "dev"
+description = "Postgresql fixtures and fixture factories for Pytest."
+name = "pytest-postgresql"
+optional = false
+python-versions = ">=3.5"
+version = "2.3.0"
+
+[package.dependencies]
+mirakuru = ">=2.0.0"
+port-for = "*"
+pytest = ">=3.0.0"
+
+[package.extras]
+docs = ["sphinx"]
+tests = ["pytest-cov (2.7.1)", "pytest-xdist (1.29.0)"]
 
 [[package]]
 category = "dev"
@@ -655,6 +779,14 @@ version = "2.8.1"
 
 [package.dependencies]
 six = ">=1.5"
+
+[[package]]
+category = "dev"
+description = "Programmatically open an editor, capture the result."
+name = "python-editor"
+optional = false
+python-versions = "*"
+version = "1.0.4"
 
 [[package]]
 category = "main"
@@ -769,6 +901,26 @@ version = "2.0.0"
 
 [[package]]
 category = "main"
+description = "Database Abstraction Library"
+name = "sqlalchemy"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.3.15"
+
+[package.extras]
+mssql = ["pyodbc"]
+mssql_pymssql = ["pymssql"]
+mssql_pyodbc = ["pyodbc"]
+mysql = ["mysqlclient"]
+oracle = ["cx-oracle"]
+postgresql = ["psycopg2"]
+postgresql_pg8000 = ["pg8000"]
+postgresql_psycopg2binary = ["psycopg2-binary"]
+postgresql_psycopg2cffi = ["psycopg2cffi"]
+pymysql = ["pymysql"]
+
+[[package]]
+category = "main"
 description = "Find and read your project configuration files easily"
 name = "stela"
 optional = false
@@ -793,6 +945,14 @@ name = "termcolor"
 optional = false
 python-versions = "*"
 version = "1.1.0"
+
+[[package]]
+category = "dev"
+description = "The most basic Text::Unidecode port"
+name = "text-unidecode"
+optional = false
+python-versions = "*"
+version = "1.3"
 
 [[package]]
 category = "main"
@@ -936,10 +1096,13 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "8aed94cf55e0e272ccee0d09ef14ac60b45952ed84b414d1218c2582bcf50529"
+content-hash = "ff03a8ac50a169405d33dcea9c0f914dd9e729109183185d46f9b9d03cf25d27"
 python-versions = "^3.7"
 
 [metadata.files]
+alembic = [
+    {file = "alembic-1.4.2.tar.gz", hash = "sha256:035ab00497217628bf5d0be82d664d8713ab13d37b630084da8e1f98facf4dbf"},
+]
 apipkg = [
     {file = "apipkg-1.5-py2.py3-none-any.whl", hash = "sha256:58587dd4dc3daefad0487f6d9ae32b4542b185e1c36db6993290e7c41ca2b47c"},
     {file = "apipkg-1.5.tar.gz", hash = "sha256:37228cda29411948b422fae072f57e31d3396d2ee1c9783775980ee9c9990af6"},
@@ -1056,9 +1219,21 @@ execnet = [
     {file = "execnet-1.7.1-py2.py3-none-any.whl", hash = "sha256:d4efd397930c46415f62f8a31388d6be4f27a91d7550eb79bc64a756e0056547"},
     {file = "execnet-1.7.1.tar.gz", hash = "sha256:cacb9df31c9680ec5f95553976c4da484d407e85e41c83cb812aa014f0eddc50"},
 ]
+factory-boy = [
+    {file = "factory_boy-2.12.0-py2.py3-none-any.whl", hash = "sha256:728df59b372c9588b83153facf26d3d28947fc750e8e3c95cefa9bed0e6394ee"},
+    {file = "factory_boy-2.12.0.tar.gz", hash = "sha256:faf48d608a1735f0d0a3c9cbf536d64f9132b547dae7ba452c4d99a79e84a370"},
+]
+faker = [
+    {file = "Faker-4.0.2-py3-none-any.whl", hash = "sha256:b89aa33837498498e15c709eb40c31386408a901a53c7a5e12a425737a767976"},
+    {file = "Faker-4.0.2.tar.gz", hash = "sha256:2d3f866ef25e1a5af80e7b0ceeacc3c92dec5d0fdbad3e2cb6adf6e60b22188f"},
+]
 filelock = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
     {file = "filelock-3.0.12.tar.gz", hash = "sha256:18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59"},
+]
+freezegun = [
+    {file = "freezegun-0.3.15-py2.py3-none-any.whl", hash = "sha256:82c757a05b7c7ca3e176bfebd7d6779fd9139c7cb4ef969c38a28d74deef89b2"},
+    {file = "freezegun-0.3.15.tar.gz", hash = "sha256:e2062f2c7f95cc276a834c22f1a17179467176b624cc6f936e8bc3be5535ad1b"},
 ]
 future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
@@ -1086,6 +1261,10 @@ jinja2-time = [
 loguru = [
     {file = "loguru-0.4.1-py3-none-any.whl", hash = "sha256:074b3caa6748452c1e4f2b302093c94b65d5a4c5a4d7743636b4121e06437b0e"},
     {file = "loguru-0.4.1.tar.gz", hash = "sha256:a6101fd435ac89ba5205a105a26a6ede9e4ddbb4408a6e167852efca47806d11"},
+]
+mako = [
+    {file = "Mako-1.1.2-py2.py3-none-any.whl", hash = "sha256:8e8b53c71c7e59f3de716b6832c4e401d903af574f6962edbbbf6ecc2a5fe6c9"},
+    {file = "Mako-1.1.2.tar.gz", hash = "sha256:3139c5d64aa5d175dbafb95027057128b5fbd05a40c53999f3905ceb53366d9d"},
 ]
 markupsafe = [
     {file = "MarkupSafe-1.1.1-cp27-cp27m-macosx_10_6_intel.whl", hash = "sha256:09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161"},
@@ -1125,6 +1304,10 @@ markupsafe = [
 marshmallow = [
     {file = "marshmallow-3.5.1-py2.py3-none-any.whl", hash = "sha256:ac2e13b30165501b7d41fc0371b8df35944f5849769d136f20e2c5f6cdc6e665"},
     {file = "marshmallow-3.5.1.tar.gz", hash = "sha256:90854221bbb1498d003a0c3cc9d8390259137551917961c8b5258c64026b2f85"},
+]
+mirakuru = [
+    {file = "mirakuru-2.2.0-py3-none-any.whl", hash = "sha256:5a4d61d4463e1aa14f4eec36311f04bbc759ceaaf6a5587cc2d5f59f7ab3cf93"},
+    {file = "mirakuru-2.2.0.tar.gz", hash = "sha256:d8c7aa81a897e14f2071fd8cab581b8aa3b51356aa9bba6d1f9db7b0a47790cc"},
 ]
 more-itertools = [
     {file = "more-itertools-8.2.0.tar.gz", hash = "sha256:b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"},
@@ -1168,9 +1351,41 @@ pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
+port-for = [
+    {file = "port-for-0.4.tar.gz", hash = "sha256:47b5cb48f8e036497cd73b96de305cecb4070e9ecbc908724afcbd2224edccde"},
+    {file = "port_for-0.4-py2.py3-none-any.whl", hash = "sha256:247b4db1901aa3d9906258308e40dfbadf65275b27ca77faa0b9a876b7284970"},
+]
 poyo = [
     {file = "poyo-0.5.0-py2.py3-none-any.whl", hash = "sha256:3e2ca8e33fdc3c411cd101ca395668395dd5dc7ac775b8e809e3def9f9fe041a"},
     {file = "poyo-0.5.0.tar.gz", hash = "sha256:e26956aa780c45f011ca9886f044590e2d8fd8b61db7b1c1cf4e0869f48ed4dd"},
+]
+psutil = [
+    {file = "psutil-5.7.0-cp27-none-win32.whl", hash = "sha256:298af2f14b635c3c7118fd9183843f4e73e681bb6f01e12284d4d70d48a60953"},
+    {file = "psutil-5.7.0-cp27-none-win_amd64.whl", hash = "sha256:75e22717d4dbc7ca529ec5063000b2b294fc9a367f9c9ede1f65846c7955fd38"},
+    {file = "psutil-5.7.0-cp35-cp35m-win32.whl", hash = "sha256:f344ca230dd8e8d5eee16827596f1c22ec0876127c28e800d7ae20ed44c4b310"},
+    {file = "psutil-5.7.0-cp35-cp35m-win_amd64.whl", hash = "sha256:e2d0c5b07c6fe5a87fa27b7855017edb0d52ee73b71e6ee368fae268605cc3f5"},
+    {file = "psutil-5.7.0-cp36-cp36m-win32.whl", hash = "sha256:a02f4ac50d4a23253b68233b07e7cdb567bd025b982d5cf0ee78296990c22d9e"},
+    {file = "psutil-5.7.0-cp36-cp36m-win_amd64.whl", hash = "sha256:1413f4158eb50e110777c4f15d7c759521703bd6beb58926f1d562da40180058"},
+    {file = "psutil-5.7.0-cp37-cp37m-win32.whl", hash = "sha256:d008ddc00c6906ec80040d26dc2d3e3962109e40ad07fd8a12d0284ce5e0e4f8"},
+    {file = "psutil-5.7.0-cp37-cp37m-win_amd64.whl", hash = "sha256:73f35ab66c6c7a9ce82ba44b1e9b1050be2a80cd4dcc3352cc108656b115c74f"},
+    {file = "psutil-5.7.0-cp38-cp38-win32.whl", hash = "sha256:60b86f327c198561f101a92be1995f9ae0399736b6eced8f24af41ec64fb88d4"},
+    {file = "psutil-5.7.0-cp38-cp38-win_amd64.whl", hash = "sha256:d84029b190c8a66a946e28b4d3934d2ca1528ec94764b180f7d6ea57b0e75e26"},
+    {file = "psutil-5.7.0.tar.gz", hash = "sha256:685ec16ca14d079455892f25bd124df26ff9137664af445563c1bd36629b5e0e"},
+]
+psycopg2 = [
+    {file = "psycopg2-2.8.4-cp27-cp27m-win32.whl", hash = "sha256:72772181d9bad1fa349792a1e7384dde56742c14af2b9986013eb94a240f005b"},
+    {file = "psycopg2-2.8.4-cp27-cp27m-win_amd64.whl", hash = "sha256:893c11064b347b24ecdd277a094413e1954f8a4e8cdaf7ffbe7ca3db87c103f0"},
+    {file = "psycopg2-2.8.4-cp34-cp34m-win32.whl", hash = "sha256:9ab75e0b2820880ae24b7136c4d230383e07db014456a476d096591172569c38"},
+    {file = "psycopg2-2.8.4-cp34-cp34m-win_amd64.whl", hash = "sha256:b0845e3bdd4aa18dc2f9b6fb78fbd3d9d371ad167fd6d1b7ad01c0a6cdad4fc6"},
+    {file = "psycopg2-2.8.4-cp35-cp35m-win32.whl", hash = "sha256:ef6df7e14698e79c59c7ee7cf94cd62e5b869db369ed4b1b8f7b729ea825712a"},
+    {file = "psycopg2-2.8.4-cp35-cp35m-win_amd64.whl", hash = "sha256:965c4c93e33e6984d8031f74e51227bd755376a9df6993774fd5b6fb3288b1f4"},
+    {file = "psycopg2-2.8.4-cp36-cp36m-win32.whl", hash = "sha256:ed686e5926929887e2c7ae0a700e32c6129abb798b4ad2b846e933de21508151"},
+    {file = "psycopg2-2.8.4-cp36-cp36m-win_amd64.whl", hash = "sha256:dca2d7203f0dfce8ea4b3efd668f8ea65cd2b35112638e488a4c12594015f67b"},
+    {file = "psycopg2-2.8.4-cp37-cp37m-win32.whl", hash = "sha256:8396be6e5ff844282d4d49b81631772f80dabae5658d432202faf101f5283b7c"},
+    {file = "psycopg2-2.8.4-cp37-cp37m-win_amd64.whl", hash = "sha256:47fc642bf6f427805daf52d6e52619fe0637648fe27017062d898f3bf891419d"},
+    {file = "psycopg2-2.8.4-cp38-cp38-win32.whl", hash = "sha256:4212ca404c4445dc5746c0d68db27d2cbfb87b523fe233dc84ecd24062e35677"},
+    {file = "psycopg2-2.8.4-cp38-cp38-win_amd64.whl", hash = "sha256:92a07dfd4d7c325dd177548c4134052d4842222833576c8391aab6f74038fc3f"},
+    {file = "psycopg2-2.8.4.tar.gz", hash = "sha256:f898e5cc0a662a9e12bde6f931263a1bbd350cfb18e1d5336a12927851825bb6"},
 ]
 py = [
     {file = "py-1.8.1-py2.py3-none-any.whl", hash = "sha256:c20fdd83a5dbc0af9efd622bee9a5564e278f6380fffcacc43ba6f43db2813b0"},
@@ -1209,12 +1424,15 @@ pytest-forked = [
     {file = "pytest_forked-1.1.3-py2.py3-none-any.whl", hash = "sha256:1ae25dba8ee2e56fb47311c9638f9e58552691da87e82d25b0ce0e4bf52b7d87"},
 ]
 pytest-mock = [
-    {file = "pytest-mock-2.0.0.tar.gz", hash = "sha256:b35eb281e93aafed138db25c8772b95d3756108b601947f89af503f8c629413f"},
-    {file = "pytest_mock-2.0.0-py2.py3-none-any.whl", hash = "sha256:cb67402d87d5f53c579263d37971a164743dc33c159dfb4fb4a86f37c5552307"},
+    {file = "pytest-mock-3.0.0.tar.gz", hash = "sha256:a4494016753a30231f8519bfd160242a0f3c8fb82ca36e7b6f82a7fb602ac6b8"},
+    {file = "pytest_mock-3.0.0-py2.py3-none-any.whl", hash = "sha256:98e02534f170e4f37d7e1abdfc5973fd4207aa609582291717f643764e71c925"},
 ]
 pytest-mypy = [
     {file = "pytest-mypy-0.6.0.tar.gz", hash = "sha256:ea5da19d7343d4ccd98c3fe39cc30dee2743b9fbf00999b2a863e3ead78e353c"},
     {file = "pytest_mypy-0.6.0-py3-none-any.whl", hash = "sha256:f55dfbdd9e6749f5af3896e8ad813b611c3acadcec16ba728738777ccf9ce1d4"},
+]
+pytest-postgresql = [
+    {file = "pytest_postgresql-2.3.0-py3-none-any.whl", hash = "sha256:f4afd5b8bede11ef8aaf3803a0c87603ee50494144a722b30c7e34dcd63057ee"},
 ]
 pytest-pydocstyle = [
     {file = "pytest-pydocstyle-2.1.2.tar.gz", hash = "sha256:789bddeb3805ba5b60e66e60126d3edb4905a5258d18aaf4f1622c621ca22f2c"},
@@ -1229,6 +1447,13 @@ pytest-xdist = [
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
     {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
+]
+python-editor = [
+    {file = "python-editor-1.0.4.tar.gz", hash = "sha256:51fda6bcc5ddbbb7063b2af7509e43bd84bfc32a4ff71349ec7847713882327b"},
+    {file = "python_editor-1.0.4-py2-none-any.whl", hash = "sha256:5f98b069316ea1c2ed3f67e7f5df6c0d8f10b689964a4a811ff64f0106819ec8"},
+    {file = "python_editor-1.0.4-py2.7.egg", hash = "sha256:ea87e17f6ec459e780e4221f295411462e0d0810858e055fc514684350a2f522"},
+    {file = "python_editor-1.0.4-py3-none-any.whl", hash = "sha256:1bf6e860a8ad52a14c3ee1252d5dc25b2030618ed80c022598f00176adc8367d"},
+    {file = "python_editor-1.0.4-py3.5.egg", hash = "sha256:c3da2053dbab6b29c94e43c486ff67206eafbe7eb52dbec7390b5e2fb05aac77"},
 ]
 python-json-logger = [
     {file = "python-json-logger-0.1.11.tar.gz", hash = "sha256:b7a31162f2a01965a5efb94453ce69230ed208468b0bbc7fdfc56e6d8df2e281"},
@@ -1292,12 +1517,19 @@ snowballstemmer = [
     {file = "snowballstemmer-2.0.0-py2.py3-none-any.whl", hash = "sha256:209f257d7533fdb3cb73bdbd24f436239ca3b2fa67d56f6ff88e86be08cc5ef0"},
     {file = "snowballstemmer-2.0.0.tar.gz", hash = "sha256:df3bac3df4c2c01363f3dd2cfa78cce2840a79b9f1c2d2de9ce8d31683992f52"},
 ]
+sqlalchemy = [
+    {file = "SQLAlchemy-1.3.15.tar.gz", hash = "sha256:c4cca4aed606297afbe90d4306b49ad3a4cd36feb3f87e4bfd655c57fd9ef445"},
+]
 stela = [
     {file = "stela-1.0.4-py3-none-any.whl", hash = "sha256:8e115d5d052be3883d4d8bb2e8976798f495b09be145dfc1bcafe9553c252f50"},
     {file = "stela-1.0.4.tar.gz", hash = "sha256:13535562979bf095cf6f5dd50fd9a7b9e3dc1a88c843e22fd1014ade436c0a3d"},
 ]
 termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
+]
+text-unidecode = [
+    {file = "text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"},
+    {file = "text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8"},
 ]
 toml = [
     {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},

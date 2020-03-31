@@ -9,6 +9,13 @@ from initializers.sentry import initialize_sentry
 
 @pytest.fixture(autouse=True)
 def before_tests(monkeypatch):
+    """Define environment before each test.
+
+    This automatic fixture is used at module level:
+        * Before each test: set env SENTRY_ENDPOINT
+        * After each test: remove env SENTRY_ENDPOINT
+
+    """
     monkeypatch.setenv("SENTRY_ENDPOINT", "https://sentry.com/foo")
     stela_reload()
     yield
@@ -16,6 +23,7 @@ def before_tests(monkeypatch):
 
 
 def test_sentry_not_initialized(mocker, monkeypatch):
+    """Test if Sentry is not initialized when endpoint is unavailable."""
     monkeypatch.delenv("SENTRY_ENDPOINT")
     stela_reload()
     sentry_mock = mocker.patch("initializers.sentry.sentry_sdk")
@@ -23,7 +31,8 @@ def test_sentry_not_initialized(mocker, monkeypatch):
     sentry_mock.assert_not_called()
 
 
-def test_sentry_initialized(mocker, monkeypatch):
+def test_sentry_initialized(mocker):
+    """Test if Sentry is initialized when endpoint is available."""
     sentry_mock = mocker.patch("initializers.sentry.sentry_sdk")
     mocked_distribution = MagicMock()
     mocked_distribution.version = "1.0.0"
