@@ -5,7 +5,7 @@ from pythonjsonlogger import jsonlogger
 from stela import settings
 
 
-def initialize_logger():
+def initialize_logger() -> None:
     """Initialize logs of application."""
     logger.info(f"Initializing Logger...")
     if settings["logger.use_json_format"]:
