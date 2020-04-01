@@ -1,21 +1,21 @@
 """Pytest main conftest module."""
+
 import alembic.config
 import pytest
-from _pytest.monkeypatch import MonkeyPatch
+from loguru import logger
 from pytest_postgresql.janitor import DatabaseJanitor
-from stela import stela_reload
 
 from entities import Service
-from initializers.sql import db_session
+from initializers.sql import Session
 from tests.factories.entities import ServiceFactory
 
 
 @pytest.fixture(scope="session", autouse=True)
-def start_database():
+def start_session():
     """Start database in Session.
 
     This automatic fixture is used at session level:
-        * Before any tests: will create/migrate test database.
+        * Before any tests: will create and migrate test database.
         * After all tests: will drop test database.
 
     """
@@ -26,23 +26,17 @@ def start_database():
     db_name = "test"
     version = 11
 
-    # Reload SQLAlchemy test database session
-    mpatch = MonkeyPatch()
-    mpatch.setenv(
-        "DATABASE_SQL_URL", f"postgres://{user}:{password}@{host}:{port}/{db_name}"
-    )
-    stela_reload()
-
-    # Create Test Database
     janitor = DatabaseJanitor(user, host, port, db_name, version, password)
+    logger.info("Creating test database...")
     janitor.drop()
     janitor.init()
 
     # Run Alembic Migrations in Test Database
+    logger.info("Running database migration...")
     alembicArgs = [
-        '--raiseerr',
-        'upgrade',
-        'head',
+        "--raiseerr",
+        "upgrade",
+        "head",
     ]
     alembic.config.main(argv=alembicArgs)
 
@@ -54,7 +48,7 @@ def start_database():
 
 
 @pytest.fixture(autouse=True)
-def dbsession() -> db_session:
+def dbsession():
     """Rollback transactions after test.
 
     This automatic fixture is used at function level:
@@ -62,14 +56,13 @@ def dbsession() -> db_session:
 
     This session can be accessed through fixture.
 
-    :return: SQLAlchemy database scoped session
     """
-    # Run Test passing database session
-    yield db_session
+    # Run Tests
+    yield
 
     # After test
-    db_session.rollback()
-    db_session.close()
+    Session.rollback()
+    Session.remove()
 
 
 @pytest.fixture()
@@ -78,4 +71,4 @@ def service_model() -> Service:
 
     :return: Service Model instance
     """
-    return ServiceFactory.create(name="test_service")
+    return ServiceFactory.create(name="fixture_service")

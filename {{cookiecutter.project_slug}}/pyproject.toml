@@ -11,7 +11,6 @@ addopts = '--pydocstyle'
 
 [tool.black]
 line-length = {{ cookiecutter.line_length }}
-skip-string-normalization = true
 target-version = ['{{ cookiecutter.black_target_version }}']
 include = '\.pyi?$'
 exclude = '''
@@ -43,6 +42,7 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^{{ cookiecutter.python_version }}"
+aws_lambda_context = "*"
 loguru = "*"
 marshmallow = "*"
 python-json-logger = "*"

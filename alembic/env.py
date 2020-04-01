@@ -4,7 +4,7 @@ from stela import settings
 
 # noinspection PyUnresolvedReferences
 from entities import *
-from initializers.sql import Base
+from initializers.sql import Base, get_database_url
 
 target_metadata = Base.metadata
 
@@ -22,7 +22,7 @@ def run_migrations_offline():
 
     """
     context.configure(
-        url=settings["database.sql.url"],
+        url=get_database_url(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -39,7 +39,7 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    connectable = create_engine(settings["database.sql.url"], echo=False)
+    connectable = create_engine(get_database_url(), echo=False)
 
     with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)

@@ -6,10 +6,10 @@ from datetime import datetime
 
 import arrow
 import factory
-from factory.alchemy import SQLAlchemyModelFactory, SESSION_PERSISTENCE_FLUSH
+from factory.alchemy import SESSION_PERSISTENCE_FLUSH, SQLAlchemyModelFactory
 
 from entities import Service
-from initializers.sql import db_session
+from initializers.sql import Session
 
 
 def return_now() -> datetime:
@@ -36,9 +36,9 @@ class ServiceFactory(SQLAlchemyModelFactory):
         """Factory Meta Class."""
 
         model = Service
-        sqlalchemy_session = db_session
+        sqlalchemy_session = Session
         sqlalchemy_session_persistence = SESSION_PERSISTENCE_FLUSH
 
-    name = factory.Faker('first_name')
-    description = factory.Faker('sentence')
+    name = factory.Faker("first_name")
+    description = factory.Faker("sentence")
     created = factory.LazyFunction(return_now)

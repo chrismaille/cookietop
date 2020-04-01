@@ -9,5 +9,5 @@ repos:
     rev: stable
     hooks:
       - id: black
-        args: [-l{{ cookiecutter.line_length }},-S]
+        args: [-l{{ cookiecutter.line_length }}]
         language_version: python{{ cookiecutter.python_version }}

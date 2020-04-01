@@ -5,7 +5,7 @@ from pythonjsonlogger import jsonlogger
 from stela import settings
 
 
-def initialize_logger() -> None:
+def initialize_log() -> None:
     """Initialize application logs.
 
     More info: https://github.com/Delgan/loguru
@@ -21,7 +21,7 @@ def initialize_logger() -> None:
     if settings["logger.use_json_format"]:
         log_handler = logging.StreamHandler()
         formatter = jsonlogger.JsonFormatter(
-            '%(asctime)s - %(levelname)s - %(name)s - %(lineno)d - %(message)s'
+            "%(asctime)s - %(levelname)s - %(name)s - %(lineno)d - %(message)s"
         )
         log_handler.setFormatter(formatter)
         config = {

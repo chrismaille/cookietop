@@ -64,6 +64,17 @@ tests = ["coverage", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.i
 
 [[package]]
 category = "main"
+description = "AWS Lambda Context class for type checking and testing"
+name = "aws-lambda-context"
+optional = false
+python-versions = ">= 3.6"
+version = "1.1.0"
+
+[package.extras]
+tests = ["flake8 (3.7.8)", "isort (4.3.21)", "mypy (0.720)", "black (19.3b0)", "pytest (5.0.1)", "pytest-cov (2.7.1)", "pre-commit (1.17.0)", "bump2version (0.5.10)"]
+
+[[package]]
+category = "main"
 description = "Ultra-lightweight pure Python package to check if a file is binary or text."
 name = "binaryornot"
 optional = false
@@ -1096,7 +1107,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ff03a8ac50a169405d33dcea9c0f914dd9e729109183185d46f9b9d03cf25d27"
+content-hash = "398ff814244eb5dbeda1502009e9ae83e1412fe9b6642c28906bfaa3201e3c75"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1122,6 +1133,10 @@ atomicwrites = [
 attrs = [
     {file = "attrs-19.3.0-py2.py3-none-any.whl", hash = "sha256:08a96c641c3a74e44eb59afb61a24f2cb9f4d7188748e76ba4bb5edfa3cb7d1c"},
     {file = "attrs-19.3.0.tar.gz", hash = "sha256:f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"},
+]
+aws-lambda-context = [
+    {file = "aws-lambda-context-1.1.0.tar.gz", hash = "sha256:b6a6d3360671b25bb171335c7e6510b22e60c6fd5db99803f478c986d3230220"},
+    {file = "aws_lambda_context-1.1.0-py3-none-any.whl", hash = "sha256:d03b16aaf8abac30b71bc5d66ed8edadd8805e0d581f73f1e9b4b171635c817d"},
 ]
 binaryornot = [
     {file = "binaryornot-0.4.4-py2.py3-none-any.whl", hash = "sha256:b8b71173c917bddcd2c16070412e369c3ed7f0528926f70cac18a6c97fd563e4"},

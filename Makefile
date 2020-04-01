@@ -35,10 +35,10 @@ reload:
 .PHONY: create_db
 # Create Database
 create_db:
-	@echo "Creating database cookiecutter_test..."
-	@psql postgres -c "DROP DATABASE IF EXISTS cookiecutter_test;"
+	@echo "Creating database cookiecutter_develop..."
+	@psql postgres -c "DROP DATABASE IF EXISTS cookiecutter_develop;"
 	@sleep 1
-	@psql postgres -c "CREATE DATABASE cookiecutter_test;"
+	@psql postgres -c "CREATE DATABASE cookiecutter_develop;"
 
 .PHONY: revision
 # Create new Alembic Migration

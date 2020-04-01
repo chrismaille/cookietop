@@ -9,7 +9,6 @@ fail_under = 40
 addopts = '--pydocstyle'
 
 [tool.black]
-skip-string-normalization = true
 target-version = ['py37']
 include = '\.pyi?$'
 exclude = '''
@@ -41,6 +40,7 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+aws_lambda_context = "*"
 cookiecutter = "*"
 loguru = "*"
 marshmallow = "*"
