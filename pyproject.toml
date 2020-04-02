@@ -3,13 +3,12 @@ default_environment = "test"
 config_file_extension = "TOML"
 
 [tool.coverage.report]
-fail_under = 25
+fail_under = 40
 
 [tool.pytest]
 addopts = '--pydocstyle'
 
 [tool.black]
-skip-string-normalization = true
 target-version = ['py37']
 include = '\.pyi?$'
 exclude = '''
@@ -27,6 +26,7 @@ exclude = '''
     | buck-out
     | build
     | dist
+    | alembic
     | node_modules
   )/
 )
@@ -40,24 +40,30 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+aws_lambda_context = "*"
 cookiecutter = "*"
-toml = "*"
 loguru = "*"
-stela = "*"
-sentry-sdk = "*"
-python-json-logger = "*"
 marshmallow = "*"
+python-json-logger = "*"
+psycopg2 = "*"
+sentry-sdk = "*"
+SQLAlchemy = "*"
+stela = "*"
 
 [tool.poetry.dev-dependencies]
+alembic = "*"
+black = {version = "*", allow-prereleases = true}
+factory_boy = "*"
+freezegun = "*"
 pytest = "*"
 pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
+pytest-postgresql = "*"
 pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"
-black = {version = "*", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry>=0.12"]

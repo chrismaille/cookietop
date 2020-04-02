@@ -1,7 +1,10 @@
 [logger]
 level = "DEBUG"
 use_json_format = false
-do_not_read_environment = true
+
+[database.sql]
+url = "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop"
+echo = true
 
 [sentry]
 endpoint = ""

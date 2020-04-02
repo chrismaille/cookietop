@@ -2,5 +2,10 @@
 level = "DEBUG"
 use_json_format = true
 
+[database.sql]
+url = ""
+echo = true
+
+
 [sentry]
 endpoint = ""

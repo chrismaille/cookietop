@@ -1,19 +1,34 @@
-from typing import Dict, Any
-
 from stela import settings
 
 from helpers.decorators import handler_view
+from helpers.request import Request
 from helpers.status_code import StatusCode
+from helpers.types import HandlerResponse
 
 
 @handler_view()
-def health_check() -> Dict[str, Any]:
-    """Do the check health status of application.
+def health_check(request: Request) -> HandlerResponse:
+    """Return application's health status.
 
-    :return: Dict
+    This is a very simple example for a GET request.
+    All request validation occurs in `handler_view` logic
+    before call this decorated function.
+
+    The Request object will have all data received from
+    AWS event and context arguments.
+
+    Response must be a Dictionary compatible
+    with HandlerResponse TypedDict.
+
+    :param: request: Sherlock instance
+    :return: HandlerResponse Dict
     """
-    return {
-        "status": "OK",
-        "environment": settings.stela_options.current_environment,
-        "statusCode": StatusCode.OK,
+    response = {
+        "message": {
+            "status": "OK",
+            "environment": settings.stela_options.current_environment,
+        },
+        "status_code": StatusCode.OK,
     }
+
+    return response

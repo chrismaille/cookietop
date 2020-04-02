@@ -35,7 +35,10 @@ in [Notion](https://www.notion.so/noverde)
 # Configure your Noverde AWS account
 $ aws configure
 
-# Install application
+# Install application (first time)
+$ make first_install
+
+# Reinstall application
 $ make install
 
 # Quick-Test Application
@@ -55,6 +58,19 @@ $ make serve
 
 # Manual Deploy (check your permissions first)
 $ make deploy
+```
+
+#### Relational Database Commands
+```shell
+# Create development database
+# In Postgres create user: noverde, pass: noverde
+$ make create_db
+
+# Create new Revision
+$ make revision message="foo"
+
+# Migrate Database
+$ make migrate
 ```
 
 #### The AWS Toolkit

@@ -11,7 +11,6 @@ addopts = '--pydocstyle'
 
 [tool.black]
 line-length = {{ cookiecutter.line_length }}
-skip-string-normalization = true
 target-version = ['{{ cookiecutter.black_target_version }}']
 include = '\.pyi?$'
 exclude = '''
@@ -29,6 +28,7 @@ exclude = '''
     | buck-out
     | build
     | dist
+    | migrations
     | node_modules
   )/
 )
@@ -42,21 +42,28 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^{{ cookiecutter.python_version }}"
+aws_lambda_context = "*"
 loguru = "*"
 marshmallow = "*"
 python-json-logger = "*"
+psycopg2 = "*"
 sentry-sdk = "*"
+SQLAlchemy = "*"
 stela = "*"
 
 [tool.poetry.dev-dependencies]
+alembic = "*"
 aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
+factory_boy = "*"
+freezegun = "*"
 ipdb = "*"
 pre-commit = "*"
 pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
+pytest-postgresql = "*"
 pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"

@@ -2,8 +2,12 @@ import json
 from dataclasses import dataclass
 from typing import Dict, Any, Optional, Type
 
+from aws_lambda_context import LambdaContext
 from loguru import logger
 from marshmallow import Schema
+
+from helpers.request import Request
+from initializers.sql import Session
 
 
 @dataclass
@@ -20,6 +24,7 @@ class Sherlock:
     """
 
     event_data: Dict[Any, Any]
+    context_data: LambdaContext
     schema: Optional[Type[Schema]] = None
     validated_data: Optional[Any] = None
     body_data: Optional[Dict[Any, Any]] = None
@@ -37,13 +42,18 @@ class Sherlock:
         if self.body_data:
             logger.debug(f"Body received: {self.body_data}")
 
-    def inspect(self) -> None:
-        """Do the call of data validation methods.
+    def inspect(self) -> Request:
+        """Inspect and return Request object.
 
-        Methods are:
-
-            - self.get_body()
-            - self.get_validated_data_from_schema()
+        :return: Request instance
         """
         self.get_body()
         self.get_validated_data_from_schema()
+        return Request(
+            validated_data=self.validated_data,
+            original_body=self.event_data.get("body"),
+            body=self.body_data,
+            aws_event=self.event_data,
+            aws_context=self.context_data,
+            db_session=Session(),
+        )
