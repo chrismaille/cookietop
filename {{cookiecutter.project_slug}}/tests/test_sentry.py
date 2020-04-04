@@ -4,7 +4,7 @@ import pkg_resources
 import pytest
 from stela import settings, stela_reload
 
-from initializers.sentry import initialize_sentry
+from interface.initializers.sentry import initialize_sentry
 
 
 @pytest.fixture(autouse=True)
@@ -26,14 +26,14 @@ def test_sentry_not_initialized(mocker, monkeypatch):
     """Test if Sentry is not initialized when endpoint is unavailable."""
     monkeypatch.delenv("SENTRY_ENDPOINT")
     stela_reload()
-    sentry_mock = mocker.patch("initializers.sentry.sentry_sdk")
+    sentry_mock = mocker.patch("interface.initializers.sentry.sentry_sdk")
     initialize_sentry()
     sentry_mock.assert_not_called()
 
 
 def test_sentry_initialized(mocker):
     """Test if Sentry is initialized when endpoint is available."""
-    sentry_mock = mocker.patch("initializers.sentry.sentry_sdk")
+    sentry_mock = mocker.patch("interface.initializers.sentry.sentry_sdk")
     mocked_distribution = MagicMock()
     mocked_distribution.version = "1.0.0"
     mocker.patch.object(

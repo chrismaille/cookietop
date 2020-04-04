@@ -4,7 +4,7 @@ config_file_extension = "TOML"
 config_file_prefix = "env-"
 
 [tool.coverage.report]
-fail_under = {{ cookiecutter.min_coverage_threshold }}
+fail_under = 80
 
 [tool.pytest]
 addopts = '--pydocstyle'
@@ -42,9 +42,12 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^{{ cookiecutter.python_version }}"
+arrow = "*"
 aws_lambda_context = "*"
 loguru = "*"
 marshmallow = "*"
+marshmallow_enum = "*"
+marshmallow-sqlalchemy = "*"
 python-json-logger = "*"
 psycopg2 = "*"
 sentry-sdk = "*"

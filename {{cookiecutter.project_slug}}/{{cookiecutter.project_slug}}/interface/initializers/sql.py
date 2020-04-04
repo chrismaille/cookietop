@@ -42,6 +42,14 @@ class Base:
 
     """
 
+    def save(self):
+        if self.validate():  # type: ignore
+            session = Session()
+            if not self.id:  # type: ignore
+                session.add(self)
+            session.commit()
+            session.refresh(self)
+
     @classmethod
     def query(cls) -> Query:
         """Return SQLAlchemy Query.

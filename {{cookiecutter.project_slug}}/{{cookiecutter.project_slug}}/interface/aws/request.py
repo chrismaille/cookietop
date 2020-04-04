@@ -4,7 +4,7 @@ from typing import Dict, Any, Optional
 from aws_lambda_context import LambdaContext
 
 
-from initializers.sql import Session
+from interface.initializers.sql import Session
 
 
 @dataclass
@@ -31,9 +31,9 @@ class Request:
     1. Case use: Simple POST
     aws_event = {"foo": "bar"}
 
-    >>> from helpers.types import HandlerResponse
-    >>> from helpers.decorators import handler_view
-    >>> from helpers.status_code import StatusCode
+    >>> from common.types import HandlerResponse
+    >>> from common.decorators import handler_view
+    >>> from common.status_code import StatusCode
     >>>
     >>> # aws_event = "{\"foo\": \"bar\"}"
     >>> @handler_view()
@@ -49,9 +49,9 @@ class Request:
 
     2. Case use: POST with Marshmallow Schema
 
-    >>> from helpers.types import HandlerResponse
-    >>> from helpers.decorators import handler_view
-    >>> from helpers.status_code import StatusCode
+    >>> from common.types import HandlerResponse
+    >>> from common.decorators import handler_view
+    >>> from common.status_code import StatusCode
     >>> from marshmallow import fields, Schema
     >>>
     >>> class FooSchema(Schema):

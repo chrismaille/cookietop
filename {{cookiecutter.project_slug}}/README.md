@@ -9,6 +9,7 @@ cookiecutter.project_slug }}/actions)
 src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 [![GitFlow](https://img.shields.io/badge/GitFlow-Friendly-brightgreen)](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Domain](https://img.shields.io/badge/Domain-{{ cookiecutter.domain_class }}-purple)](https://www.notion.so/noverde/Engineering-5388610204db436a81b992b1b146f83e)
 
 {{ cookiecutter.project_description }}
 
@@ -28,17 +29,32 @@ in [Notion](https://www.notion.so/noverde)
 * [Poetry](https://python-poetry.org/)
 * [GitFlow](https://github.com/petervanderdoes/gitflow-avh/wiki/Installation)
 
-
-### Commands
+### First install
 
 ```shell
 # Configure your Noverde AWS account
 $ aws configure
 
+# Install project
+$ make first_install
+
+# Prepare database
+$ make create_db
+$ make revision message="First commit"
+$ make migrate
+
+# Test project
+$ make test
+```
+
+
+### Command List
+
+```shell
 # Install application (first time)
 $ make first_install
 
-# Reinstall application
+# (Re)install application
 $ make install
 
 # Quick-Test Application
@@ -61,6 +77,7 @@ $ make deploy
 ```
 
 #### Relational Database Commands
+
 ```shell
 # Create development database
 # In Postgres create user: noverde, pass: noverde

@@ -9,4 +9,6 @@ echo = true
 [sentry]
 endpoint = ""
 
-
+[noverde.{{cookiecutter.domain_slug}}.settings]
+name = "noverde_{{cookiecutter.domain_slug}}_settings"
+active = true

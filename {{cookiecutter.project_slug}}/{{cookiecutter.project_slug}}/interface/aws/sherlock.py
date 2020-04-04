@@ -6,8 +6,8 @@ from aws_lambda_context import LambdaContext
 from loguru import logger
 from marshmallow import Schema
 
-from helpers.request import Request
-from initializers.sql import Session
+from interface.aws.request import Request
+from interface.initializers.sql import Session
 
 
 @dataclass

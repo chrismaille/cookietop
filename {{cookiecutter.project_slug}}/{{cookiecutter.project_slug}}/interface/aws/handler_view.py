@@ -6,11 +6,13 @@ from loguru import logger
 from marshmallow import Schema, ValidationError
 from sentry_sdk import capture_exception  # type: ignore
 
-from helpers.types import HandlerResponse
-from helpers.sherlock import Sherlock
-from helpers.status_code import StatusCode
-from initializers.sql import Session
 from aws_lambda_context import LambdaContext
+
+from enterprise.rules.exceptions import RuleValidationErrors
+from interface.aws.sherlock import Sherlock
+from interface.types.status_code import StatusCode
+from interface.types.handler_response import HandlerResponse
+from interface.initializers.sql import Session
 
 
 def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
@@ -47,8 +49,6 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                     "body": json.dumps(ret["message"]),
                 }
 
-                # Commit database
-                Session.commit()
                 return response
             except ValidationError as error:
                 # Handle Bad Request Errors
@@ -62,6 +62,15 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
                     "body": json.dumps({"errors": error_list}),
+                }
+            except RuleValidationErrors as error:
+                # Handle Enterprise Rules Validation Errors.
+                Session.rollback()
+                capture_exception(error)
+                logger.error(f"Rules Validation Error during request: {error}")
+                return {
+                    "statusCode": StatusCode.BAD_REQUEST.value,
+                    "body": json.dumps({"errors": ["{error}"]}),
                 }
             except Exception as error:
                 # Handle Internal Server Errors
