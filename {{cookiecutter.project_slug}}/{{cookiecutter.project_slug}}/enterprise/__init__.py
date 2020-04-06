@@ -3,8 +3,8 @@
 This layer process the Enterprise Business Rules.
 
 This is the place for:
-    * Entities
-    * Models
+    * Main Entity (project's domain)
+    * Entity Models
     * Rules Validation
 
 Workflow

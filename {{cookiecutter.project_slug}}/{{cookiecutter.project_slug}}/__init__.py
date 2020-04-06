@@ -27,7 +27,7 @@ The Enterprise Layer
 ====================
 This layer contain all code about **Enterprise and
 Business Rules** for Noverde and his Partners.
-All Entities, Models and Rules Validation are defined here.
+Primary Entity, his Models and all Rules Validation are defined here.
 
 
 Workflow
