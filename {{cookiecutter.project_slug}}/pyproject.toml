@@ -30,6 +30,7 @@ exclude = '''
     | dist
     | migrations
     | node_modules
+    | dependencies
   )/
 )
 '''
@@ -53,6 +54,7 @@ psycopg2 = "*"
 sentry-sdk = "*"
 SQLAlchemy = "*"
 stela = "*"
+typing_extensions = "*"
 
 [tool.poetry.dev-dependencies]
 alembic = "*"

@@ -47,8 +47,9 @@ package: show_config
 # Build dependencies for SAM operations
 build_dependencies:
 	@mkdir -p ./dependencies/python
-	@poetry export -f requirements.txt -o ./dependencies/python/requirements.txt
-	@pip install -r ./dependencies/python/requirements.txt -t ./dependencies/python
+	@poetry export --without-hashes -f requirements.txt -o ./dependencies/python/requirements.txt
+	@cp *.toml ./dependencies/python/*.toml
+	@pip install --upgrade -r ./dependencies/python/requirements.txt -t ./dependencies/python
 
 .PHONY: deploy
 # Run `sam deploy` command
@@ -78,17 +79,17 @@ serve: build_dependencies
 .PHONY: watch
 # Runs pytest in watch mode
 watch:
-	@poetry run ptw -c -w -n
+	@poetry run ptw -c -w -n --ignore=dependencies
 
 .PHONY: test
 # Runs pytest stopping at first error
 test:
-	@poetry run pytest -x  --disable-warnings
+	@poetry run pytest -x  --disable-warnings --ignore=dependencies
 
 .PHONY: ci
 # Runs pytest for full testing
 ci:
-	@poetry run pytest --disable-warnings --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations
+	@poetry run pytest --disable-warnings --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations --ignore=dependencies
 
 .PHONY: format
 # Format code using black

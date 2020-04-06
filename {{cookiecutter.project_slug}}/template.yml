@@ -6,13 +6,14 @@ Globals:
   Function:
     Runtime: python{{ cookiecutter.python_version }}
     Layers:
-      - Ref: {{cookiecutter.project_slug}}DepLayer
+      - Ref: {{cookiecutter.project_name_camel}}DepLayer
+      - arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py37:3
     Environment:
       Variables:
         {% raw %}
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOG_LEVEL: '{{resolve:ssm:NoverdeEnvironmentLogLevel:1}}'
-        SENTRY_ENDPOINT: '{{resolve:ssm:/sentry/endpoints/{% endraw %}{{cookiecutter.project_slug}}{% raw %}:1}}'
+        SENTRY_ENDPOINT: '{{resolve:ssm:/sentry/endpoints/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}:1}}'
         {% endraw %}
   Api:
     Cors:
@@ -26,22 +27,23 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_slug}}-health-check
       CodeUri: {{cookiecutter.project_slug}}
-      Handler: handlers.health.health_check
+      Handler: interface.handlers.health.health_check
       Policies:
         - AWSLambdaFullAccess
-    Tags:
-      noverde:service: {{ cookiecutter.project_name }}
-    Events:
-      GetHealth:
-        Type: Api
-        Properties:
-          Path: /health
-          Method: get
-          RestApiId:
-            Ref: {{cookiecutter.project_slug}}Api
+      Tags:
+        noverde:
+          service:{{ cookiecutter.project_name_camel }}
+      Events:
+        GetHealth:
+          Type: Api
+          Properties:
+            Path: /health
+            Method: get
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
 
   # Lambda Layer Configuration
-  {{cookiecutter.project_slug}}DepLayer:
+  {{cookiecutter.project_name_camel}}DepLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
       LayerName: sam-{{cookiecutter.project_slug}}-dependencies
@@ -52,10 +54,10 @@ Resources:
       LicenseInfo: 'MIT'
 
   # Api Gateway Configuration
-  {{cookiecutter.project_slug}}Api:
+  {{cookiecutter.project_name_camel}}Api:
     Type: AWS::Serverless::Api
     Properties:
-      Name: {{cookiecutter.project_slug}}-api
+      Name: {{cookiecutter.project_name_camel}}Api
       OpenApiVersion: "3.0.3"
       TracingEnabled: true
       StageName: v1
