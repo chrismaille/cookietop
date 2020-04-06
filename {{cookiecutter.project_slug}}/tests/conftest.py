@@ -5,9 +5,10 @@ import pytest
 from loguru import logger
 from pytest_postgresql.janitor import DatabaseJanitor
 
-from entities import Service
-from initializers.sql import Session
-from tests.factories.entities import ServiceFactory
+from enterprise.types.enterprise_resources import EnterpriseResources
+from enterprise.models.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
+from interface.initializers.sql import Session
+from tests.factories.entities import Noverde{{cookiecutter.domain_class}}ModelFactory
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -66,9 +67,9 @@ def dbsession():
 
 
 @pytest.fixture()
-def service_model() -> Service:
-    """Return Service Model Fixture.
+def {{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}Model:
+    """Return Noverde{{cookiecutter.domain_class}}Model Fixture.
 
-    :return: Service Model instance
+    :return: Noverde{{cookiecutter.domain_class}}Model instance
     """
-    return ServiceFactory.create(name="fixture_service")
+    return Noverde{{cookiecutter.domain_class}}ModelFactory.create(rule=EnterpriseResources.noverde)

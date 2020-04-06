@@ -2,9 +2,6 @@
 default_environment = "test"
 config_file_extension = "TOML"
 
-[tool.coverage.report]
-fail_under = 40
-
 [tool.pytest]
 addopts = '--pydocstyle'
 
@@ -40,10 +37,12 @@ authors = ["Noverde <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+arrow = "*"
 aws_lambda_context = "*"
-cookiecutter = "*"
 loguru = "*"
 marshmallow = "*"
+marshmallow_enum = "*"
+marshmallow-sqlalchemy = "*"
 python-json-logger = "*"
 psycopg2 = "*"
 sentry-sdk = "*"
@@ -52,10 +51,12 @@ stela = "*"
 
 [tool.poetry.dev-dependencies]
 alembic = "*"
+aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"
 freezegun = "*"
-pytest = "*"
+ipdb = "*"
+pre-commit = "*"
 pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
@@ -64,6 +65,7 @@ pytest-postgresql = "*"
 pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"
+wheel = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]

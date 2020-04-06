@@ -1,26 +1,27 @@
-export PYTHONPATH := $(PWD):$(PWD)/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:$(PWD)/tests
+export PYTHONPATH := $(PWD):$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/tests
 
-setup:
+first_install:
 	@git flow init -d
+	@poetry install
+	@rm -rf ./src
 
 install:
 	@poetry install
-	rm -rf ./src
+	@rm -rf ./src
 
-test:
-	@rm -rf ./noverde_test_project
-	@poetry run pytest --disable-warnings
-
-ci:
+cookie:
 	@echo Running Cookiecutter...
 	@rm -rf ./noverde_test_project
 	@poetry run cookiecutter --no-input .
-	@poetry run pytest  --cov=./noverde_test_project --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
-	@rm -rf ./noverde_test_project
 
-watch:
-	@rm -rf ./noverde_test_project
-	@poetry run ptw -c -w -n
+test: cookie
+	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_slug}}
+
+ci: cookie
+	@poetry run pytest  --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
+
+watch: cookie
+	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_slug}}
 
 format:
 	@poetry run black .

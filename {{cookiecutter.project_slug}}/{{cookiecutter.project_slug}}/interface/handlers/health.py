@@ -1,9 +1,9 @@
 from stela import settings
 
-from helpers.decorators import handler_view
-from helpers.request import Request
-from helpers.status_code import StatusCode
-from helpers.types import HandlerResponse
+from interface.aws.handler_view import handler_view
+from interface.aws.request import Request
+from interface.types.status_code import StatusCode
+from interface.types.handler_response import HandlerResponse
 
 
 @handler_view()

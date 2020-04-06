@@ -53,7 +53,7 @@ $ cookiecutter gh:noverde/noverde_cookiecutter
 
 # Install and Test new Microservice
 $ cd path/to/new_project
-$ make setup
+$ make first_install
 $ make test
 ```
 
@@ -62,10 +62,10 @@ $ make test
 Use the following commands to install and develop our cookiecutter:
 
 ```shell
-# Before first install
-$ make setup
+# First install
+$ make first_install
 
-# Install Project
+# Reinstall Project
 $ make install
 
 # Run tests once (stop a first error)

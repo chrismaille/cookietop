@@ -2,8 +2,8 @@ from alembic import context
 from sqlalchemy import create_engine
 
 # noinspection PyUnresolvedReferences
-from entities import *
-from initializers.sql import Base, get_database_url
+from enterprise.models import *
+from interface.initializers.sql import Base, get_database_url
 
 target_metadata = Base.metadata
 

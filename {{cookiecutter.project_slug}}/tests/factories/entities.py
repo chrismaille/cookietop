@@ -8,8 +8,9 @@ import arrow
 import factory
 from factory.alchemy import SESSION_PERSISTENCE_FLUSH, SQLAlchemyModelFactory
 
-from entities import Service
-from initializers.sql import Session
+from enterprise.types.enterprise_resources import EnterpriseResources
+from enterprise.models.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
+from interface.initializers.sql import Session
 
 
 def return_now() -> datetime:
@@ -23,8 +24,8 @@ def return_now() -> datetime:
     return arrow.utcnow().datetime
 
 
-class ServiceFactory(SQLAlchemyModelFactory):
-    """Service Factory.
+class Noverde{{cookiecutter.domain_class}}ModelFactory(SQLAlchemyModelFactory):
+    """{{cookiecutter.domain_class}}Model Factory.
 
     This is a simple example for
     Entity's Factory suitable for tests.
@@ -35,10 +36,9 @@ class ServiceFactory(SQLAlchemyModelFactory):
     class Meta:
         """Factory Meta Class."""
 
-        model = Service
+        model = Noverde{{cookiecutter.domain_class}}Model
         sqlalchemy_session = Session
         sqlalchemy_session_persistence = SESSION_PERSISTENCE_FLUSH
 
-    name = factory.Faker("first_name")
-    description = factory.Faker("sentence")
     created = factory.LazyFunction(return_now)
+    rule = EnterpriseResources.noverde
