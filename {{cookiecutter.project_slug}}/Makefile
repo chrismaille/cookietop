@@ -48,7 +48,7 @@ package: show_config
 build_dependencies:
 	@mkdir -p ./dependencies/python
 	@poetry export --without-hashes -f requirements.txt -o ./dependencies/python/requirements.txt
-	@cp *.toml ./dependencies/python/*.toml
+	@cp *.toml ./dependencies/python
 	@pip install --upgrade -r ./dependencies/python/requirements.txt -t ./dependencies/python
 
 .PHONY: deploy
@@ -74,7 +74,7 @@ install:
 .PHONY: serve
 # Runs local API via SAM client
 serve: build_dependencies
-	@poetry run sam local start-api
+	@poetry run sam local start-api --debug -n local.json
 
 .PHONY: watch
 # Runs pytest in watch mode
@@ -114,6 +114,7 @@ create_db:
 # Create new Alembic Migration
 # Usage: make revision message="foo"
 revision:
+	@mkdir -p ./migrations/versions
 	@poetry run alembic revision --autogenerate -m "$(message)"
 
 .PHONY: migrate

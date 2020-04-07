@@ -86,9 +86,10 @@ $ make ci
 $ make reload
 ```
 
-For quick development in cookiecutter, use command `make reload` to
-install a test project. Every time you run this command it will refresh
-the test project with your modifications in this project.
+Every time you run tests, this project will create a "Noverde Test
+Project" in `noverde_test_project` subfolder using local cookiecutter
+code. Also you can use command `make reload` to install this test
+project in parent folder.
 
 #### Testing Relational Database
 ```shell

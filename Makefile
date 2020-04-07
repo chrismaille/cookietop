@@ -45,6 +45,7 @@ create_db:
 # Create new Alembic Migration
 # Usage: make revision message="foo"
 revision:
+	@mkdir -p ./migrations/versions
 	@poetry run alembic revision --autogenerate -m "$(message)"
 
 .PHONY: migrate
