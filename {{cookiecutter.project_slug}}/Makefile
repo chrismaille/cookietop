@@ -47,8 +47,9 @@ package: show_config
 # Build dependencies for SAM operations
 build_dependencies:
 	@mkdir -p ./dependencies/python
-	@poetry export -f requirements.txt -o ./dependencies/python/requirements.txt
-	@pip install -r ./dependencies/python/requirements.txt -t ./dependencies/python
+	@poetry export --without-hashes -f requirements.txt -o ./dependencies/python/requirements.txt
+	@cp *.toml ./dependencies/python
+	@pip install --upgrade -r ./dependencies/python/requirements.txt -t ./dependencies/python
 
 .PHONY: deploy
 # Run `sam deploy` command
@@ -73,22 +74,22 @@ install:
 .PHONY: serve
 # Runs local API via SAM client
 serve: build_dependencies
-	@poetry run sam local start-api
+	@poetry run sam local start-api --debug -n local.json
 
 .PHONY: watch
 # Runs pytest in watch mode
 watch:
-	@poetry run ptw -c -w -n
+	@poetry run ptw -c -w -n --ignore=dependencies
 
 .PHONY: test
 # Runs pytest stopping at first error
 test:
-	@poetry run pytest -x  --disable-warnings
+	@poetry run pytest -x  --disable-warnings --ignore=dependencies
 
 .PHONY: ci
 # Runs pytest for full testing
 ci:
-	@poetry run pytest --disable-warnings --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations
+	@poetry run pytest --disable-warnings --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations --ignore=dependencies
 
 .PHONY: format
 # Format code using black
@@ -113,6 +114,7 @@ create_db:
 # Create new Alembic Migration
 # Usage: make revision message="foo"
 revision:
+	@mkdir -p ./migrations/versions
 	@poetry run alembic revision --autogenerate -m "$(message)"
 
 .PHONY: migrate

@@ -38,13 +38,15 @@ $ aws configure
 # Install project
 $ make first_install
 
-# Prepare database
+# Prepare relational database (postgres)
+# Make sure you have the "noverde:noverde"
+# superuser created in postgres.
 $ make create_db
 $ make revision message="First commit"
 $ make migrate
 
 # Test project
-$ make test
+$ make test # or make ci
 ```
 
 

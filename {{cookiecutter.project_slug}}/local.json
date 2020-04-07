@@ -1,0 +1,7 @@
+{
+  "HealthCheck": {
+    "ENVIRONMENT": "development",
+    "LOG_LEVEL": "debug",
+    "SENTRY_LEVEL": null
+  }
+}
