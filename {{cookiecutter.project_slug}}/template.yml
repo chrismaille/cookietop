@@ -15,7 +15,7 @@ Globals:
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
-        DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
+        DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:3}}'
         {% endraw %}
   Api:
     Cors:
