@@ -126,3 +126,8 @@ revision:
 # Run Alembic Migrations
 migrate:
 	@poetry run alembic upgrade head
+
+.PHONY: start_docker_dynamodb
+# Run DynamoDB with Docker
+start_docker_dynamodb:
+	@docker-compose up -d dynamodb
