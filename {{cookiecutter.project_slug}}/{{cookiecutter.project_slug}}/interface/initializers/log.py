@@ -26,7 +26,12 @@ def initialize_log() -> None:
         log_handler.setFormatter(formatter)
         config = {
             "handlers": [
-                {"sink": log_handler, "format": "{message}", "serialize": True,},
+                {
+                    "sink": log_handler,
+                    "format": "{message}",
+                    "serialize": True,
+                    "level": settings["logger.level"],
+                },
             ],
         }
         logger.configure(**config)  # type: ignore

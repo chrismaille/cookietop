@@ -13,6 +13,15 @@ from interface.aws.sherlock import Sherlock
 from interface.types.status_code import StatusCode
 from interface.types.handler_response import HandlerResponse
 from interface.initializers.sql import Session
+from interface.initializers.log import initialize_log
+from interface.initializers.sentry import initialize_sentry
+
+
+# When running on AWS
+# this code will be invoked once
+# per handler
+initialize_sentry()
+initialize_log()
 
 
 def handler_view(schema: Optional[Type[Schema]] = None) -> Any:

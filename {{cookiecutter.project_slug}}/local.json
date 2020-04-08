@@ -1,0 +1,8 @@
+{
+  "HealthCheck": {
+    "ENVIRONMENT": "development",
+    "LOGGER_LEVEL": "DEBUG",
+    "SENTRY_LEVEL": null,
+    "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop"
+  }
+}
