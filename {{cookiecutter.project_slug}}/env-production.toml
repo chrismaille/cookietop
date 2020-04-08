@@ -6,6 +6,9 @@ use_json_format = true
 url = ""
 echo = false
 
+[databae.nosql]
+url = ""
+
 [sentry]
 endpoint = ""
 

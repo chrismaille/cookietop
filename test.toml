@@ -6,6 +6,9 @@ use_json_format = false
 url = "postgres://noverde:noverde@localhost/cookiecutter_develop"
 echo = true
 
+[database.nosql]
+url = "http://localhost:8000"
+
 [sentry]
 endpoint = ""
 
