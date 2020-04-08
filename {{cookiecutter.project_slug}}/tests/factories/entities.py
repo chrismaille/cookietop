@@ -55,13 +55,9 @@ class Noverde{{cookiecutter.domain_class}}DocumentFactory(Factory):
 
     class Meta:
         """Factory DynamoDB Meta Class."""
+
         model = Noverde{{cookiecutter.domain_class}}Document
-    uuid = Faker('uuid4')
+
+    uuid = Faker("uuid4")
     created = LazyFunction(return_now)
     rule = EnterpriseResources.noverde
-
-    @classmethod
-    def dict_factory(cls, create=False, extra=None):
-        declarations = cls._meta.pre_declarations.as_dict()
-        declarations.update(extra or {})
-        return make_factory(dict, **declarations)

@@ -3,6 +3,5 @@ from enterprise.rules.noverde_mixin import NoverdeMixin
 
 
 class Noverde{{cookiecutter.domain_class}}Document(NoverdeMixin, {{cookiecutter.domain_class}}Document):
-    class Meta:
-        table_name = "Noverde{{cookiecutter.domain_class}}Document"
-    pass
+    class Meta({{cookiecutter.domain_class}}Document.Meta):
+        pass

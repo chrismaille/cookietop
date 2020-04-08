@@ -78,7 +78,7 @@ marker = "platform_system != \"Windows\""
 name = "aws-lambda-builders"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
-version = "0.5.0"
+version = "0.8.0"
 
 [package.dependencies]
 setuptools = "*"
@@ -86,7 +86,7 @@ six = ">=1.11,<2.0"
 wheel = "*"
 
 [package.extras]
-dev = ["coverage (4.3.4)", "flake8 (3.3.0)", "tox (2.2.1)", "pytest-cov (2.4.0)", "astroid (>=1.5.8,<2.1.0)", "pylint (1.7.2)", "pytest (3.0.7)", "py (1.4.33)", "mock (2.0.0)", "parameterized (0.6.1)", "backports.tempfile (1.0)", "futures (3.2.0)", "pathlib2 (2.3.2)"]
+dev = ["coverage (4.3.4)", "pytest-cov (2.4.0)", "pytest (3.0.7)", "py (1.4.33)", "mock (2.0.0)", "parameterized (0.6.1)", "backports.tempfile (1.0)", "futures (3.2.0)", "pathlib2 (2.3.2)", "flake8 (3.3.0)", "astroid (>=1.5.8,<2.1.0)", "pylint (1.7.2)", "flake8 (3.7.9)", "pylint (2.4.4)"]
 
 [[package]]
 category = "main"
@@ -106,22 +106,24 @@ marker = "platform_system != \"Windows\""
 name = "aws-sam-cli"
 optional = false
 python-versions = ">=3.6, <=4.0, !=4.0"
-version = "0.30.0"
+version = "0.47.0"
 
 [package.dependencies]
 Flask = ">=1.0.2,<1.1.0"
 PyYAML = ">=5.1,<6.0"
-aws-lambda-builders = "0.5.0"
-aws-sam-translator = "1.15.1"
-boto3 = ">=1.9.56,<2.0"
+aws-lambda-builders = "0.8.0"
+aws-sam-translator = "1.22.0"
+boto3 = ">=1.10.29,<2.0"
 chevron = ">=0.12,<1.0"
 click = ">=7.0,<8.0"
 cookiecutter = ">=1.6.0,<1.7.0"
 dateparser = ">=0.7,<1.0"
 docker = ">=4.0,<5.0"
-python-dateutil = ">=2.6,<3.0"
+jmespath = ">=0.9.5,<0.10.0"
+python-dateutil = ">=2.6,<2.8.1"
 requests = "2.22.0"
 serverlessrepo = "0.1.9"
+tomlkit = "0.5.8"
 
 [package.extras]
 dev = ["coverage (4.5.4)", "pytest-cov (2.7.1)", "pylint (2.3.1)", "pytest (5.2.1)", "parameterized (0.7.0)", "pytest-xdist (1.30.0)", "pytest-forked (1.1.3)", "pytest-timeout (1.3.3)", "pytest-rerunfailures (7.0)"]
@@ -132,7 +134,7 @@ description = "AWS SAM Translator is a library that transform SAM templates into
 name = "aws-sam-translator"
 optional = false
 python-versions = "*"
-version = "1.15.1"
+version = "1.22.0"
 
 [package.dependencies]
 boto3 = ">=1.5,<2.0"
@@ -211,10 +213,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.12.38"
+version = "1.12.39"
 
 [package.dependencies]
-botocore = ">=1.15.38,<1.16.0"
+botocore = ">=1.15.39,<1.16.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -224,7 +226,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.15.38"
+version = "1.15.39"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -264,22 +266,33 @@ version = "3.1.0"
 
 [[package]]
 category = "main"
-description = "checks cloudformation for practices and behaviour         that could potentially be improved"
+description = "Checks CloudFormation templates for practices and behaviour that could potentially be improved"
 name = "cfn-lint"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "0.26.1"
+version = "0.29.4"
 
 [package.dependencies]
-aws-sam-translator = ">=1.15.1"
-jsonpatch = "*"
+aws-sam-translator = ">=1.21.0"
 jsonschema = ">=3.0,<4.0"
-pyyaml = "*"
 six = ">=1.11,<2.0"
+
+[package.dependencies.jsonpatch]
+python = "<3.4.0 || >=3.5.0"
+version = "*"
+
+[package.dependencies.networkx]
+python = ">=3.5"
+version = ">=2.4,<3.0"
+
+[package.dependencies.pyyaml]
+python = "<3.4.0 || >=3.5.0"
+version = "*"
 
 [[package]]
 category = "main"
 description = "Universal encoding detector for Python 2 and 3"
+marker = "platform_system != \"Windows\""
 name = "chardet"
 optional = false
 python-versions = "*"
@@ -375,7 +388,7 @@ regex = "!=2019.02.19"
 tzlocal = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Decorators for Humans"
 marker = "python_version >= \"3.4\""
 name = "decorator"
@@ -691,6 +704,7 @@ version = "1.1.2"
 [[package]]
 category = "main"
 description = " Apply JSON-Patches (RFC 6902) "
+marker = "python_version != \"3.4\""
 name = "jsonpatch"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -710,6 +724,7 @@ version = "1.3"
 [[package]]
 category = "main"
 description = "Identify specific nodes in a JSON document (RFC 6901)"
+marker = "python_version != \"3.4\""
 name = "jsonpointer"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -913,6 +928,31 @@ name = "mypy-extensions"
 optional = false
 python-versions = "*"
 version = "0.4.3"
+
+[[package]]
+category = "main"
+description = "Python package for creating and manipulating graphs and networks"
+marker = "python_version >= \"3.5\""
+name = "networkx"
+optional = false
+python-versions = ">=3.5"
+version = "2.4"
+
+[package.dependencies]
+decorator = ">=4.3.0"
+
+[package.extras]
+all = ["numpy", "scipy", "pandas", "matplotlib", "pygraphviz", "pydot", "pyyaml", "gdal", "lxml", "pytest"]
+gdal = ["gdal"]
+lxml = ["lxml"]
+matplotlib = ["matplotlib"]
+numpy = ["numpy"]
+pandas = ["pandas"]
+pydot = ["pydot"]
+pygraphviz = ["pygraphviz"]
+pytest = ["pytest"]
+pyyaml = ["pyyaml"]
+scipy = ["scipy"]
 
 [[package]]
 category = "dev"
@@ -1148,7 +1188,7 @@ version = "2.4.7"
 [[package]]
 category = "main"
 description = ""
-marker = "sys_platform == \"win32\" and python_version >= \"3.6\" or sys_platform == \"win32\" and python_version >= \"3.6\" and platform_system != \"Windows\""
+marker = "sys_platform == \"win32\" and python_version >= \"3.6\" and platform_system != \"Windows\""
 name = "pypiwin32"
 optional = false
 python-versions = "*"
@@ -1160,6 +1200,7 @@ pywin32 = ">=223"
 [[package]]
 category = "main"
 description = "Persistent/Functional/Immutable data structures"
+marker = "platform_system != \"Windows\""
 name = "pyrsistent"
 optional = false
 python-versions = "*"
@@ -1359,8 +1400,8 @@ category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
-version = "2.8.1"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "2.8.0"
 
 [package.dependencies]
 six = ">=1.5"
@@ -1411,7 +1452,7 @@ version = "2019.3"
 [[package]]
 category = "main"
 description = "Python for Window Extensions"
-marker = "sys_platform == \"win32\" and python_version >= \"3.6\" or sys_platform == \"win32\" and python_version >= \"3.6\" and platform_system != \"Windows\""
+marker = "sys_platform == \"win32\" and python_version >= \"3.6\" and platform_system != \"Windows\""
 name = "pywin32"
 optional = false
 python-versions = "*"
@@ -1619,6 +1660,15 @@ version = "0.10.0"
 
 [[package]]
 category = "dev"
+description = "Style preserving TOML library"
+marker = "platform_system != \"Windows\""
+name = "tomlkit"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "0.5.8"
+
+[[package]]
+category = "dev"
 description = "Traitlets Python config system"
 marker = "python_version >= \"3.4\""
 name = "traitlets"
@@ -1723,6 +1773,7 @@ version = "0.1.9"
 [[package]]
 category = "main"
 description = "WebSocket client for Python. hybi13 is supported."
+marker = "platform_system != \"Windows\""
 name = "websocket-client"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -1837,21 +1888,21 @@ attrs = [
     {file = "attrs-19.3.0.tar.gz", hash = "sha256:f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"},
 ]
 aws-lambda-builders = [
-    {file = "aws_lambda_builders-0.5.0-py2-none-any.whl", hash = "sha256:e1b469974a6c33843cfd8fb0ef64cefca08b25e4d4ad5042334894e59f6ca3c5"},
-    {file = "aws_lambda_builders-0.5.0-py3-none-any.whl", hash = "sha256:f9f65e8c0949b5efc0af383ef1ea9438ad1756bb0562a5523e432f2b940c3566"},
-    {file = "aws_lambda_builders-0.5.0.tar.gz", hash = "sha256:4241d9e43c348b41ad6619b4d0c925f50f3d4a5de90891e22d308a14c0a7967f"},
+    {file = "aws_lambda_builders-0.8.0-py2-none-any.whl", hash = "sha256:d365f1a6950480df905e8429312f1070c5ea464c286eb1319aa596a87940e4fd"},
+    {file = "aws_lambda_builders-0.8.0-py3-none-any.whl", hash = "sha256:8057b437884cb0fbac9f9dc4acc0e24c8447f2e8ee8a22ed80508877f533a851"},
+    {file = "aws_lambda_builders-0.8.0.tar.gz", hash = "sha256:c35c013560bc3ae991e39c83e35d77bedadbf53083fe17d0d508cedefe3e33f6"},
 ]
 aws-lambda-context = [
     {file = "aws-lambda-context-1.1.0.tar.gz", hash = "sha256:b6a6d3360671b25bb171335c7e6510b22e60c6fd5db99803f478c986d3230220"},
     {file = "aws_lambda_context-1.1.0-py3-none-any.whl", hash = "sha256:d03b16aaf8abac30b71bc5d66ed8edadd8805e0d581f73f1e9b4b171635c817d"},
 ]
 aws-sam-cli = [
-    {file = "aws-sam-cli-0.30.0.tar.gz", hash = "sha256:614967a41f3e41421f23385d8e5368af04865b3571b5551a6a89679b5f2c3f7b"},
-    {file = "aws_sam_cli-0.30.0-py2-none-any.whl", hash = "sha256:2f05d18a0dd7e5d971e0689b97aa8005e8c620d145ea6a561567dff1d8664d31"},
-    {file = "aws_sam_cli-0.30.0-py3-none-any.whl", hash = "sha256:eb645809746c5298a58303f0a5920665cfc5fa6a2d3a26d8c63eeec2d411009e"},
+    {file = "aws-sam-cli-0.47.0.tar.gz", hash = "sha256:bcd5942e767d3e8a2d0770f25e5528eb304b662b3478914d8c619984f3d3ae7b"},
+    {file = "aws_sam_cli-0.47.0-py2-none-any.whl", hash = "sha256:9bc600c7a98a1955cafe40974c955944f29bbafd598646479e2a8916e7dea583"},
+    {file = "aws_sam_cli-0.47.0-py3-none-any.whl", hash = "sha256:55caa43350a05a57e9df2ede9d0d0713d40bd9f17ada0ac3620a4c2e66290315"},
 ]
 aws-sam-translator = [
-    {file = "aws-sam-translator-1.15.1.tar.gz", hash = "sha256:11c62c00f37b57c39a55d7a29d93f4704a88549c29a6448ebc953147173fbe85"},
+    {file = "aws-sam-translator-1.22.0.tar.gz", hash = "sha256:3ba6a821eda29ca8ea1306e27a8135256d6136f1b0b29c6cbf9a107dfd1c2dd9"},
 ]
 aws-xray-sdk = [
     {file = "aws-xray-sdk-2.4.3.tar.gz", hash = "sha256:263a38f3920d9dc625e3acb92e6f6d300f4250b70f538bd009ce6e485676ab74"},
@@ -1874,12 +1925,12 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 boto3 = [
-    {file = "boto3-1.12.38-py2.py3-none-any.whl", hash = "sha256:c61ab9b65b05f58c6ec6fcec6820f45e2a72f7a9b52ec894e2152bbf419e9d4e"},
-    {file = "boto3-1.12.38.tar.gz", hash = "sha256:fb3d5dbded3b5c4ff6e1c0750b9fa8a0f9d1cbe056f6d542cc2beda2ebaa71ed"},
+    {file = "boto3-1.12.39-py2.py3-none-any.whl", hash = "sha256:cdd79a3a7bbe1f33a365f0acfcc75c4405b482b3eb9ce3f4e6b16c418e201ac3"},
+    {file = "boto3-1.12.39.tar.gz", hash = "sha256:970bd7b332e73d7b51077ed36772c634811b38c81b0cc6ed0f910e50d7ebadf8"},
 ]
 botocore = [
-    {file = "botocore-1.15.38-py2.py3-none-any.whl", hash = "sha256:f3dc5e45abc1f1c8e86cf6ae8d787084230ae4b9c92a4e5d73213dff807a3802"},
-    {file = "botocore-1.15.38.tar.gz", hash = "sha256:903df3186ab1f222b78539920cfba09891da341dc45623a6159f88b2a8775f60"},
+    {file = "botocore-1.15.39-py2.py3-none-any.whl", hash = "sha256:e20ba56476b1031ce5ac8e22b59dabc75bd0e03231f124ed6b9ff99fe0b0c96b"},
+    {file = "botocore-1.15.39.tar.gz", hash = "sha256:94232b44e1540b7e043e220bd43f855400d0a243e926b26b3fb72994e971d518"},
 ]
 certifi = [
     {file = "certifi-2020.4.5.1-py2.py3-none-any.whl", hash = "sha256:1d987a998c75633c40847cc966fcf5904906c920a7f17ef374f5aa4282abd304"},
@@ -1920,8 +1971,8 @@ cfgv = [
     {file = "cfgv-3.1.0.tar.gz", hash = "sha256:c8e8f552ffcc6194f4e18dd4f68d9aef0c0d58ae7e7be8c82bee3c5e9edfa513"},
 ]
 cfn-lint = [
-    {file = "cfn-lint-0.26.1.tar.gz", hash = "sha256:648c9fc70abc479183c63e53eebaae5a9d5236480b55e7fae033a727c21592fd"},
-    {file = "cfn_lint-0.26.1-py3-none-any.whl", hash = "sha256:f399dabc7c7579be4140f5987bb70b158bdaaf12b999139cc2548466eb9dd651"},
+    {file = "cfn-lint-0.29.4.tar.gz", hash = "sha256:58652622b28732223a9a4c2b5625c5f4f4d9509bbf8d06b1b891a1ef9782f1fd"},
+    {file = "cfn_lint-0.29.4-py3-none-any.whl", hash = "sha256:3ff2a77214777360516945d06cbbbeecddc9c7969832b6e1b699f94144b89317"},
 ]
 chardet = [
     {file = "chardet-3.0.4-py2.py3-none-any.whl", hash = "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"},
@@ -2204,6 +2255,10 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
+networkx = [
+    {file = "networkx-2.4-py3-none-any.whl", hash = "sha256:cdfbf698749a5014bf2ed9db4a07a5295df1d3a53bf80bf3cbd61edf9df05fa1"},
+    {file = "networkx-2.4.tar.gz", hash = "sha256:f8f4ff0b6f96e4f9b16af6b84622597b5334bf9cae8cf9b2e42e7985d5c95c64"},
+]
 nodeenv = [
     {file = "nodeenv-1.3.5-py2.py3-none-any.whl", hash = "sha256:5b2438f2e42af54ca968dd1b374d14a1194848955187b0e5e4be1f73813a5212"},
 ]
@@ -2368,8 +2423,8 @@ pytest-xdist = [
     {file = "pytest_xdist-1.31.0-py2.py3-none-any.whl", hash = "sha256:0f46020d3d9619e6d17a65b5b989c1ebbb58fc7b1da8fb126d70f4bac4dfeed1"},
 ]
 python-dateutil = [
-    {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
-    {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
+    {file = "python-dateutil-2.8.0.tar.gz", hash = "sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"},
+    {file = "python_dateutil-2.8.0-py2.py3-none-any.whl", hash = "sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb"},
 ]
 python-editor = [
     {file = "python-editor-1.0.4.tar.gz", hash = "sha256:51fda6bcc5ddbbb7063b2af7509e43bd84bfc32a4ff71349ec7847713882327b"},
@@ -2493,6 +2548,10 @@ toml = [
     {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
     {file = "toml-0.10.0-py2.py3-none-any.whl", hash = "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"},
     {file = "toml-0.10.0.tar.gz", hash = "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c"},
+]
+tomlkit = [
+    {file = "tomlkit-0.5.8-py2.py3-none-any.whl", hash = "sha256:96e6369288571799a3052c1ef93b9de440e1ab751aa045f435b55e9d3bcd0690"},
+    {file = "tomlkit-0.5.8.tar.gz", hash = "sha256:32c10cc16ded7e4101c79f269910658cc2a0be5913f1252121c3cd603051c269"},
 ]
 traitlets = [
     {file = "traitlets-4.3.3-py2.py3-none-any.whl", hash = "sha256:70b4c6a1d9019d7b4f6846832288f86998aa3b9207c6821f3578a6a6a467fe44"},
