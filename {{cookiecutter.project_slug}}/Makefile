@@ -73,6 +73,8 @@ first_install:
 .PHONY: install
 # Install application
 install:
+	@docker-compose up -d db_sql
+	@docker-compose up -d db_nosql
 	@poetry install
 	@rm -rf ./src
 
