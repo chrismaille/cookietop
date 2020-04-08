@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db_sql:
+    image: postgres:11
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    environment:
+      TZ: America/Sao_Paulo
+      POSTGRES_DB: test
+      POSTGRES_USER: noverde
+      POSTGRES_PASSWORD: noverde
+
+  db_nosql:
+    image: amazon/dynamodb-local
+    restart: on-failure
+    ports:
+      - "8000:8000"
