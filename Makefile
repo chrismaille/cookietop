@@ -53,11 +53,6 @@ revision:
 migrate:
 	@poetry run alembic upgrade head
 
-.PHONY: start_docker_db_sql
-# Run PostgreSQL with Docker
-start_docker_db_sql:
-	@docker-compose up -d db_sql
-
 .PHONY: start_docker_db_nosql
 # Run DynamoDB with Docker
 start_docker_db_nosql:
