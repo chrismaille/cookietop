@@ -1,7 +1,7 @@
-from unittest.mock import ANY, MagicMock
+from unittest.mock import ANY
 
-import pkg_resources
 import pytest
+import toml
 from stela import settings, stela_reload
 
 from interface.initializers.sentry import initialize_sentry
@@ -34,11 +34,8 @@ def test_sentry_not_initialized(mocker, monkeypatch):
 def test_sentry_initialized(mocker):
     """Test if Sentry is initialized when endpoint is available."""
     sentry_mock = mocker.patch("interface.initializers.sentry.sentry_sdk")
-    mocked_distribution = MagicMock()
-    mocked_distribution.version = "1.0.0"
-    mocker.patch.object(
-        pkg_resources, "get_distribution", return_value=mocked_distribution
-    )
+    toml_data = {"tool": {"poetry": {"version": "1.0.0"}}}
+    mocker.patch.object(toml, "load", return_value=toml_data)
     initialize_sentry()
     sentry_mock.init.assert_called_with(
         dsn="https://sentry.com/foo",
