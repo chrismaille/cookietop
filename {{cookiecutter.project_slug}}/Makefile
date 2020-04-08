@@ -73,8 +73,6 @@ first_install:
 .PHONY: install
 # Install application
 install:
-	@docker-compose up -d db_sql
-	@docker-compose up -d db_nosql
 	@poetry install
 	@rm -rf ./src
 
@@ -128,3 +126,13 @@ revision:
 # Run Alembic Migrations
 migrate:
 	@poetry run alembic upgrade head
+
+.PHONY: start_docker_db_sql
+# Run PostgreSQL with Docker
+start_docker_db_sql:
+	@docker-compose up -d db_sql
+
+.PHONY: start_docker_db_nosql
+# Run DynamoDB with Docker
+start_docker_db_nosql:
+	@docker-compose up -d db_nosql
