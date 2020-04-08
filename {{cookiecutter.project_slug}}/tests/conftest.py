@@ -10,6 +10,7 @@ from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.models.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from enterprise.models.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
 from interface.initializers.sql import Session
+from interface.initializers.nosql import connection
 from tests.factories.entities import Noverde{{cookiecutter.domain_class}}ModelFactory
 from tests.factories.entities import Noverde{{cookiecutter.domain_class}}DocumentFactory
 
@@ -44,8 +45,6 @@ def start_session():
     ]
     alembic.config.main(argv=alembicArgs)
 
-    # TODO: Create DynamoDB Local connection
-
     # Start Tests
     yield
 
@@ -63,12 +62,28 @@ def dbsession():
     This session can be accessed through fixture.
 
     """
+    # DynamoDB Connection
+    connection.create_table(
+        table_name="Noverde{{cookiecutter.domain_class}}Document",
+        attribute_definitions=[{"attribute_type": "S", "attribute_name": "uuid"}],
+        key_schema=[
+            {
+                "attribute_name": "uuid",
+                "key_type": "HASH"
+            }
+        ],
+        read_capacity_units=1,
+        write_capacity_units=1
+    )
+
     # Run Tests
     yield
 
     # After test
     Session.rollback()
     Session.remove()
+
+    connection.delete_table("Noverde{{cookiecutter.domain_class}}Document")
 
 
 @pytest.fixture()

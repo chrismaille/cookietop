@@ -6,7 +6,7 @@ use_json_format = false
 url = "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop"
 echo = true
 
-[databae.nosql]
+[database.nosql]
 url = "http://localhost:8000"
 
 [sentry]

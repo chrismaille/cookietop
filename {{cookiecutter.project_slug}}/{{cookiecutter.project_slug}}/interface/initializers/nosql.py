@@ -41,9 +41,10 @@ class Base(Model):
 
         :return: PynamoDB query instance
         """
-        return Session().query(cls)
+        return dynamodb_session().query(cls)
 
 
 connection = Connection(host=get_nosql_database_url())
-Session = connection.session
+dynamodb_session = connection.session
 logger.debug(f"Session Registry created for {connection}")
+logger.debug(f"LIST TABLES {connection.list_tables()}")
