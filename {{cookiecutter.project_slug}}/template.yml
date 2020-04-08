@@ -5,6 +5,7 @@ Description: {{ cookiecutter.project_description }}
 Globals:
   Function:
     Runtime: python{{ cookiecutter.python_version }}
+    Tracing: Active
     Layers:
       - Ref: {{cookiecutter.project_name_camel}}DepLayer
       - arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py37:3

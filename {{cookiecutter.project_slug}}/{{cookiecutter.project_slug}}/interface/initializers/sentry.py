@@ -1,5 +1,8 @@
-import pkg_resources
+from pathlib import Path
+
+import toml
 from loguru import logger
+from scalpl import Cut
 from stela import settings
 import sentry_sdk as sentry_sdk
 from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
@@ -13,18 +16,18 @@ def initialize_sentry() -> None:
     environment SENTRY_ENDPOINT.
 
     """
-    if not settings["sentry.endpoint"]:
+    endpoint = settings["sentry.endpoint"]
+    if not endpoint:
         logger.warning(f"Sentry not initialized.")
         return
 
-    # fmt: off
-    current_version = pkg_resources.get_distribution(
-        '{{cookiecutter.project_slug}}'
-    ).version
-    # fmt: on
+    toml_path = Path().cwd().joinpath("pyproject.toml")
+    with open(str(toml_path), "r") as file:
+        data = Cut(toml.load(file))
+        current_version = data["tool.poetry.version"]
 
     sentry_sdk.init(
-        dsn=settings["sentry.endpoint"],
+        dsn=endpoint,
         integrations=[AwsLambdaIntegration()],
         environment=settings.stela_options.current_environment,
         release=current_version,
