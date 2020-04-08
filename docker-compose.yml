@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  db_sql:
+  postgres:
     image: postgres:11
     restart: on-failure
     ports:
@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: noverde
       POSTGRES_PASSWORD: noverde
 
-  db_nosql:
+  dynamodb:
     image: amazon/dynamodb-local
     restart: on-failure
     ports:
