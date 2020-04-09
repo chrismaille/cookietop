@@ -24,3 +24,6 @@ class EnumUnicodeAttribute(UnicodeAttribute):
             )
         else:
             return UnicodeAttribute.serialize(self, value.value)  # type: ignore
+    
+    def deserialize(self, value):
+        return EnterpriseResources(value)

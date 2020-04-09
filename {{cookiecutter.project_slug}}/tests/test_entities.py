@@ -1,9 +1,15 @@
+from uuid import uuid4
+
 import arrow
 import pytest
 from freezegun import freeze_time
+from loguru import logger
 
 from enterprise.models.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
+from enterprise.models.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
+from enterprise.types.enterprise_resources import EnterpriseResources
 from tests.factories.entities import Noverde{{cookiecutter.domain_class}}ModelFactory
+from tests.factories.entities import Noverde{{cookiecutter.domain_class}}DocumentFactory
 
 
 def test_create_model():
@@ -59,3 +65,48 @@ def test_fixed_time():
     )
     # fmt: on
     assert test_service.created == arrow.get("2020-03-30 13:00:00").datetime
+
+
+def test_create_document():
+    """Test create document.
+
+    This test show:
+        1. Creating a new Noverde{{cookiecutter.domain_class}}Document using Factory Boy
+        2. Using the database session from fixture(dbsession)
+
+    It will run twice to ensure transaction are rollback after each test.
+    """
+    model_uuid = uuid4().hex
+    data = {
+        "uuid": model_uuid,
+        "created": arrow.utcnow().datetime,
+        "rule": EnterpriseResources.noverde,
+    }
+    Noverde{{cookiecutter.domain_class}}DocumentFactory.create(**data)
+    # fmt: off
+    test_instance = (
+        Noverde{{cookiecutter.domain_class}}DocumentFactory.uuid == model_uuid
+    )
+    # fmt: on
+    assert test_instance is not None
+
+def test_read_document({{cookiecutter.domain_slug}}_document):
+    """Test Read Document.
+
+    This test show:
+        1. Document generated using Factory Boy.
+        2. A simple query using PynamoDB.
+
+    """
+    new_instance = Noverde{{cookiecutter.domain_class}}Document.get(
+        hash_key={{cookiecutter.domain_slug}}_document.uuid)
+    logger.debug(new_instance)
+    logger.debug({{cookiecutter.domain_slug}}_document)
+
+    assert new_instance.uuid == {{cookiecutter.domain_slug}}_document.uuid
+    assert new_instance.rule == {{cookiecutter.domain_slug}}_document.rule
+    assert new_instance.created == {{cookiecutter.domain_slug}}_document.created
+    logger.debug(type(new_instance))
+    logger.debug(type({{cookiecutter.domain_slug}}_document))
+
+    assert new_instance == {{cookiecutter.domain_slug}}_document

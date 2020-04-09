@@ -37,16 +37,8 @@ class Base(Model):
     class Meta:
         abstract = True
         host = get_nosql_database_url()
-
-    @classmethod
-    def query(cls):
-        """Return PynamoDB Query.
-
-        :return: PynamoDB query instance
-        """
-        return dynamodb_session().query(cls)
-
+        read_capacity_units = 1
+        write_capacity_units = 1
 
 connection = Connection(host=get_nosql_database_url())
-dynamodb_session = connection.session
 logger.debug(f"Session Registry created for {connection}")

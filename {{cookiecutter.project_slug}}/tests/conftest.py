@@ -92,4 +92,6 @@ def {{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_clas
 
     :return: Noverde{{cookiecutter.domain_class}}Document instance
     """
-    return Noverde{{cookiecutter.domain_class}}DocumentFactory.create(rule=EnterpriseResources.noverde)
+    new_instance = Noverde{{cookiecutter.domain_class}}DocumentFactory.create(rule=EnterpriseResources.noverde)
+    new_instance.save()
+    return new_instance
