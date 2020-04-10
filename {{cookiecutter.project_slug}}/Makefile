@@ -36,6 +36,12 @@ autoenv:
 	$(if $(wildcard $(LOCAL_ENV_FILE)),$(shell cp $(LOCAL_ENV_FILE) $(ENV_FILE)),)
 	echo 'Autoenv instaled and .env created. Please close this terminal before continue.'
 
+.PHONY: build
+# Run SAM build command
+build: build_dependencies
+	@rm -rf .aws-sam
+	@sam build
+
 .PHONY: build_dependencies
 # Build dependencies for SAM operations
 build_dependencies:
@@ -59,7 +65,8 @@ deploy: build_dependencies package
 	@poetry run sam deploy \
 		--template-file $(PACKAGE_FILE) \
 		--capabilities CAPABILITY_IAM \
-		--stack-name $(STACK_NAME)
+		--stack-name $(STACK_NAME) \
+		--guided
 	@rm -f ./{{cookiecutter.project_slug}}/env-*.toml
 	@rm -f ./{{cookiecutter.project_slug}}/packaged.yaml
 
