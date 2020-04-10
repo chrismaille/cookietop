@@ -28,6 +28,7 @@ jobs:
           make install
       - name: Run Tests
         run: |
+          make dynamodb
           make ci
         env:
           AWS_ACCESS_KEY_ID: 1234
