@@ -24,7 +24,7 @@ Globals:
       AllowHeaders: "'Content-Type,Authorization'"
 
 Resources:
-  #  Handlers Configuration
+  # API Gateway Handlers
   HealthCheck:
     Type: AWS::Serverless::Function
     Properties:
@@ -45,6 +45,41 @@ Resources:
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
 
+  # Step Functions Handlers
+  Find{{cookiecutter.domain_class}}Instance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: noverde_test_project-find-{{cookiecutter.domain_slug}}-instance
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: interface.tasks.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_instance
+      Policies:
+        - AWSLambdaFullAccess
+      Role: !GetAtt [ LambdaExecutionRole, Arn ]
+      Tags:
+        noverde:
+          service:NoverdeTestProject
+
+  # Step Function Machine
+  {{cookiecutter.domain_class}}CreateMachine:
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      DefinitionString:
+        !Sub
+        - |-
+          {
+            "Comment": "Create {{cookiecutter.domain}} State Machine",
+            "StartAt": "Find{{cookiecutter.domain_class}}Instance",
+            "States": {
+              "Find{{cookiecutter.domain_class}}Instance": {
+                "Type": "Task",
+                "Resource": "${lambdaArn}",
+                "End": true
+              }
+            }
+          }
+        - {lambdaArn: !GetAtt [ MyLambdaFunction, Arn ]}
+      RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
+
   # Lambda Layer Configuration
   {{cookiecutter.project_name_camel}}DepLayer:
     Type: AWS::Serverless::LayerVersion
@@ -64,3 +99,37 @@ Resources:
       OpenApiVersion: "3.0.3"
       TracingEnabled: true
       StageName: v1
+
+  # IAM Roles
+  LambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: "sts:AssumeRole"
+
+  StatesExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - !Sub states.${AWS::Region}.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: StatesExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource: "*"
