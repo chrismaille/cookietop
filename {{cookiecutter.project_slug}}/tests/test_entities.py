@@ -100,13 +100,18 @@ def test_read_document({{cookiecutter.domain_slug}}_document):
     """
     new_instance = Noverde{{cookiecutter.domain_class}}Document.get(
         hash_key={{cookiecutter.domain_slug}}_document.uuid)
-    logger.debug(new_instance)
-    logger.debug({{cookiecutter.domain_slug}}_document)
 
     assert new_instance.uuid == {{cookiecutter.domain_slug}}_document.uuid
     assert new_instance.rule == {{cookiecutter.domain_slug}}_document.rule
     assert new_instance.created == {{cookiecutter.domain_slug}}_document.created
-    logger.debug(type(new_instance))
-    logger.debug(type({{cookiecutter.domain_slug}}_document))
 
-    assert new_instance == {{cookiecutter.domain_slug}}_document
+@freeze_time("2020-03-30 13:00:00")
+def test_fixed_time():
+    """Test save document in fixed time.
+
+    This test show:
+        1. Save new record with freeze time.
+    """
+    new_service = Noverde{{cookiecutter.domain_class}}DocumentFactory.create()
+    assert new_service.created == arrow.utcnow().datetime
+    assert new_service.created == arrow.get("2020-03-30 13:00:00").datetime
