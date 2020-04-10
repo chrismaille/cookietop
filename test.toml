@@ -3,7 +3,7 @@ level = "DEBUG"
 use_json_format = false
 
 [database.sql]
-url = "postgres://noverde:noverde@localhost/cookiecutter_develop"
+url = "postgres://noverde:noverde@localhost/noverde_test_project_develop"
 echo = true
 
 [database.nosql]

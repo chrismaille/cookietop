@@ -43,6 +43,7 @@ class Base:
     """
 
     def save(self):
+        """Validate before commit instance."""
         if self.validate():  # type: ignore
             session = Session()
             if not self.id:  # type: ignore

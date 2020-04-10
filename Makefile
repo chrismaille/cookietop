@@ -35,7 +35,7 @@ reload:
 
 .PHONY: create_db
 # Create Database
-create_db:
+createdb:
 	@echo "Creating database cookiecutter_develop..."
 	@psql postgres -c "DROP DATABASE IF EXISTS cookiecutter_develop;"
 	@sleep 1

@@ -11,5 +11,6 @@ def test_rule_model({{cookiecutter.domain_slug}}_model):
 def test_invalid_rule():
     """Test validate in instance with no rule defined."""
     new_instance = Noverde{{cookiecutter.domain_class}}Model()
+    new_instance.rule = None
     with pytest.raises(NoverdeEnterpriseValidationErrors):
-        new_instance.validate()
+        new_instance.save()
