@@ -8,6 +8,8 @@ echo = true
 
 [database.nosql]
 url = "http://localhost:8000"
+capacity.read = 1
+capacity.write = 1
 
 [sentry]
 endpoint = ""

@@ -34,11 +34,16 @@ class Base(Model):
     to PynamoDB Base class.
     """
 
+    def save(self, **kwargs):
+        """Validate before save DynamoDB."""
+        if self.validate():
+            return super().save(**kwargs)
+
     class Meta:
         abstract = True
         host = get_nosql_database_url()
-        read_capacity_units = 1
-        write_capacity_units = 1
+        read_capacity_units = settings["database.nosql.capacity.read"]
+        write_capacity_units = settings["database.nosql.capacity.write"]
 
 
 connection = Connection(host=get_nosql_database_url())

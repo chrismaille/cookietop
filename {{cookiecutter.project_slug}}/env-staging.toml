@@ -8,6 +8,8 @@ echo = true
 
 [databae.nosql]
 url = ""
+capacity.read = 1
+capacity.write = 1
 
 [sentry]
 endpoint = ""
