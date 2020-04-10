@@ -78,7 +78,7 @@ def dbsession():
 
 
 @pytest.fixture()
-def {{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}Model:
+def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}Model:
     """Return Noverde{{cookiecutter.domain_class}}Model Fixture.
 
     :return: Noverde{{cookiecutter.domain_class}}Model instance
@@ -87,7 +87,7 @@ def {{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}
 
 
 @pytest.fixture()
-def {{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_class}}Document:
+def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_class}}Document:
     """Return Noverde{{cookiecutter.domain_class}}Document Fixture.
 
     :return: Noverde{{cookiecutter.domain_class}}Document instance
