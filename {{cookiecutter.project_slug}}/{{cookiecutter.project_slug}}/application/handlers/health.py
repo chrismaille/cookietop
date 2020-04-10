@@ -2,8 +2,8 @@ from stela import settings
 
 from interface.aws.handler_view import handler_view
 from interface.aws.request import Request
-from interface.types.status_code import StatusCode
-from interface.types.handler_response import HandlerResponse
+from application.types.status_code import StatusCode
+from application.types.handler_response import HandlerResponse
 
 
 @handler_view()

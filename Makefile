@@ -1,8 +1,8 @@
-export PYTHONPATH := $(PWD):$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/tests
+export PYTHONPATH := $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
 
 first_install:
 	@git flow init -d
-	@poetry install
+	@poetry install$(PWD)/noverde_
 	@rm -rf ./src
 
 install:

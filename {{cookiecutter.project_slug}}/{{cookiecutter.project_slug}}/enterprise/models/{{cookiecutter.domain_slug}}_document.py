@@ -3,7 +3,8 @@ from datetime import datetime
 from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 
-from enterprise.helpers.get_enum import EnumUnicodeAttribute
+from enterprise.types.enterprise_resources import EnterpriseResources
+from enterprise.types.enum_attribute import EnumAttribute
 from interface.initializers.nosql import Base, connection
 
 
@@ -26,12 +27,13 @@ class {{cookiecutter.domain_class}}Document(Base):
     uuid = UnicodeAttribute(hash_key=True)
     created_index = {{cookiecutter.domain_class}}CreatedIndex()
     created = UTCDateTimeAttribute(default=datetime.utcnow)
-    rule = EnumUnicodeAttribute()
+    rule = EnumAttribute(EnterpriseResources)
 
     def __str__(self):
         return (
             f"<{{cookiecutter.domain_class}}Document("
             f"uuid={self.uuid}, "
             f"rule={self.rule}, "
-            f"created={self.created.isoformat()})>"
+            f"created={self.created.isoformat()}, "
+            f"id={id(self)})>"
         )

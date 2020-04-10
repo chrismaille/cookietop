@@ -2,10 +2,10 @@
 
 # Internal variables
 LOCAL_ENV_FILE	:= ./{{cookiecutter.project_slug}}/local.env
-ENV_FILE     		:= ./{{cookiecutter.project_slug}}/.env
-PACKAGE_FILE 		:= ./{{cookiecutter.project_slug}}/packaged.yaml
+ENV_FILE     	:= ./{{cookiecutter.project_slug}}/.env
+PACKAGE_FILE 	:= ./{{cookiecutter.project_slug}}/packaged.yaml
 CURRENT_BRANCH	:= $(shell git rev-parse --abbrev-ref HEAD)
-ARTIFACTS    		:= \
+ARTIFACTS    	:= \
 	./{{cookiecutter.project_slug}}/.aws-sam \
 	./{{cookiecutter.project_slug}}/.pytest_cache \
 	./{{cookiecutter.project_slug}}/.coverage \
@@ -116,7 +116,7 @@ clean:
 
 .PHONY: create_db
 # Create Development Database
-create_db:
+createdb:
 	@echo "Creating database {{cookiecutter.project_slug}}_develop..."
 	@psql postgres -c "DROP DATABASE IF EXISTS {{cookiecutter.project_slug}}_develop;"
 	@sleep 1
@@ -134,7 +134,16 @@ revision:
 migrate:
 	@poetry run alembic upgrade head
 
-.PHONY: start_docker_dynamodb
-# Run DynamoDB with Docker
-start_docker_dynamodb:
+.PHONY: dynamodb
+# Run local DynamoDB
+dynamodb:
 	@docker-compose up -d dynamodb
+
+.PHONY: config_cookie
+# After run `make reload`
+# change to noverde_test_project folder
+# and use this command to quick config the test project
+config_cookie: first_install createdb
+	@mkdir -p ./migrations/versions
+	@poetry run alembic revision --autogenerate -m "First Commit"
+	@poetry run alembic upgrade head

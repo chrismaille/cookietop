@@ -40,5 +40,6 @@ class Base(Model):
         read_capacity_units = 1
         write_capacity_units = 1
 
+
 connection = Connection(host=get_nosql_database_url())
 logger.debug(f"Session Registry created for {connection}")

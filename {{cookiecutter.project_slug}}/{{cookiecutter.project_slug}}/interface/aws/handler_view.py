@@ -8,10 +8,10 @@ from sentry_sdk import capture_exception  # type: ignore
 
 from aws_lambda_context import LambdaContext
 
-from enterprise.rules.exceptions import RuleValidationErrors
+from enterprise.rules.exceptions import EnterpriseValidationErrors
 from interface.aws.sherlock import Sherlock
-from interface.types.status_code import StatusCode
-from interface.types.handler_response import HandlerResponse
+from application.types.status_code import StatusCode
+from application.types.handler_response import HandlerResponse
 from interface.initializers.sql import Session
 from interface.initializers.log import initialize_log
 from interface.initializers.sentry import initialize_sentry
@@ -72,7 +72,7 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                     "statusCode": StatusCode.BAD_REQUEST.value,
                     "body": json.dumps({"errors": error_list}),
                 }
-            except RuleValidationErrors as error:
+            except EnterpriseValidationErrors as error:
                 # Handle Enterprise Rules Validation Errors.
                 Session.rollback()
                 capture_exception(error)

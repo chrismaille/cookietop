@@ -3,8 +3,8 @@ import json
 from aws_lambda_context import LambdaContext
 from stela import settings
 
-from interface.handlers.health import health_check
-from interface.types.status_code import StatusCode
+from application.handlers.health import health_check
+from application.types.status_code import StatusCode
 
 
 def test_health_check():

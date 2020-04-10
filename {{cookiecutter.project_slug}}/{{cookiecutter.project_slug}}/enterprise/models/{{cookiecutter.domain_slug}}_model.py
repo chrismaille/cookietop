@@ -21,5 +21,6 @@ class {{cookiecutter.domain_class}}Model(Base):
             f"<{{cookiecutter.domain_class}}Model(id={self.id}, "
             f"uuid={self.uuid}, "
             f"rule={self.rule}, "
-            f"created={self.created.isoformat()})>"
+            f"created={self.created.isoformat()})>, "
+            f"id={id(self)})>"
         )

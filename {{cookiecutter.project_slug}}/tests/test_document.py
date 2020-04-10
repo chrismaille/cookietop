@@ -5,7 +5,7 @@ import pytest
 from pynamodb.exceptions import DoesNotExist
 
 from enterprise.types.enterprise_resources import EnterpriseResources
-from enterprise.models.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
+from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
 
 
 @pytest.mark.parametrize(

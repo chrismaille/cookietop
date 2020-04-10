@@ -2,7 +2,7 @@ from typing import Dict, Any, Optional
 
 from typing_extensions import TypedDict
 
-from interface.types.status_code import StatusCode
+from application.types.status_code import StatusCode
 
 
 class HandlerResponse(TypedDict):

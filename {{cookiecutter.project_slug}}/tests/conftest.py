@@ -5,9 +5,9 @@ from loguru import logger
 from pytest_postgresql.janitor import DatabaseJanitor
 
 from enterprise.types.enterprise_resources import EnterpriseResources
-from enterprise.models.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
+from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from enterprise.models.{{cookiecutter.domain_slug}}_document import {{cookiecutter.domain_class}}Document
-from enterprise.models.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
+from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
 from interface.initializers.sql import Session
 from tests.factories.entities import Noverde{{cookiecutter.domain_class}}ModelFactory
 from tests.factories.entities import Noverde{{cookiecutter.domain_class}}DocumentFactory
@@ -92,6 +92,8 @@ def {{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_clas
 
     :return: Noverde{{cookiecutter.domain_class}}Document instance
     """
-    new_instance = Noverde{{cookiecutter.domain_class}}DocumentFactory.create(rule=EnterpriseResources.noverde)
+    new_instance = Noverde{{cookiecutter.domain_class}}DocumentFactory.create(
+        rule=EnterpriseResources.noverde
+    )
     new_instance.save()
     return new_instance
