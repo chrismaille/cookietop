@@ -36,7 +36,7 @@ class Base(Model):
 
     def save(self, **kwargs):
         """Validate before save DynamoDB."""
-        if self.validate():
+        if self.validate():  # type: ignore
             return super().save(**kwargs)
 
     class Meta:

@@ -8,7 +8,7 @@ from enterprise.types.enum_attribute import EnumAttribute
 from interface.initializers.nosql import Base, connection
 
 
-class {{cookiecutter.domain_class}}CreatedIndex(GlobalSecondaryIndex):  # type: ignore
+class {{cookiecutter.domain_class}}CreatedIndex(GlobalSecondaryIndex):
     class Meta:
         index_name = "created-index"
         read_capacity_units = 1
