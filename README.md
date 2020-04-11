@@ -77,8 +77,11 @@ $ make watch
 # Format code
 $ make format
 
-# Run all tests for CI
+# Run all CI tests
 $ make ci
+
+# Run all CI tests for all database choices
+$ make test_full_ci
 
 # Create test Project
 # called Noverde Test Project

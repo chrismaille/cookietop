@@ -57,3 +57,8 @@ migrate:
 # Run local DynamoDB
 dynamodb:
 	@docker-compose up -d dynamodb
+
+.PHONY: test_full_ci
+# Run make ci for all database options
+test_full_ci:
+	./full_ci_tests.sh
