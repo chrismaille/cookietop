@@ -31,12 +31,33 @@ jobs:
       - name: Install Python dependencies
         run: |
           make install
-      - name: Run Tests
+      - name: Run Tests (with DynamoDB)
         run: |
           make ci
         env:
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: 1234
           AWS_SECRET_ACCESS_KEY: 1234
+      - name: Run Tests (with RDS)
+          run: |
+            make ci
+          env:
+            COOKIECUTTER_CONFIG: $PWD/cookie_rds.yml
+            AWS_DEFAULT_REGION: us-east-1
+      - name: Run Tests (both Databases)
+          run: |
+            make ci
+          env:
+            COOKIECUTTER_CONFIG: $PWD/cookie_both.yml
+            AWS_DEFAULT_REGION: us-east-1
+            AWS_ACCESS_KEY_ID: 1234
+            AWS_SECRET_ACCESS_KEY: 1234
+      - name: Run Tests (no Databases)
+          run: |
+            make ci
+          env:
+            COOKIECUTTER_CONFIG: $PWD/cookie_none.yml
+            AWS_DEFAULT_REGION: us-east-1
+
 
 
