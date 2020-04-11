@@ -1,19 +1,24 @@
+{%- if cookiecutter.database != "None" -%}
 """Pytest main conftest module."""
-import alembic.config
+# fmt: off
 import pytest
 from loguru import logger
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+import alembic.config
+
 from pytest_postgresql.janitor import DatabaseJanitor
 
-from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from interface.initializers.sql import Session
 from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFactory
+{% endif %}
+from enterprise.types.enterprise_resources import EnterpriseResources
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 from enterprise.models.{{cookiecutter.domain_slug}}_document import {{cookiecutter.domain_class}}Document
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
 from tests.factories.documents import Noverde{{cookiecutter.domain_class}}DocumentFactory
 {% endif %}
-
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 @pytest.fixture(scope="session", autouse=True)
 def start_session():
     """Start database in Session.
@@ -66,7 +71,7 @@ def model_session():
     # After test
     Session.rollback()
     Session.remove()
-
+{% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 @pytest.fixture(autouse=True)
 def document_session():
@@ -88,7 +93,7 @@ def document_session():
     # Remove table
     {{cookiecutter.domain_class}}Document.delete_table()
 {% endif %}
-
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 @pytest.fixture()
 def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}Model:
     """Return Noverde{{cookiecutter.domain_class}}Model Fixture.
@@ -96,7 +101,7 @@ def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain
     :return: Noverde{{cookiecutter.domain_class}}Model instance
     """
     return Noverde{{cookiecutter.domain_class}}ModelFactory.create(rule=EnterpriseResources.noverde)
-
+{% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 @pytest.fixture()
 def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_class}}Document:
@@ -109,4 +114,6 @@ def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.dom
     )
     new_instance.save()
     return new_instance
+{% endif %}
+# fmt: on
 {% endif %}

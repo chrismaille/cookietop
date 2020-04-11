@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 import pytest
 
 from enterprise.rules.exceptions import NoverdeEnterpriseValidationErrors
@@ -14,3 +15,4 @@ def test_invalid_rule():
     new_instance.rule = None
     with pytest.raises(NoverdeEnterpriseValidationErrors):
         new_instance.save()
+{% endif %}

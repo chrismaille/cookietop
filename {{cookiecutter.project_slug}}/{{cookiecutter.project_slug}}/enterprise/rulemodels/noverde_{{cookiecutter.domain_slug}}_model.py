@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 from sqlalchemy import Column, String
 
 from enterprise.types.enterprise_resources import EnterpriseResources
@@ -24,3 +25,4 @@ class Noverde{{cookiecutter.domain_class}}Model(NoverdeMixin, {{cookiecutter.dom
 
     __mapper_args__ = {"polymorphic_identity": EnterpriseResources.noverde}
     noverde_unique_field = Column(String)
+{% endif %}

@@ -39,7 +39,7 @@ class Noverde{{cookiecutter.domain_class}}Document(NoverdeMixin, {{cookiecutter.
             f"<Noverde{{cookiecutter.domain_class}}Document("
             f"uuid={self.uuid}, "
             f"rule={self.rule}, "
-            f"created={self.created.isoformat()}, "
+            f"created={self.created.isoformat() if self.created else '-'}, "
             f"id={id(self)})>"
         )
 

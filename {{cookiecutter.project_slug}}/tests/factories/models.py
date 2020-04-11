@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 """Models Factory.
 
 For more info: https://github.com/FactoryBoy/factory_boy
@@ -29,3 +30,4 @@ class Noverde{{cookiecutter.domain_class}}ModelFactory(SQLAlchemyModelFactory):
 
     created = LazyFunction(get_now)
     rule = EnterpriseResources.noverde
+{% endif %}

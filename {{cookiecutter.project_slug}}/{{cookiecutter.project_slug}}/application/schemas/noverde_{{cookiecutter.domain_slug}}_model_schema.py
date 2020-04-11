@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 from application.schemas.base import BaseSchema
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from marshmallow_enum import EnumField
@@ -11,3 +12,4 @@ class Noverde{{cookiecutter.domain_class}}ModelSchema(BaseSchema):
 
     class Meta(BaseSchema.Meta):
         model = Noverde{{cookiecutter.domain_class}}Model
+{% endif %}

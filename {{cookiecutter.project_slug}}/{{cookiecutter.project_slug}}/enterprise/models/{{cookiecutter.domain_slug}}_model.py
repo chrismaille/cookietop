@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 from datetime import datetime
 
 import sqlalchemy as sa
@@ -23,7 +24,7 @@ class {{cookiecutter.domain_class}}Model(Base):
             f"<{{cookiecutter.domain_class}}Model(id={self.id}, "
             f"uuid={self.uuid}, "
             f"rule={self.rule}, "
-            f"created={self.created.isoformat()})>, "
+            f"created={self.created.isoformat() if self.created else ''})>, "
             f"id={id(self)})>"
         )
 
@@ -41,3 +42,4 @@ def validate(mapper, connection, target):
     """
     return target.validate()
 # fmt: on
+{% endif %}

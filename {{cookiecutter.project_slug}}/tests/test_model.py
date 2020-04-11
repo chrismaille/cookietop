@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 import arrow
 import pytest
 from freezegun import freeze_time
@@ -74,3 +75,4 @@ def test_fixed_time():
     )
     # fmt: on
     assert test_service.created == arrow.get("2020-03-30 13:00:00").datetime
+{% endif %}

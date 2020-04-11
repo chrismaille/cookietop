@@ -2,9 +2,11 @@
 level = "WARNING"
 use_json_format = true
 
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 [database.sql]
-url = ""
-echo = false
+url = "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop"
+echo = true
+{% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 [databae.nosql]
 url = ""

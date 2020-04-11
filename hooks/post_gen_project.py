@@ -10,6 +10,7 @@ manifest = {
         "tests/factories/documents.py",
         "tests/test_document.py",
         "tests/test_document_schema.py",
+        "tests/test_rule_document.py",
         "{{cookiecutter.project_slug}}/schemas/noverde_{{cookiecutter.domain_slug}}_document_schema.py",
         "{{cookiecutter.project_slug}}/models/{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/rulemodels/noverde_{{cookiecutter.domain_slug}}_document.py",
@@ -19,10 +20,13 @@ manifest = {
         "tests/factories/models.py",
         "tests/test_model.py",
         "tests/test_model_schema.py",
+        "tests/test_rule_model.py",
         "{{cookiecutter.project_slug}}/schemas/noverde_{{cookiecutter.domain_slug}}_model_schema.py",
         "{{cookiecutter.project_slug}}/models/{{cookiecutter.domain_slug}}_model.py",
         "{{cookiecutter.project_slug}}/rulemodels/noverde_{{cookiecutter.domain_slug}}_model.py",
         "{{cookiecutter.project_slug}}/interface/initializers/sql.py",
+        "{{cookiecutter.project_slug}}/migrations",
+        "alembic.ini",
     ],
 }
 

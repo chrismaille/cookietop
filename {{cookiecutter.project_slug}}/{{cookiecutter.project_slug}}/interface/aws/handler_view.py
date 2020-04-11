@@ -1,3 +1,4 @@
+# fmt: off
 import json
 from functools import wraps
 from typing import Optional, Type, Any, Dict
@@ -12,10 +13,11 @@ from enterprise.rules.exceptions import EnterpriseValidationErrors
 from interface.aws.sherlock import Sherlock
 from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
-from interface.initializers.sql import Session
 from interface.initializers.log import initialize_log
 from interface.initializers.sentry import initialize_sentry
-
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+from interface.initializers.sql import Session
+{% endif %}
 
 # When running on AWS
 # this code will be invoked once
@@ -61,8 +63,10 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                 return response
             except ValidationError as error:
                 # Handle Bad Request Errors
-                Session.rollback()
                 logger.error(f"Validation Error during request: {error.messages}")
+                {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+                Session.rollback()
+                {% endif %}
                 error_list = [
                     f"{field_key}: {description}"
                     for field_key in error.messages
@@ -74,8 +78,10 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                 }
             except EnterpriseValidationErrors as error:
                 # Handle Enterprise Rules Validation Errors.
-                Session.rollback()
                 capture_exception(error)
+                {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+                Session.rollback()
+                {% endif %}
                 logger.error(f"Rules Validation Error during request: {error}")
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
@@ -83,16 +89,20 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                 }
             except Exception as error:
                 # Handle Internal Server Errors
-                Session.rollback()
                 capture_exception(error)
+                {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+                Session.rollback()
+                {% endif %}
                 logger.error(f"Internal Error during request: {error}")
                 return {
                     "statusCode": StatusCode.INTERNAL_ERROR.value,
                     "body": json.dumps({"errors": [str(error)]}),
                 }
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
             finally:
                 Session.close()
-
+{% endif %}
         return wrapper
 
     return config
+# fmt: on'

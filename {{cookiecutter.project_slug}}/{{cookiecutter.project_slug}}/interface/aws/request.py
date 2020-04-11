@@ -4,9 +4,6 @@ from typing import Dict, Any, Optional
 from aws_lambda_context import LambdaContext
 
 
-from interface.initializers.sql import Session
-
-
 @dataclass
 class Request:
     """Request Object.
@@ -17,7 +14,6 @@ class Request:
     Properties
     ==========
 
-        db_session:     Current database session
         original_body:  Original body received in AWS event, if available
         body:           Converted body to dictionary, if available
         validated_data: Body validated by a marshmallow schema,
@@ -71,7 +67,6 @@ class Request:
 
     """
 
-    db_session: Session
     validated_data: Dict[Any, Any]
     original_body: Optional[str]
     body: Optional[Dict[Any, Any]]

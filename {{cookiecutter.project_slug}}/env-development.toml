@@ -1,10 +1,11 @@
 [logger]
 level = "DEBUG"
 use_json_format = false
-
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 [database.sql]
 url = "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop"
 echo = true
+{% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 [database.nosql]
 url = "http://localhost:8000"

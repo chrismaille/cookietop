@@ -24,7 +24,7 @@ class NoverdeMixin(EnterpriseRules):
         """
         if self.rule != EnterpriseResources.noverde:
             raise NoverdeEnterpriseValidationErrors(
-                f"{{cookiecutter.domain_class}} {self.id} is not from Noverde."
+                f"{{cookiecutter.domain_class}} {self} is not from Noverde."
             )
 
     def check_if_active(self):

@@ -8,7 +8,9 @@ Globals:
     Tracing: Active
     Layers:
       - Ref: {{cookiecutter.project_name_camel}}DepLayer
+      {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
       - arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py37:3
+      {% endif %}
     Environment:
       Variables:
         # Use file local.json to override these values in sam local start-api
