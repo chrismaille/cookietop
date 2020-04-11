@@ -35,9 +35,6 @@ Resources:
       Handler: interface.handlers.health.health_check
       Policies:
         - AWSLambdaFullAccess
-      Tags:
-        noverde:
-          service:{{ cookiecutter.project_name_camel }}
       Events:
         GetHealth:
           Type: Api
@@ -53,18 +50,21 @@ Resources:
     Properties:
       FunctionName: noverde_test_project-find-{{cookiecutter.domain_slug}}-instance
       CodeUri: {{cookiecutter.project_slug}}
-      Handler: interface.tasks.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_instance
+      Handler: application.machines.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_instance
       Policies:
         - AWSLambdaFullAccess
       Role: !GetAtt [ LambdaExecutionRole, Arn ]
-      Tags:
-        noverde:
-          service:NoverdeTestProject
 
   # Step Function Machine
   {{cookiecutter.domain_class}}CreateMachine:
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt [ {{cookiecutter.domain_class}}CreateMachineLogGroup, Arn ]
+        IncludeExecutionData: true
+        Level: ALL
       DefinitionString:
         !Sub
         - |-
@@ -74,13 +74,21 @@ Resources:
             "States": {
               "Find{{cookiecutter.domain_class}}Instance": {
                 "Type": "Task",
-                "Resource": "${lambdaArn}",
+                "Resource": "${firstLambdaArn}",
                 "End": true
               }
             }
           }
-        - {lambdaArn: !GetAtt [ MyLambdaFunction, Arn ]}
+        - {firstLambdaArn: !GetAtt [ FindMydomainInstance, Arn ]}
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
+      # ALWAYS use "EXPRESS" unless you know what your doing
+      StateMachineType: "EXPRESS"
+
+  # Step Function Log Group
+  {{cookiecutter.domain_class}}CreateMachineLogGroup:
+    Type: "AWS::Logs::LogGroup"
+    Properties:
+      RetentionInDays: 1
 
   # Lambda Layer Configuration
   {{cookiecutter.project_name_camel}}DepLayer:
@@ -113,6 +121,16 @@ Resources:
             Principal:
               Service: lambda.amazonaws.com
             Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: demo-xray-lambda-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "xray:PutTraceSegments"
+                  - "xray:PutTelemetryRecords"
+                Effect: Allow
+                Resource: "*"
 
   StatesExecutionRole:
     Type: "AWS::IAM::Role"
@@ -134,4 +152,19 @@ Resources:
               - Effect: Allow
                 Action:
                   - "lambda:InvokeFunction"
+                Resource: "*"
+        - PolicyName: StatesAccessLogPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogDelivery"
+                  - "logs:GetLogDelivery"
+                  - "logs:UpdateLogDelivery"
+                  - "logs:DeleteLogDelivery"
+                  - "logs:ListLogDeliveries"
+                  - "logs:PutResourcePolicy"
+                  - "logs:DescribeResourcePolicies"
+                  - "logs:DescribeLogGroups"
                 Resource: "*"

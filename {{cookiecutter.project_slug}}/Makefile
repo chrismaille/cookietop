@@ -48,7 +48,7 @@ build_dependencies:
 	@mkdir -p ./dependencies/python
 	@poetry export --without-hashes -f requirements.txt -o ./dependencies/python/requirements.txt
 	@cp *.toml ./{{cookiecutter.project_slug}}
-	@pip install --upgrade -r ./dependencies/python/requirements.txt -t ./dependencies/python
+	@poetry run pip install --upgrade -r ./dependencies/python/requirements.txt -t ./dependencies/python
 
 .PHONY: package
 # Run `sam package` command
@@ -65,8 +65,8 @@ deploy: build_dependencies package
 	@poetry run sam deploy \
 		--template-file $(PACKAGE_FILE) \
 		--capabilities CAPABILITY_IAM \
-		--stack-name $(STACK_NAME) \
-		--guided
+		--stack-name $(STACK_NAME)
+
 	@rm -f ./{{cookiecutter.project_slug}}/env-*.toml
 	@rm -f ./{{cookiecutter.project_slug}}/packaged.yaml
 
