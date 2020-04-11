@@ -15,5 +15,4 @@ capacity.write = 1
 endpoint = ""
 
 [noverde.mydomain.settings]
-name = "noverde_mydomain_settings"
 active = true

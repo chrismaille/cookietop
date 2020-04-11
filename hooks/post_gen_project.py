@@ -3,6 +3,10 @@
 From database choices: "DynamoDB (recommended)", "RDS", "Both", "None"
 
 """
+import os
+import shutil
+from pathlib import Path
+
 from loguru import logger
 
 manifest = {
@@ -11,9 +15,9 @@ manifest = {
         "tests/test_document.py",
         "tests/test_document_schema.py",
         "tests/test_rule_document.py",
-        "{{cookiecutter.project_slug}}/schemas/noverde_{{cookiecutter.domain_slug}}_document_schema.py",
-        "{{cookiecutter.project_slug}}/models/{{cookiecutter.domain_slug}}_document.py",
-        "{{cookiecutter.project_slug}}/rulemodels/noverde_{{cookiecutter.domain_slug}}_document.py",
+        "{{cookiecutter.project_slug}}/application/schemas/noverde_{{cookiecutter.domain_slug}}_document_schema.py",
+        "{{cookiecutter.project_slug}}/enterprise/models/{{cookiecutter.domain_slug}}_document.py",
+        "{{cookiecutter.project_slug}}/enterprise/rulemodels/noverde_{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/interface/initializers/nosql.py",
     ],
     "rds": [
@@ -21,11 +25,11 @@ manifest = {
         "tests/test_model.py",
         "tests/test_model_schema.py",
         "tests/test_rule_model.py",
-        "{{cookiecutter.project_slug}}/schemas/noverde_{{cookiecutter.domain_slug}}_model_schema.py",
-        "{{cookiecutter.project_slug}}/models/{{cookiecutter.domain_slug}}_model.py",
-        "{{cookiecutter.project_slug}}/rulemodels/noverde_{{cookiecutter.domain_slug}}_model.py",
+        "{{cookiecutter.project_slug}}/application/schemas/noverde_{{cookiecutter.domain_slug}}_model_schema.py",
+        "{{cookiecutter.project_slug}}/enterprise/models/{{cookiecutter.domain_slug}}_model.py",
+        "{{cookiecutter.project_slug}}/enterprise/rulemodels/noverde_{{cookiecutter.domain_slug}}_model.py",
         "{{cookiecutter.project_slug}}/interface/initializers/sql.py",
-        "{{cookiecutter.project_slug}}/migrations",
+        "migrations",
         "alembic.ini",
     ],
 }
@@ -42,4 +46,10 @@ elif database_choice == "DynamoDB (recommended)":
 elif database_choice == "RDS":
     exclude_files = manifest["dynamo"]
 
-logger.debug(f"Files to be deleted: {exclude_files}")
+for string_path in exclude_files:
+    path = Path().cwd().joinpath(string_path)
+    logger.debug(f"Removing {path}...")
+    if path.is_dir():
+        shutil.rmtree(path)
+    else:
+        os.remove(str(path))
