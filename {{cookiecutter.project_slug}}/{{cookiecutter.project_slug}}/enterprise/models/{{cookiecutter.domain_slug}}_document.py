@@ -9,7 +9,7 @@ from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from interface.initializers.nosql import Base, connection
 
 
-class {{cookiecutter.domain_class}}CreatedIndex(GlobalSecondaryIndex):
+class {{cookiecutter.domain_class}}CreatedIndex(GlobalSecondaryIndex):  # type: ignore
     class Meta:
         index_name = "created-index"
         read_capacity_units = settings["database.nosql.capacity.read"]

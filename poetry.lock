@@ -695,11 +695,11 @@ marshmallow = ">=2.0.0"
 
 [[package]]
 category = "main"
-description = "PynamoDB integration with the marshmallow (de)serialization library"
+description = "PynamoDB integration with the Marshmallow (de)serialization library"
 name = "marshmallow-pynamo-db"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "0.8.3"
+version = "0.8.4"
 
 [package.dependencies]
 marshmallow = ">=3.0.0"
@@ -1846,8 +1846,8 @@ marshmallow-enum = [
     {file = "marshmallow_enum-1.5.1-py2.py3-none-any.whl", hash = "sha256:57161ab3dbfde4f57adeb12090f39592e992b9c86d206d02f6bd03ebec60f072"},
 ]
 marshmallow-pynamo-db = [
-    {file = "marshmallow-pynamo-db-0.8.3.tar.gz", hash = "sha256:0f755414a48b09735e6b07f434b4eb45dbd195860f65474f91ebbd37ea3e82bc"},
-    {file = "marshmallow_pynamo_db-0.8.3-py3-none-any.whl", hash = "sha256:d1c932edda8de89f52ca965947ee940f6a031b557c3886014c2ceb53eec9b294"},
+    {file = "marshmallow-pynamo-db-0.8.4.tar.gz", hash = "sha256:4eaea7650b5eeb19567d2694d3128073af7d19afe6d289b48a770423c012babd"},
+    {file = "marshmallow_pynamo_db-0.8.4-py3-none-any.whl", hash = "sha256:298b7fd31b781dd46eadf883d8d396edaf4ea5d5819d758ae70c84e94d4649ad"},
 ]
 marshmallow-sqlalchemy = [
     {file = "marshmallow-sqlalchemy-0.22.3.tar.gz", hash = "sha256:9301c6fd197bd97337820ea1417aa1233d0ee3e22748ebd5821799bc841a57e8"},

@@ -29,7 +29,7 @@ def get_nosql_database_url() -> str:
 
 
 class Base(Model):
-    """Base relational class
+    """Base relational class.
     
     Use this class to add funcionality
     to PynamoDB Base class.
