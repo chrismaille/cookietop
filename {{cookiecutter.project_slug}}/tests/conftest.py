@@ -6,12 +6,13 @@ from pytest_postgresql.janitor import DatabaseJanitor
 
 from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
+from interface.initializers.sql import Session
+from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFactory
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 from enterprise.models.{{cookiecutter.domain_slug}}_document import {{cookiecutter.domain_class}}Document
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
-from interface.initializers.sql import Session
-from tests.factories.entities import Noverde{{cookiecutter.domain_class}}ModelFactory
-from tests.factories.entities import Noverde{{cookiecutter.domain_class}}DocumentFactory
-
+from tests.factories.documents import Noverde{{cookiecutter.domain_class}}DocumentFactory
+{% endif %}
 
 @pytest.fixture(scope="session", autouse=True)
 def start_session():
@@ -51,21 +52,13 @@ def start_session():
 
 
 @pytest.fixture(autouse=True)
-def dbsession():
+def model_session():
     """Rollback transactions after test.
 
     This automatic fixture is used at function level:
         * After each test: rollback and close session database.
 
-    This session can be accessed through fixture.
-
     """
-    # DynamoDB Connection
-    if Noverde{{cookiecutter.domain_class}}Document.exists():
-        Noverde{{cookiecutter.domain_class}}Document.delete_table()
-    Noverde{{cookiecutter.domain_class}}Document.create_table(
-        read_capacity_units=1, write_capacity_units=1, wait=True
-    )
 
     # Run Tests
     yield
@@ -74,8 +67,27 @@ def dbsession():
     Session.rollback()
     Session.remove()
 
-    {{cookiecutter.domain_class}}Document.delete_table()
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+@pytest.fixture(autouse=True)
+def document_session():
+    """Remove table after test.
 
+    This automatic fixture is used at function level:
+        * After each test: delete and create dynamodb table.
+
+    """
+    if Noverde{{cookiecutter.domain_class}}Document.exists():
+        Noverde{{cookiecutter.domain_class}}Document.delete_table()
+    Noverde{{cookiecutter.domain_class}}Document.create_table(
+        read_capacity_units=1, write_capacity_units=1, wait=True
+    )
+
+    # Run tests
+    yield
+
+    # Remove table
+    {{cookiecutter.domain_class}}Document.delete_table()
+{% endif %}
 
 @pytest.fixture()
 def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}Model:
@@ -85,7 +97,7 @@ def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain
     """
     return Noverde{{cookiecutter.domain_class}}ModelFactory.create(rule=EnterpriseResources.noverde)
 
-
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 @pytest.fixture()
 def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_class}}Document:
     """Return Noverde{{cookiecutter.domain_class}}Document Fixture.
@@ -97,3 +109,4 @@ def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.dom
     )
     new_instance.save()
     return new_instance
+{% endif %}

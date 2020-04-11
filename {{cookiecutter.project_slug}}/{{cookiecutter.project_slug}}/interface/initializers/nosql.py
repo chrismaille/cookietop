@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 import sys
 
 from loguru import logger
@@ -34,6 +35,9 @@ class Base(Model):
     to PynamoDB Base class.
     """
 
+    def __eq__(self, other):
+        return self.uuid == other.uuid  # type: ignore
+
     def save(self, **kwargs):
         """Validate before save DynamoDB."""
         if self.validate():  # type: ignore
@@ -48,3 +52,4 @@ class Base(Model):
 
 connection = Connection(host=get_nosql_database_url())
 logger.debug(f"Session Registry created for {connection}")
+{% endif %}

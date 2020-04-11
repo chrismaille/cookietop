@@ -5,12 +5,12 @@ use_json_format = true
 [database.sql]
 url = ""
 echo = true
-
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 [databae.nosql]
 url = ""
 capacity.read = 1
 capacity.write = 1
-
+{% endif %}
 [sentry]
 endpoint = ""
 

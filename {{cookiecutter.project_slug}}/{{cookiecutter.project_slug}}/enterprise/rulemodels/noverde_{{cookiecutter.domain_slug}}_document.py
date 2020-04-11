@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 from datetime import datetime
 
 from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute
@@ -44,3 +45,4 @@ class Noverde{{cookiecutter.domain_class}}Document(NoverdeMixin, {{cookiecutter.
 
     class Meta({{cookiecutter.domain_class}}Document.Meta):
         pass
+{% endif %}

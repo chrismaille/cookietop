@@ -4,7 +4,7 @@ from freezegun import freeze_time
 
 from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
-from tests.factories.entities import Noverde{{cookiecutter.domain_class}}ModelFactory
+from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFactory
 
 
 def test_save_model():

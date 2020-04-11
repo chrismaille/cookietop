@@ -1,7 +1,4 @@
-from uuid import uuid4
-
-import arrow
-
+{%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 from application.schemas.noverde_{{cookiecutter.domain_slug}}_document_schema import (
     Noverde{{cookiecutter.domain_class}}DocumentSchema,
 )
@@ -18,3 +15,4 @@ def test_create_document_from_schema():
 
     test_document = Noverde{{cookiecutter.domain_class}}DocumentSchema().load(data)
     assert isinstance(test_document, Noverde{{cookiecutter.domain_class}}Document) is True
+{% endif %}

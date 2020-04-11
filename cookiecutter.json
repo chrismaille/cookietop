@@ -9,5 +9,6 @@
   "line_length": 88,
   "domain": "MyDomain",
   "domain_class": "{{ cookiecutter.domain.strip().replace(' ', '').title() }}",
-  "domain_slug": "{{ cookiecutter.domain.lower().replace(' ', '_') }}"
+  "domain_slug": "{{ cookiecutter.domain.lower().replace(' ', '_') }}",
+  "database": ["DynamoDB (recommended)", "RDS", "Both", "None"]
 }

@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 from uuid import uuid4
 
 import arrow
@@ -7,8 +8,7 @@ from pynamodb.exceptions import DoesNotExist
 
 from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
-from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
-from tests.factories.entities import Noverde{{cookiecutter.domain_class}}DocumentFactory
+from tests.factories.documents import Noverde{{cookiecutter.domain_class}}DocumentFactory
 
 
 @pytest.mark.parametrize(
@@ -85,3 +85,4 @@ def test_fixed_time():
     new_service = Noverde{{cookiecutter.domain_class}}DocumentFactory.create()
     assert new_service.created == arrow.utcnow().datetime
     assert new_service.created == arrow.get("2020-03-30 13:00:00").datetime
+{% endif %}

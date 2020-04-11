@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 from marshmallow import fields
 from marshmallow_enum import EnumField
 from marshmallow_pynamodb import ModelSchema as DocumentSchema
@@ -13,3 +14,4 @@ class Noverde{{cookiecutter.domain_class}}DocumentSchema(DocumentSchema):
 
     class Meta:
         model = Noverde{{cookiecutter.domain_class}}Document
+{% endif %}

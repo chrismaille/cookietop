@@ -5,12 +5,12 @@ use_json_format = false
 [database.sql]
 url = "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop"
 echo = true
-
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 [database.nosql]
 url = "http://localhost:8000"
 capacity.read = 1
 capacity.write = 1
-
+{% endif %}
 [sentry]
 endpoint = ""
 
