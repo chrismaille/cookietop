@@ -23,16 +23,20 @@ jobs:
           postgresql db: 'test'
           postgresql user: 'noverde'
           postgresql password: 'noverde'
+      - name: Setup DynamoDB Local
+        uses: rrainn/dynamodb-action@v2.0.0
+        with:
+          port: 8000
+          cors: '*'
       - name: Install Python dependencies
         run: |
           make install
       - name: Run Tests
         run: |
-          make dynamodb
           make ci
         env:
+          AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: 1234
           AWS_SECRET_ACCESS_KEY: 1234
-          AWS_REGION: us-east-1
 
 

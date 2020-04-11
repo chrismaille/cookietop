@@ -11,5 +11,3 @@ class Noverde{{cookiecutter.domain_class}}ModelSchema(BaseSchema):
 
     class Meta(BaseSchema.Meta):
         model = Noverde{{cookiecutter.domain_class}}Model
-        include_relationships = True
-        load_instance = True

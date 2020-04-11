@@ -24,6 +24,7 @@ def test_save_document(model_uuid):
         "uuid": model_uuid,
         "created": arrow.utcnow().datetime,
         "rule": EnterpriseResources.noverde,
+        "noverde_unique_field": "foo",
     }
     new_instance = Noverde{{cookiecutter.domain_class}}Document(**data)
     new_instance.save()
@@ -36,7 +37,7 @@ def test_create_document():
     """Test create document.
 
     This test show:
-        1. Creating a new NoverdeMydomainDocument using Factory Boy
+        1. Creating a new Noverde{{cookiecutter.domain_slug}}Document using Factory Boy
         2. Using the database session from fixture(dbsession)
 
     It will run twice to ensure transaction are rollback after each test.
@@ -47,16 +48,16 @@ def test_create_document():
         "created": arrow.utcnow().datetime,
         "rule": EnterpriseResources.noverde,
     }
-    NoverdeMydomainDocumentFactory.create(**data)
+    Noverde{{cookiecutter.domain_class}}DocumentFactory.create(**data)
     # fmt: off
     test_instance = (
-            NoverdeMydomainDocumentFactory.uuid == model_uuid
+            Noverde{{cookiecutter.domain_class}}DocumentFactory.uuid == model_uuid
     )
     # fmt: on
     assert test_instance is not None
 
 
-def test_read_document(noverde_mydomain_document):
+def test_read_document(noverde_{{cookiecutter.domain_slug}}_document):
     """Test Read Document.
 
     This test show:
@@ -64,11 +65,14 @@ def test_read_document(noverde_mydomain_document):
         2. A simple query using PynamoDB.
 
     """
-    new_instance = NoverdeMydomainDocument.get(hash_key=noverde_mydomain_document.uuid)
+    new_instance = Noverde{{cookiecutter.domain_class}}Document.get(hash_key=noverde_{{cookiecutter.domain_slug}}_document.uuid)
 
-    assert new_instance.uuid == noverde_mydomain_document.uuid
-    assert new_instance.rule == noverde_mydomain_document.rule
-    assert new_instance.created == noverde_mydomain_document.created
+    assert new_instance.uuid == noverde_{{cookiecutter.domain_slug}}_document.uuid
+    assert new_instance.rule == noverde_{{cookiecutter.domain_slug}}_document.rule
+    assert new_instance.created == noverde_{{cookiecutter.domain_slug}}_document.created
+    assert new_instance.noverde_unique_field is not None
+
+    assert new_instance == noverde_{{cookiecutter.domain_slug}}_document
 
 
 @freeze_time("2020-03-30 13:00:00")
@@ -78,6 +82,6 @@ def test_fixed_time():
     This test show:
         1. Save new record with freeze time.
     """
-    new_service = NoverdeMydomainDocumentFactory.create()
+    new_service = Noverde{{cookiecutter.domain_class}}DocumentFactory.create()
     assert new_service.created == arrow.utcnow().datetime
     assert new_service.created == arrow.get("2020-03-30 13:00:00").datetime

@@ -61,9 +61,9 @@ def dbsession():
 
     """
     # DynamoDB Connection
-    if {{cookiecutter.domain_class}}Document.exists():
-        {{cookiecutter.domain_class}}Document.delete_table()
-    {{cookiecutter.domain_class}}Document.create_table(
+    if Noverde{{cookiecutter.domain_class}}Document.exists():
+        Noverde{{cookiecutter.domain_class}}Document.delete_table()
+    Noverde{{cookiecutter.domain_class}}Document.create_table(
         read_capacity_units=1, write_capacity_units=1, wait=True
     )
 
