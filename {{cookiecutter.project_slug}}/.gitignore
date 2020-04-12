@@ -148,7 +148,7 @@ requirements.txt
 .src/
 
 .aws-sam/
-./{{cookiecutter.project_slug}}}/*.toml
+./{{cookiecutter.project_slug}}/*.toml
 packaged.yaml
 
 .vscode/

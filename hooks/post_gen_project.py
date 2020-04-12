@@ -48,7 +48,7 @@ elif database_choice == "RDS":
 
 for string_path in exclude_files:
     path = Path().cwd().joinpath(string_path)
-    logger.debug(f"Removing {path}...")
+    # logger.debug(f"Removing {path}...")
     if path.is_dir():
         shutil.rmtree(path)
     else:

@@ -32,7 +32,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_slug}}-health-check
       CodeUri: {{cookiecutter.project_slug}}
-      Handler: interface.handlers.health.health_check
+      Handler: application.handlers.health.health_check
       Policies:
         - AWSLambdaFullAccess
       Events:
@@ -43,14 +43,90 @@ Resources:
             Method: get
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
+  Create{{cookiecutter.domain_class}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: create_{{cookiecutter.domain_slug}}
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: application.handlers.create_{{cookiecutter.domain_slug}}.create
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Post{{cookiecutter.domain_class}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.domain_slug}}s
+            Method: post
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+  Retrieve{{cookiecutter.domain_class}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: retrieve_{{cookiecutter.domain_slug}}
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: application.handlers.retrieve_{{cookiecutter.domain_slug}}.retrieve
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Retrieve{{cookiecutter.domain_class}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.domain_slug}}s/{uuid}
+            Method: get
+            RequestParameters:
+              method.request.path.uuid:
+                Required: true
+                Caching: false
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+  Update{{cookiecutter.domain_class}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: update_{{cookiecutter.domain_slug}}
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: application.handlers.update_{{cookiecutter.domain_slug}}.update
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Update{{cookiecutter.domain_class}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.domain_slug}}s/{uuid}
+            Method: post
+            RequestParameters:
+              method.request.path.uuid:
+                Required: true
+                Caching: false
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
 
   # Step Functions Handlers
   Find{{cookiecutter.domain_class}}Instance:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: noverde_test_project-find-{{cookiecutter.domain_slug}}-instance
+      FunctionName: {{cookiecutter.project_slug}}-find-{{cookiecutter.domain_slug}}-step
       CodeUri: {{cookiecutter.project_slug}}
-      Handler: application.machines.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_instance
+      Handler: application.machines.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_step.find_step
+      Policies:
+        - AWSLambdaFullAccess
+      Role: !GetAtt [ LambdaExecutionRole, Arn ]
+
+  Create{{cookiecutter.domain_class}}Instance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_slug}}-create-{{cookiecutter.domain_slug}}-step
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: application.machines.create_{{cookiecutter.domain_slug}}.create_{{cookiecutter.domain_slug}}_step.create_step
+      Policies:
+        - AWSLambdaFullAccess
+      Role: !GetAtt [ LambdaExecutionRole, Arn ]
+
+  Update{{cookiecutter.domain_class}}Instance:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_slug}}-update-{{cookiecutter.domain_slug}}-step
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: application.machines.create_{{cookiecutter.domain_slug}}.update_{{cookiecutter.domain_slug}}_step.update_step
       Policies:
         - AWSLambdaFullAccess
       Role: !GetAtt [ LambdaExecutionRole, Arn ]
