@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 from stela import settings
+
 {% if cookiecutter.database != "None" %}
 # fmt: off
 import pytest
@@ -136,4 +137,6 @@ def load_fixture(filename: str) -> Dict[Any, Any]:
     with open(str(file_path)) as file:
         fixture = json.load(file)
     return fixture
+
+
 # fmt: on
