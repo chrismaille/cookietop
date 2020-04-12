@@ -141,23 +141,45 @@ Resources:
               LogGroupArn: !GetAtt [ {{cookiecutter.domain_class}}CreateMachineLogGroup, Arn ]
         IncludeExecutionData: true
         Level: ALL
-      DefinitionString:
-        !Sub
-        - |-
-          {
-            "Comment": "Create {{cookiecutter.domain}} State Machine",
-            "StartAt": "Find{{cookiecutter.domain_class}}Instance",
-            "States": {
-              "Find{{cookiecutter.domain_class}}Instance": {
-                "Type": "Task",
-                "Resource": "${firstLambdaArn}",
-                "End": true
-              }
+      DefinitionString: !Sub |
+        {
+          "Comment": "Create oor Update {{cookiecutter.domain}} State Machine",
+          "StartAt": "Find {{cookiecutter.domain}}",
+          "States": {
+            "Find {{cookiecutter.domain}}": {
+              "Type": "Task",
+              "Resource": "${FindMydomainInstance.Arn}",
+              "Next": "{{cookiecutter.domain}} exists?"
+            },
+            "{{cookiecutter.domain}} exists?": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.exists",
+                  "BooleanEquals": true,
+                  "Next": "Update {{cookiecutter.domain}}"
+                }
+              ],
+              "Default": "Create new {{cookiecutter.domain}}"
+            },
+            "Update {{cookiecutter.domain}}": {
+              "Type": "Task",
+              "Resource": "${UpdateMydomainInstance.Arn}",
+              "Next": "Success"
+            },
+            "Create new {{cookiecutter.domain}}": {
+              "Type": "Task",
+              "Resource": "${CreateMydomainInstance.Arn}",
+              "Next": "Success"
+            },
+            "Success": {
+              "Type": "Succeed"
             }
           }
-        - {firstLambdaArn: !GetAtt [ FindMydomainInstance, Arn ]}
+        }
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
       # ALWAYS use "EXPRESS" unless you know what your doing
+      # https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html
       StateMachineType: "EXPRESS"
 
   # Step Function Log Group
