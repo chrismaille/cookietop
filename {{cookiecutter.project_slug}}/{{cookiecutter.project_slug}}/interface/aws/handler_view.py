@@ -15,6 +15,7 @@ from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
 from interface.initializers.log import initialize_log
 from interface.initializers.sentry import initialize_sentry
+from interface.aws.exceptions import RequestUnauthorizedError
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 from interface.initializers.sql import Session
 {% endif %}
@@ -76,6 +77,9 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                     "statusCode": StatusCode.BAD_REQUEST.value,
                     "body": json.dumps({"errors": error_list}),
                 }
+            except RequestUnauthorizedError:
+                # handle requests without authorizationToken header - status 401
+                raise RequestUnauthorizedError("Unauthorized")
             except EnterpriseValidationErrors as error:
                 # Handle Enterprise Rules Validation Errors.
                 capture_exception(error)

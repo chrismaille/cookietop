@@ -1,5 +1,11 @@
-{%- if cookiecutter.database != "None" -%}
 """Pytest main conftest module."""
+import json
+import os
+from pathlib import Path
+from typing import Any, Dict
+
+from stela import settings
+{% if cookiecutter.database != "None" %}
 # fmt: off
 import pytest
 from loguru import logger
@@ -115,5 +121,19 @@ def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.dom
     new_instance.save()
     return new_instance
 {% endif %}
-# fmt: on
 {% endif %}
+def load_fixture(filename: str) -> Dict[Any, Any]:
+    """Load fixtures from fixtures folder.
+
+    :param filename: json filename
+    :return: Dict
+    """
+    if settings.get("use_cookie_path", False):
+        base_path = os.environ.get("PYTHONPATH").split(":")[0]
+    else:
+        base_path = str(Path().cwd())
+    file_path = Path().joinpath(base_path, "tests", "fixtures", filename)
+    with open(str(file_path)) as file:
+        fixture = json.load(file)
+    return fixture
+# fmt: on

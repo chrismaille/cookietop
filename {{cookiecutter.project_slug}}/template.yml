@@ -18,7 +18,8 @@ Globals:
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
-        DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:3}}'
+        DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
+        AUTHORIZATION_TOKEN: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/secrets/access_token:1}}'
         {% endraw %}
   Api:
     Cors:
@@ -26,6 +27,16 @@ Globals:
       AllowHeaders: "'Content-Type,Authorization'"
 
 Resources:
+  # Request Lambda Authorizer
+  ApiLambdaAuthorizer:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_slug}}-api-lambda-authorizer
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: interface.handlers.authorize.authorize
+      Policies:
+        - AWSLambdaFullAccess
+
   # API Gateway Handlers
   HealthCheck:
     Type: AWS::Serverless::Function
@@ -207,6 +218,11 @@ Resources:
       OpenApiVersion: "3.0.3"
       TracingEnabled: true
       StageName: v1
+      Auth:
+        DefaultAuthorizer: RequestLambdaAuthorizer
+        Authorizers:
+          RequestLambdaAuthorizer:
+            FunctionArn: !GetAtt ApiLambdaAuthorizer.Arn
 
   # IAM Roles
   LambdaExecutionRole:

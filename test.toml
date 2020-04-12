@@ -1,3 +1,5 @@
+use_cookie_path = true
+
 [logger]
 level = "DEBUG"
 use_json_format = false
