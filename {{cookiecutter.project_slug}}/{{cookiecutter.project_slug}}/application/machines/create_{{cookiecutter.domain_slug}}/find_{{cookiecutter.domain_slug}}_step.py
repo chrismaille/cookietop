@@ -1,11 +1,25 @@
+from random import choice
+from typing import Any, Dict
+
+from aws_lambda_context import LambdaContext
 from loguru import logger
 
 
-def find_step(event, context):
+def find_step(event: Dict[Any, Any], context: LambdaContext) -> Dict[Any, Any]:
     """Create {{cookiecutter.domain_class}} step.
 
-    This is part from Create {{ cookiecutter.domain_class }} State Machine
-    Current Step: Find
+    This is part 1 from Create {{ cookiecutter.domain_class }} State Machine
+    Current Step: Find instance
+
+    To understand this flow, please
+    check on CloudWatch the following logs.
+
+    The return dict will be used on
+    "{{cookiecutter.domain}} exists?" Step.
 
     """
-    logger.debug("Start step: Find {{cookiecutter.domain_class}}")
+    logger.debug("Start step 1: Find {{cookiecutter.domain_class}}")
+    logger.debug(f"Event received: {event}")
+    return {
+        "exists": choice([True, False])
+    }

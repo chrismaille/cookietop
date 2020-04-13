@@ -307,6 +307,16 @@ Resources:
                   - "xray:PutTelemetryRecords"
                 Effect: Allow
                 Resource: "*"
+        - PolicyName: LambdaWriteLogs
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Effect: Allow
+                Resource: "*"
         {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
         - PolicyName: AccessDynamoDBFromLambda
           PolicyDocument:
