@@ -20,6 +20,7 @@ class Request:
                         informed in `handler_view` decorator.
         aws_event:      Original AWS Event
         aws_context:    Original AWS Context
+        path:           Path Parameters from AWS Context
 
     Examples
     ========
@@ -72,3 +73,4 @@ class Request:
     body: Optional[Dict[Any, Any]]
     aws_event: Dict[Any, Any]
     aws_context: LambdaContext
+    path: Dict[Any, Any]

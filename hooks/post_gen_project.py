@@ -15,6 +15,7 @@ manifest = {
         "tests/test_document.py",
         "tests/test_document_schema.py",
         "tests/test_rule_document.py",
+        "tests/test_{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/application/schemas/noverde_{{cookiecutter.domain_slug}}_document_schema.py",
         "{{cookiecutter.project_slug}}/enterprise/models/{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/enterprise/rulemodels/noverde_{{cookiecutter.domain_slug}}_document.py",

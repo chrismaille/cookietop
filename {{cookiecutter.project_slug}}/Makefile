@@ -78,6 +78,7 @@ first_install:
 	@git flow init -d
 	@poetry install
 	@poetry run pre-commit install
+	@docker network create lambda-local
 
 .PHONY: install
 # Install application
@@ -88,7 +89,7 @@ install:
 .PHONY: serve
 # Runs local API via SAM client
 serve: build_dependencies
-	@poetry run sam local start-api --debug -n local.json
+	@poetry run sam local start-api --debug -n local.json --docker-network lambda-local
 
 .PHONY: watch
 # Runs pytest in watch mode

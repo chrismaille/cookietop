@@ -38,8 +38,25 @@ class Base(Model):
     def __eq__(self, other):
         return self.uuid == other.uuid  # type: ignore
 
+    def table_exists(self) -> None:
+        """Check if Table exists.
+
+        Running only in Development.
+
+        :return: None
+        """
+        environment = settings.stela_options.current_environment
+        if environment == "development":
+            if not self.exists():
+                logger.warning(
+                    f"Table {self.Meta.table_name} in {environment} "  # type: ignore
+                    f"does not exist. Creating..."
+                )
+                self.create_table(wait=True)
+
     def save(self, **kwargs):
         """Validate before save DynamoDB."""
+        self.table_exists()
         if self.validate():  # type: ignore
             return super().save(**kwargs)
 

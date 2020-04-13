@@ -19,8 +19,7 @@ Globals:
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
         DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
-        DATABASE_NOSQL_URL: !GetAtt [ {{cookiecutter.domain_class}}Document, Arn ]
-        AUTHORIZATION_TOKEN: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/secrets/access_token:1}}'
+        DATABASE_NOSQL_URL: !GetAtt [ {% endraw %}{{cookiecutter.domain_class}}{% raw %}Document, Arn ]
         {% endraw %}
   Api:
     Cors:
@@ -35,6 +34,11 @@ Resources:
       FunctionName: {{cookiecutter.project_slug}}-api-lambda-authorizer
       CodeUri: {{cookiecutter.project_slug}}
       Handler: interface.handlers.authorize.authorize
+      Environment:
+        Variables:
+          {% raw %}
+          AUTHORIZATION_TOKEN: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/secrets/access_token:1}}'
+          {% endraw %}
       Policies:
         - AWSLambdaFullAccess
         {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}

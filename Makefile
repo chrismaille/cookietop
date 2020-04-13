@@ -1,8 +1,9 @@
-export PYTHONPATH := $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
+export PYTHONPATH 			:= $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
+export COOKIECUTTER_CONFIG	?= ./cookie_both.yml
 
 first_install:
 	@git flow init -d
-	@poetry install$(PWD)/noverde_
+	@poetry install
 	@rm -rf ./src
 
 install:
@@ -18,7 +19,7 @@ test: cookie
 	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_slug}}
 
 ci: cookie
-	@poetry run pytest  --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
+	@poetry run pytest --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
 
 watch: cookie
 	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_slug}}

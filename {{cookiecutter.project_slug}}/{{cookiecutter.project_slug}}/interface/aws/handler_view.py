@@ -18,8 +18,11 @@ from interface.initializers.sentry import initialize_sentry
 from interface.aws.exceptions import RequestUnauthorizedError
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 from interface.initializers.sql import Session
+from sqlalchemy.orm.exc import NoResultFound
 {% endif %}
-
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+from pynamodb.exceptions import DoesNotExist
+{% endif %}
 # When running on AWS
 # this code will be invoked once
 # per handler
@@ -77,6 +80,20 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                     "statusCode": StatusCode.BAD_REQUEST.value,
                     "body": json.dumps({"errors": error_list}),
                 }
+            {% if cookiecutter.database == "DynamoDB (recommended)" %}
+            except DoesNotExist as error:
+                return {
+                    "statusCode": StatusCode.NOT_FOUND.value,
+                    "body": json.dumps({"errors": [f"{error}"]}),
+                }
+            {% endif %}
+            {% if cookiecutter.database == "RDS" %}
+            except NoResultFound as error:
+                return {
+                    "statusCode": StatusCode.NOT_FOUND.value,
+                    "body": json.dumps({"errors": [f"{error}"]}),
+                }
+            {% endif %}
             except RequestUnauthorizedError:
                 # handle requests without authorizationToken header - status 401
                 raise RequestUnauthorizedError("Unauthorized")
@@ -89,7 +106,7 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                 logger.error(f"Rules Validation Error during request: {error}")
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
-                    "body": json.dumps({"errors": ["{error}"]}),
+                    "body": json.dumps({"errors": [f"{error}"]}),
                 }
             except Exception as error:
                 # Handle Internal Server Errors
