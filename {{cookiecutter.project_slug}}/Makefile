@@ -12,8 +12,9 @@ ARTIFACTS    	:= \
 	./{{cookiecutter.project_slug}}/dependencies
 
 # External variables and his default values
-S3_BUCKET       ?= "{{cookiecutter.project_bucket}}-"$(USER)
-STACK_NAME      ?= "{{cookiecutter.project_bucket}}-"$(USER)
+ENVIRONMENT		?= "develop"
+S3_BUCKET       ?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
+STACK_NAME      ?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)"-stack"
 AWS_PROFILE     ?= "default"
 
 # Exported variables for subshells
@@ -23,6 +24,7 @@ export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}
 .PHONY: show_config
 # Show configuration used in SAM operations
 show_config:
+	@echo "ENVIRONMENT: $(ENVIRONMENT)"
 	@echo "PACKAGE_TMPL: $(PACKAGE_FILE)"
 	@echo "S3_BUCKET: $(S3_BUCKET)"
 	@echo "STACK_NAME: $(STACK_NAME)"

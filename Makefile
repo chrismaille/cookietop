@@ -29,7 +29,7 @@ format:
 reload:
 	@echo Creating new test project on folder 'noverde_test_project' ...
 	@rm -rf ../noverde_test_project
-	@cookiecutter --no-input . -o ..
+	@poetry run cookiecutter --no-input . -o ..
 	@echo Removing test project virtualenv ...
 	@cd ../noverde_test_project && poetry env remove 3.7
 

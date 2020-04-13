@@ -11,6 +11,13 @@ from interface.initializers.sql import Base
 
 
 class {{cookiecutter.domain_class}}Model(Base):
+    """{{cookiecutter.domain_class}} SQLAlchemy Declarative Model.
+
+    This is the table created in Postgres.
+    Each RuleModel Subclass can add new fields.
+
+    """
+
     __tablename__ = "{{cookiecutter.domain_slug}}_model"
 
     id = sa.Column(sa.Integer, primary_key=True)
@@ -38,7 +45,7 @@ def validate(mapper, connection, target):
     Always run validate(), even
     if we insert/modify record
     direct using session.commit()
-    instead instance.save()
+    instead using instance.save()
     """
     return target.validate()
 # fmt: on

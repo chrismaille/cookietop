@@ -19,6 +19,7 @@ Globals:
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
         DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
+        DATABASE_NOSQL_URL: !GetAtt [ {{cookiecutter.domain_class}}Document, Arn ]
         AUTHORIZATION_TOKEN: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/secrets/access_token:1}}'
         {% endraw %}
   Api:
@@ -36,7 +37,9 @@ Resources:
       Handler: interface.handlers.authorize.authorize
       Policies:
         - AWSLambdaFullAccess
-
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
   # API Gateway Handlers
   HealthCheck:
     Type: AWS::Serverless::Function
@@ -46,6 +49,9 @@ Resources:
       Handler: application.handlers.health.health_check
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Events:
         GetHealth:
           Type: Api
@@ -62,6 +68,9 @@ Resources:
       Handler: application.handlers.create_{{cookiecutter.domain_slug}}.create
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Events:
         Post{{cookiecutter.domain_class}}:
           Type: Api
@@ -78,6 +87,9 @@ Resources:
       Handler: application.handlers.retrieve_{{cookiecutter.domain_slug}}.retrieve
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Events:
         Retrieve{{cookiecutter.domain_class}}:
           Type: Api
@@ -98,6 +110,9 @@ Resources:
       Handler: application.handlers.update_{{cookiecutter.domain_slug}}.update
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Events:
         Update{{cookiecutter.domain_class}}:
           Type: Api
@@ -120,6 +135,9 @@ Resources:
       Handler: application.machines.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_step.find_step
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Role: !GetAtt [ LambdaExecutionRole, Arn ]
 
   Create{{cookiecutter.domain_class}}Instance:
@@ -130,6 +148,9 @@ Resources:
       Handler: application.machines.create_{{cookiecutter.domain_slug}}.create_{{cookiecutter.domain_slug}}_step.create_step
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Role: !GetAtt [ LambdaExecutionRole, Arn ]
 
   Update{{cookiecutter.domain_class}}Instance:
@@ -140,6 +161,9 @@ Resources:
       Handler: application.machines.create_{{cookiecutter.domain_slug}}.update_{{cookiecutter.domain_slug}}_step.update_step
       Policies:
         - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
       Role: !GetAtt [ LambdaExecutionRole, Arn ]
 
   # Step Function Machine
@@ -223,7 +247,41 @@ Resources:
         Authorizers:
           RequestLambdaAuthorizer:
             FunctionArn: !GetAtt ApiLambdaAuthorizer.Arn
-
+  {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+  # DynamoDB Table
+  {{cookiecutter.domain_class}}Document:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: "{{cookiecutter.project_slug}}_{{ cookiecutter.domain_class }}Document"
+      AttributeDefinitions:
+        - AttributeName: uuid
+          AttributeType: S
+        - AttributeName: created
+          AttributeType: S
+        - AttributeName: rule
+          AttributeType: S
+      KeySchema:
+        - AttributeName: uuid
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: search_by_date
+          KeySchema:
+            - AttributeName: uuid
+              KeyType: HASH
+            - AttributeName: created
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: search_by_rule
+          KeySchema:
+            - AttributeName: uuid
+              KeyType: HASH
+            - AttributeName: rule
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+  {% endif %}
   # IAM Roles
   LambdaExecutionRole:
     Type: "AWS::IAM::Role"
@@ -233,10 +291,10 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: lambda.amazonaws.com
+              Service: !Sub lambda.${AWS::Region}.amazonaws.com
             Action: "sts:AssumeRole"
       Policies:
-        - PolicyName: demo-xray-lambda-policy
+        - PolicyName: AccessXRayFromLambda
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -245,6 +303,22 @@ Resources:
                   - "xray:PutTelemetryRecords"
                 Effect: Allow
                 Resource: "*"
+        {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+        - PolicyName: AccessDynamoDBFromLambda
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "dynamodb:Query"
+                  - "dynamodb:Scan"
+                  - "dynamodb:GetItem"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:UpdateItem"
+                  - "dynamodb:DeleteItem"
+                  - "dynamodb:DescribeTable"
+                Effect: Allow
+                Resource: "*"
+        {% endif %}
 
   StatesExecutionRole:
     Type: "AWS::IAM::Role"
