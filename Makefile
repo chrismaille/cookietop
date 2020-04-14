@@ -1,4 +1,5 @@
-export PYTHONPATH := $(PWD):$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/tests
+export PYTHONPATH 			:= $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
+export COOKIECUTTER_CONFIG	?= ./cookie_both.yml
 
 first_install:
 	@git flow init -d
@@ -18,7 +19,7 @@ test: cookie
 	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_slug}}
 
 ci: cookie
-	@poetry run pytest  --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
+	@poetry run pytest --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
 
 watch: cookie
 	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_slug}}
@@ -29,13 +30,13 @@ format:
 reload:
 	@echo Creating new test project on folder 'noverde_test_project' ...
 	@rm -rf ../noverde_test_project
-	@cookiecutter --no-input . -o ..
+	@poetry run cookiecutter --no-input . -o ..
 	@echo Removing test project virtualenv ...
 	@cd ../noverde_test_project && poetry env remove 3.7
 
 .PHONY: create_db
 # Create Database
-create_db:
+createdb:
 	@echo "Creating database cookiecutter_develop..."
 	@psql postgres -c "DROP DATABASE IF EXISTS cookiecutter_develop;"
 	@sleep 1
@@ -53,7 +54,12 @@ revision:
 migrate:
 	@poetry run alembic upgrade head
 
-.PHONY: start_docker_db_nosql
-# Run DynamoDB with Docker
-start_docker_db_nosql:
-	@docker-compose up -d db_nosql
+.PHONY: dynamodb
+# Run local DynamoDB
+dynamodb:
+	@docker-compose up -d dynamodb
+
+.PHONY: test_full_ci
+# Run make ci for all database options
+test_full_ci:
+	./full_ci_tests.sh

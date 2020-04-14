@@ -7,7 +7,6 @@ from loguru import logger
 from marshmallow import Schema
 
 from interface.aws.request import Request
-from interface.initializers.sql import Session
 
 
 @dataclass
@@ -55,5 +54,6 @@ class Sherlock:
             body=self.body_data,
             aws_event=self.event_data,
             aws_context=self.context_data,
-            db_session=Session(),
+            path=self.event_data.get("pathParameters"),
+            headers=self.event_data.get("headers"),
         )

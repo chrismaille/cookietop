@@ -1,6 +1,6 @@
-class RuleValidationErrors(Exception):
+class EnterpriseValidationErrors(Exception):
     pass
 
 
-class NoverdeRuleValidationErrors(RuleValidationErrors):
+class NoverdeEnterpriseValidationErrors(EnterpriseValidationErrors):
     pass

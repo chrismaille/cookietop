@@ -37,14 +37,14 @@ $ aws configure
 
 # Install project
 $ make first_install
-
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 # Prepare relational database (postgres)
 # Make sure you have the "noverde:noverde"
 # superuser created in postgres.
 $ make create_db
 $ make revision message="First commit"
 $ make migrate
-
+{% endif %}
 # Test project
 $ make test # or make ci
 ```
@@ -77,7 +77,7 @@ $ make serve
 # Manual Deploy (check your permissions first)
 $ make deploy
 ```
-
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 #### Relational Database Commands
 
 ```shell
@@ -91,7 +91,7 @@ $ make revision message="foo"
 # Migrate Database
 $ make migrate
 ```
-
+{% endif %}
 #### The AWS Toolkit
 
 The

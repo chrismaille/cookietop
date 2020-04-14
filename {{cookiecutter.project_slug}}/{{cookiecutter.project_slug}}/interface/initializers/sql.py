@@ -1,3 +1,4 @@
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 """Initialize Database Session.
 
 As per SQLAlchemy API.
@@ -43,6 +44,7 @@ class Base:
     """
 
     def save(self):
+        """Validate before commit instance."""
         if self.validate():  # type: ignore
             session = Session()
             if not self.id:  # type: ignore
@@ -62,3 +64,4 @@ class Base:
 engine = create_engine(get_database_url(), echo=settings["database.sql.echo"])
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
 logger.debug(f"Session Registry created for {engine}")
+{% endif %}

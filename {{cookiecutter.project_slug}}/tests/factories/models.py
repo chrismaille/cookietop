@@ -1,27 +1,15 @@
-"""Entities Factory.
+{%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
+"""Models Factory.
 
 For more info: https://github.com/FactoryBoy/factory_boy
 """
-from datetime import datetime
-
-import arrow
-import factory
+from factory import LazyFunction
 from factory.alchemy import SESSION_PERSISTENCE_FLUSH, SQLAlchemyModelFactory
 
+from enterprise.helpers.get_now import get_now
 from enterprise.types.enterprise_resources import EnterpriseResources
-from enterprise.models.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
+from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from interface.initializers.sql import Session
-
-
-def return_now() -> datetime:
-    """Return current time.
-
-    To freeze time in Factory
-    wrap them using `freeze_time` decorator
-
-    :return: datetime object
-    """
-    return arrow.utcnow().datetime
 
 
 class Noverde{{cookiecutter.domain_class}}ModelFactory(SQLAlchemyModelFactory):
@@ -40,5 +28,6 @@ class Noverde{{cookiecutter.domain_class}}ModelFactory(SQLAlchemyModelFactory):
         sqlalchemy_session = Session
         sqlalchemy_session_persistence = SESSION_PERSISTENCE_FLUSH
 
-    created = factory.LazyFunction(return_now)
+    created = LazyFunction(get_now)
     rule = EnterpriseResources.noverde
+{% endif %}

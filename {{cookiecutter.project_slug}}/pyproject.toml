@@ -37,9 +37,9 @@ exclude = '''
 
 [tool.poetry]
 name = "{{cookiecutter.project_slug}}"
-version = "0.1.0"
+version = "1.0.0"
 description = "{{ cookiecutter.project_description }}"
-authors = ["Noverde <devs@noverde.com.br>"]
+authors = ["Noverde Tech <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^{{ cookiecutter.python_version }}"
@@ -48,16 +48,22 @@ aws_lambda_context = "*"
 loguru = "*"
 marshmallow = "*"
 marshmallow_enum = "*"
-marshmallow-sqlalchemy = "*"
 python-json-logger = "*"
-psycopg2 = "*"
 sentry-sdk = "*"
-SQLAlchemy = "*"
 stela = "*"
 typing_extensions = "*"
-
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+# DynamoDB Libraries
+pynamodb = "*"
+marshmallow-pynamo-db = "*"
+{% endif %}
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+# Postgres Libraries
+psycopg2 = "*"
+marshmallow-sqlalchemy = "*"
+SQLAlchemy = "*"
+{% endif %}
 [tool.poetry.dev-dependencies]
-alembic = "*"
 aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"
@@ -68,11 +74,14 @@ pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
-pytest-postgresql = "*"
 pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"
 wheel = "*"
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+alembic = "*"
+pytest-postgresql = "*"
+{% endif %}
 
 [build-system]
 requires = ["poetry>=0.12"]

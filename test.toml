@@ -1,14 +1,20 @@
+use_cookie_path = true
+
 [logger]
 level = "DEBUG"
 use_json_format = false
 
 [database.sql]
-url = "postgres://noverde:noverde@localhost/cookiecutter_develop"
+url = "postgres://noverde:noverde@localhost/noverde_test_project_develop"
 echo = true
+
+[database.nosql]
+url = "http://localhost:8000"
+capacity.read = 1
+capacity.write = 1
 
 [sentry]
 endpoint = ""
 
 [noverde.mydomain.settings]
-name = "noverde_mydomain_settings"
 active = true

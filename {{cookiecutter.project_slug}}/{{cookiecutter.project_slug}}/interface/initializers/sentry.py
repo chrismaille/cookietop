@@ -3,6 +3,7 @@ from pathlib import Path
 import toml
 from loguru import logger
 from scalpl import Cut
+from sentry_sdk.utils import BadDsn
 from stela import settings
 import sentry_sdk as sentry_sdk
 from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
@@ -26,10 +27,13 @@ def initialize_sentry() -> None:
         data = Cut(toml.load(file))
         current_version = data["tool.poetry.version"]
 
-    sentry_sdk.init(
-        dsn=endpoint,
-        integrations=[AwsLambdaIntegration()],
-        environment=settings.stela_options.current_environment,
-        release=current_version,
-    )
-    logger.info(f"Sentry initialized.")
+    try:
+        sentry_sdk.init(
+            dsn=endpoint,
+            integrations=[AwsLambdaIntegration()],
+            environment=settings.stela_options.current_environment,
+            release=current_version,
+        )
+        logger.info(f"Sentry initialized.")
+    except BadDsn as error:
+        logger.error(f"Error when initializing Sentry: {error}")

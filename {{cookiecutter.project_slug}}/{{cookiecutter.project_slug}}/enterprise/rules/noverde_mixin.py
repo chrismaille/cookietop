@@ -1,7 +1,7 @@
 from stela import settings
 
 from enterprise.rules.base import EnterpriseRules
-from enterprise.rules.exceptions import NoverdeRuleValidationErrors
+from enterprise.rules.exceptions import NoverdeEnterpriseValidationErrors
 from enterprise.types.enterprise_resources import EnterpriseResources
 
 
@@ -23,8 +23,8 @@ class NoverdeMixin(EnterpriseRules):
         :raise: NoverdeRuleValidationErrors
         """
         if self.rule != EnterpriseResources.noverde:
-            raise NoverdeRuleValidationErrors(
-                f"{{cookiecutter.domain_class}} {self.id} is not from Noverde."
+            raise NoverdeEnterpriseValidationErrors(
+                f"{{cookiecutter.domain_class}} {self} is not from Noverde."
             )
 
     def check_if_active(self):
@@ -34,7 +34,7 @@ class NoverdeMixin(EnterpriseRules):
         :raise: NoverdeRuleValidationErrors
         """
         if not bool(settings["noverde.{{cookiecutter.domain_slug}}.settings.active"]):
-            raise NoverdeRuleValidationErrors("Domain not available")
+            raise NoverdeEnterpriseValidationErrors("Domain not available")
 
     def validate(self) -> bool:
         """Validate Noverde Rules.
