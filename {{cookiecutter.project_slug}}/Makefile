@@ -2,10 +2,10 @@
 
 # Internal variables
 LOCAL_ENV_FILE	:= ./{{cookiecutter.project_slug}}/local.env
-ENV_FILE     	:= ./{{cookiecutter.project_slug}}/.env
-PACKAGE_FILE 	:= ./{{cookiecutter.project_slug}}/packaged.yaml
+ENV_FILE		:= ./{{cookiecutter.project_slug}}/.env
+PACKAGE_FILE	:= ./{{cookiecutter.project_slug}}/packaged.yaml
 CURRENT_BRANCH	:= $(shell git rev-parse --abbrev-ref HEAD)
-ARTIFACTS    	:= \
+ARTIFACTS		:= \
 	./{{cookiecutter.project_slug}}/.aws-sam \
 	./{{cookiecutter.project_slug}}/.pytest_cache \
 	./{{cookiecutter.project_slug}}/.coverage \
@@ -13,9 +13,9 @@ ARTIFACTS    	:= \
 
 # External variables and his default values
 ENVIRONMENT		?= "develop"
-S3_BUCKET       ?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
-STACK_NAME      ?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)"-stack"
-AWS_PROFILE     ?= "default"
+S3_BUCKET		?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
+STACK_NAME		?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)"-stack"
+AWS_PROFILE		?= "default"
 
 # Exported variables for subshells
 export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}

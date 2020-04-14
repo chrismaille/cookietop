@@ -1,4 +1,4 @@
-export PYTHONPATH 			:= $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
+export PYTHONPATH			:= $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
 export COOKIECUTTER_CONFIG	?= ./cookie_both.yml
 
 first_install:
