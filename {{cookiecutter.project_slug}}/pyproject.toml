@@ -4,14 +4,13 @@ config_file_extension = "TOML"
 config_file_prefix = "env-"
 
 [tool.coverage.report]
-fail_under = {{ cookiecutter.min_coverage_threshold }}
+fail_under = 80
 
 [tool.pytest]
 addopts = '--pydocstyle'
 
 [tool.black]
 line-length = {{ cookiecutter.line_length }}
-skip-string-normalization = true
 target-version = ['{{ cookiecutter.black_target_version }}']
 include = '\.pyi?$'
 exclude = '''
@@ -29,41 +28,59 @@ exclude = '''
     | buck-out
     | build
     | dist
+    | migrations
     | node_modules
+    | dependencies
   )/
 )
 '''
 
 [tool.poetry]
 name = "{{cookiecutter.project_slug}}"
-version = "0.1.0"
+version = "1.0.0"
 description = "{{ cookiecutter.project_description }}"
-authors = ["Noverde <devs@noverde.com.br>"]
+authors = ["Noverde Tech <devs@noverde.com.br>"]
 
 [tool.poetry.dependencies]
 python = "^{{ cookiecutter.python_version }}"
-sentry-sdk = "*"
+arrow = "*"
+aws_lambda_context = "*"
 loguru = "*"
-stela = "*"
-python-json-logger = "*"
 marshmallow = "*"
-
+marshmallow_enum = "*"
+python-json-logger = "*"
+sentry-sdk = "*"
+stela = "*"
+typing_extensions = "*"
+{% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+# DynamoDB Libraries
+pynamodb = "*"
+marshmallow-pynamo-db = "*"
+{% endif %}
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+# Postgres Libraries
+psycopg2 = "*"
+marshmallow-sqlalchemy = "*"
+SQLAlchemy = "*"
+{% endif %}
 [tool.poetry.dev-dependencies]
-aws-sam-cli = {version = "*", markers = "sys_platform != 'win32'"}
+aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
+factory_boy = "*"
+freezegun = "*"
 ipdb = "*"
+pre-commit = "*"
 pytest-black = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
 pytest-pydocstyle = "*"
-pytest-xdist ="*"
 pytest-watch = "*"
-poetry = "*"
+pytest-xdist ="*"
 wheel = "*"
-{%- if cookicutter.use_pre_commit == "y" -%}
-pre-commit = {version = "*", markers = "sys_platform != 'win32'"}
-flake8 = "*"
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+alembic = "*"
+pytest-postgresql = "*"
 {% endif %}
 
 [build-system]

@@ -1,3 +1,3 @@
-from initializers.logger import initialize_logger
+from interface.initializers.log import initialize_log
 
-initialize_logger()
+initialize_log()

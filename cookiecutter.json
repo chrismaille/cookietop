@@ -1,10 +1,14 @@
 {
-  "project_name": "Noverde Cookiecutter",
+  "project_name": "Noverde Test Project",
+  "project_name_camel": "{{ cookiecutter.project_name.replace(' ', '') }}",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "project_bucket": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
   "project_description": "This project contains all boilerplate you need to create a new microservice.",
   "python_version": "3.7",
   "black_target_version": "{{ 'py' + cookiecutter.python_version.replace('.', '') }}",
   "line_length": 88,
-  "use_pre_commit": "y",
-  "min_coverage_threshold": 80
+  "domain": "MyDomain",
+  "domain_class": "{{ cookiecutter.domain.strip().replace(' ', '').title() }}",
+  "domain_slug": "{{ cookiecutter.domain.lower().replace(' ', '_') }}",
+  "database": ["DynamoDB (recommended)", "RDS", "Both", "None"]
 }

@@ -1,7 +1,6 @@
 name: tests
 on: [push, pull_request]
 jobs:
-  {%- if cookicutter.use_pre_commit == "y" -%}
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -15,11 +14,8 @@ jobs:
         run: |
           pip install pre-commit
           pre-commit run --all-files
-  {% endif %}
   test:
-    {%- if cookiecutter.use_pre_commit == "y" -%}
     needs: lint
-    {% endif %}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
@@ -30,6 +26,18 @@ jobs:
           python-version: {{ cookiecutter.python_version }}
       - name: Setup Poetry
         uses: Gr1N/setup-poetry@v1
+      - name: Setup PostgreSQL
+        uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql version: '11'
+          postgresql db: 'test'
+          postgresql user: 'noverde'
+          postgresql password: 'noverde'
+      - name: Setup DynamoDB Local
+        uses: rrainn/dynamodb-action@v2.0.0
+        with:
+          port: 8000
+          cors: '*'
       - name: Install Python dependencies
         run: |
           make install
@@ -39,4 +47,6 @@ jobs:
         env:
           AWS_DEFAULT_REGION: us-east-1
           PYTHONPATH: {{cookiecutter.project_slug}}/
+          AWS_ACCESS_KEY_ID: 1234
+          AWS_SECRET_ACCESS_KEY: 1234
 

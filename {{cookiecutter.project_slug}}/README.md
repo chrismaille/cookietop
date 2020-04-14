@@ -6,12 +6,10 @@ cookiecutter.project_slug }}/actions)
 [![Python](https://img.shields.io/badge/python-{{ cookiecutter.python_version }}-green)](https://www.python.org)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 <a href="https://github.com/psf/black"><img alt="Code style: black"
-src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>  
+src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 [![GitFlow](https://img.shields.io/badge/GitFlow-Friendly-brightgreen)](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
-
-{%- if cookiecutter.use_pre_commit == "y" -%}
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-{% endif %}
+[![Domain](https://img.shields.io/badge/Domain-{{ cookiecutter.domain_class }}-purple)](https://www.notion.so/noverde/Engineering-5388610204db436a81b992b1b146f83e)
 
 {{ cookiecutter.project_description }}
 
@@ -29,33 +27,71 @@ in [Notion](https://www.notion.so/noverde)
 * [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 * [Docker](https://www.docker.com)
 * [Poetry](https://python-poetry.org/)
+* [GitFlow](https://github.com/petervanderdoes/gitflow-avh/wiki/Installation)
 
-
-### Commands
+### First install
 
 ```shell
 # Configure your Noverde AWS account
 $ aws configure
 
-# Install application
+# Install project
+$ make first_install
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+# Prepare relational database (postgres)
+# Make sure you have the "noverde:noverde"
+# superuser created in postgres.
+$ make create_db
+$ make revision message="First commit"
+$ make migrate
+{% endif %}
+# Test project
+$ make test # or make ci
+```
+
+
+### Command List
+
+```shell
+# Install application (first time)
+$ make first_install
+
+# (Re)install application
 $ make install
 
-# Run Local server
-$ make serve
-
-# Quick-Test Application (suitable for TDD)
+# Quick-Test Application
 $ make test
 
-# Format code
-$ make format
+# Test in watch mode
+$ make watch
 
 # Lint and Test Application
 $ make ci
 
+# Format code
+$ make format
+
+# Run Local server
+$ make serve
+
 # Manual Deploy (check your permissions first)
 $ make deploy
 ```
+{% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+#### Relational Database Commands
 
+```shell
+# Create development database
+# In Postgres create user: noverde, pass: noverde
+$ make create_db
+
+# Create new Revision
+$ make revision message="foo"
+
+# Migrate Database
+$ make migrate
+```
+{% endif %}
 #### The AWS Toolkit
 
 The
@@ -65,3 +101,4 @@ debug local or remote lambda functions. We strongly recommend his use.
 Please check the following links:
 * [AWS Toolkit for PyCharm](https://aws.amazon.com/pt/pycharm/)
 * [AWS Toolkit for VSCode](https://aws.amazon.com/pt/visualstudiocode/)
+

@@ -1,16 +1,13 @@
-{%- if cookiecutter.use_pre_commit == "y" -%}
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
-      - id: flake8
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
     rev: stable
     hooks:
       - id: black
-        args: [-l{{ cookiecutter.line_length }},-S]
+        args: [-l{{ cookiecutter.line_length }}]
         language_version: python{{ cookiecutter.python_version }}
-{% endif %}
