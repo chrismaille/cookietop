@@ -20,6 +20,4 @@ def find_step(event: Dict[Any, Any], context: LambdaContext) -> Dict[Any, Any]:
     """
     logger.debug("Start step 1: Find {{cookiecutter.domain_class}}")
     logger.debug(f"Event received: {event}")
-    return {
-        "exists": choice([True, False])
-    }
+    return {"exists": choice([True, False])}

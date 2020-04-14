@@ -55,4 +55,5 @@ class Sherlock:
             aws_event=self.event_data,
             aws_context=self.context_data,
             path=self.event_data.get("pathParameters"),
+            headers=self.event_data.get("headers"),
         )

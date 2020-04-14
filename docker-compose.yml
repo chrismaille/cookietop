@@ -15,5 +15,11 @@ services:
       - "8083:8083"
   dynamodb:
     image: amazon/dynamodb-local
+    networks:
+      lambda-local:
     ports:
       - "8000:8000"
+
+networks:
+  lambda-local:
+    external: true

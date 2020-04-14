@@ -1,6 +1,8 @@
 {%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
+import os
 import sys
 
+from typing import Optional
 from loguru import logger
 from pynamodb.connection import Connection  # type: ignore
 from pynamodb.models import Model
@@ -11,21 +13,21 @@ if test_environment:
     logger.warning(f"Running in Test Environment")
 
 
-def get_nosql_database_url() -> str:
+def get_nosql_database_url() -> Optional[str]:
     """Get Non relational Database URL.
     
-    If not running inside Pytest, will look for the
-    "DATABASE_NOSQL_URL" environment
-    or settings "database.nosql.url"
+    Return http://localhost:8000 if Pytest
+    Return settings["database.nosql.url"] in Local Development (can be localhost or current docker container)
+    For everything else, return Connection looking for current AWS Region
 
     :return: string
     """
-    nosql_database_test_url = "http://localhost:8000"
-    return (
-        nosql_database_test_url
-        if test_environment
-        else str(settings["database.nosql.url"])
-    )
+    if test_environment:
+        return "http://localhost:8000"
+    elif settings.stela_options.current_environment == "development":
+        if not os.environ.get("LAMBDA_TASK_ROOT", False):
+            return str(settings["database.nosql.url"])
+    return None
 
 
 class Base(Model):
@@ -67,6 +69,11 @@ class Base(Model):
         write_capacity_units = settings["database.nosql.capacity.write"]
 
 
-connection = Connection(host=get_nosql_database_url())
+host = get_nosql_database_url()
+connection = (
+    Connection(host=get_nosql_database_url())
+    if host
+    else Connection(region=os.environ["AWS_REGION"])
+)
 logger.debug(f"Session Registry created for {connection}")
 {% endif %}

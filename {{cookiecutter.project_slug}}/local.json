@@ -2,28 +2,28 @@
   "HealthCheck": {
     "ENVIRONMENT": "development",
     "LOGGER_LEVEL": "DEBUG",
-    "SENTRY_LEVEL": null,
+    "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop",
     "DATABASE_NOSQL_URL": "http://dynamodb:8000"
   },
   "Create{{cookiecutter.domain_class}}": {
     "ENVIRONMENT": "development",
     "LOGGER_LEVEL": "DEBUG",
-    "SENTRY_LEVEL": null,
+    "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/noverde_test_project_develop",
     "DATABASE_NOSQL_URL": "http://dynamodb:8000"
   },
   "Update{{cookiecutter.domain_class}}": {
     "ENVIRONMENT": "development",
     "LOGGER_LEVEL": "DEBUG",
-    "SENTRY_LEVEL": null,
+    "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/noverde_test_project_develop",
     "DATABASE_NOSQL_URL": "http://dynamodb:8000"
   },
   "Retrieve{{cookiecutter.domain_class}}": {
     "ENVIRONMENT": "development",
     "LOGGER_LEVEL": "DEBUG",
-    "SENTRY_LEVEL": null,
+    "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/noverde_test_project_develop",
     "DATABASE_NOSQL_URL": "http://dynamodb:8000"
   }

@@ -13,11 +13,11 @@ from interface.aws.request import Request
 from interface.types.auth_response import AuthResponse, PolicyEffect
 
 
-@handler_view()
+@handler_view(format_response=False)
 def authorize(request: Request) -> AuthResponse:
     """Return request IAM policy.
 
-    Add the 'authorizationToken' in request's Header.
+    Check for the 'authorizationToken' in request's Header.
 
     For this example, token will be compared
     with environment variable from SSM.
@@ -28,7 +28,7 @@ def authorize(request: Request) -> AuthResponse:
     logger.debug(request.aws_event)
     logger.debug(request.aws_context)
     try:
-        token = request.aws_event["authorizationToken"]
+        token = request.headers["Authorization"]
     except KeyError:
         raise RequestUnauthorizedError("Unauthorized")
 

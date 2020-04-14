@@ -30,7 +30,10 @@ initialize_sentry()
 initialize_log()
 
 
-def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
+def handler_view(
+    schema: Optional[Type[Schema]] = None,
+    format_response: bool = True
+) -> Any:
     """Configure Handler View Decorator.
 
     Handler View middleware. Current workflow is:
@@ -40,7 +43,8 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
         3. Return Handler data, in compatible API Gateway response
         4. Handle Errors
 
-    :param schema: Marshmallow Schema
+    :param schema: Marshmallow Schema for POST
+    :param format_response: Format response before send?
     :return: Dict
     """
 
@@ -59,10 +63,13 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                 ret: HandlerResponse = f(*args, **kwargs)
 
                 # Return API Gateway compatible data
-                response = {
-                    "statusCode": ret.get("status_code", StatusCode.OK).value,
-                    "body": json.dumps(ret["message"]),
-                }
+                if format_response:
+                    response = {
+                        "statusCode": ret.get("status_code", StatusCode.OK).value,
+                        "body": json.dumps(ret["message"]),
+                    }
+                else:
+                    response = ret
 
                 return response
             except ValidationError as error:
@@ -94,8 +101,9 @@ def handler_view(schema: Optional[Type[Schema]] = None) -> Any:
                     "body": json.dumps({"errors": [f"{error}"]}),
                 }
             {% endif %}
-            except RequestUnauthorizedError:
+            except RequestUnauthorizedError as error:
                 # handle requests without authorizationToken header - status 401
+                capture_exception(error)
                 raise RequestUnauthorizedError("Unauthorized")
             except EnterpriseValidationErrors as error:
                 # Handle Enterprise Rules Validation Errors.

@@ -1,7 +1,7 @@
 from enum import Enum, unique
 from typing import List
 
-from mypy_extensions import TypedDict
+from typing_extensions import TypedDict
 
 
 @unique

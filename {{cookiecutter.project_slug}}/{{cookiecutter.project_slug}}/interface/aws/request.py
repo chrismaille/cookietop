@@ -21,6 +21,7 @@ class Request:
         aws_event:      Original AWS Event
         aws_context:    Original AWS Context
         path:           Path Parameters from AWS Context
+        headers:        Header Parameters from AWS Context
 
     Examples
     ========
@@ -73,4 +74,5 @@ class Request:
     body: Optional[Dict[Any, Any]]
     aws_event: Dict[Any, Any]
     aws_context: LambdaContext
-    path: Dict[Any, Any]
+    path: Optional[Dict[Any, Any]]
+    headers: Optional[Dict[Any, Any]]

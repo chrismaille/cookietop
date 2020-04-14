@@ -19,7 +19,6 @@ Globals:
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
         DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
-        DATABASE_NOSQL_URL: !GetAtt [ {% endraw %}{{cookiecutter.domain_class}}{% raw %}Document, Arn ]
         {% endraw %}
   Api:
     Cors:
@@ -250,7 +249,13 @@ Resources:
         DefaultAuthorizer: RequestLambdaAuthorizer
         Authorizers:
           RequestLambdaAuthorizer:
+            FunctionPayloadType: REQUEST
             FunctionArn: !GetAtt ApiLambdaAuthorizer.Arn
+            Identity:
+              ReauthorizeEvery: 300
+              Headers:
+                - Authorization
+
   {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
   # DynamoDB Table
   {{cookiecutter.domain_class}}Document:
