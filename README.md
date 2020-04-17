@@ -80,7 +80,8 @@ $ make format
 # Run all CI tests
 $ make ci
 
-# Run all CI tests for all database choices
+# Run all CI tests for
+# all database options
 $ make test_full_ci
 
 # Create test Project
