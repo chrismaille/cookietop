@@ -1,7 +1,6 @@
 import json
 
 import arrow
-import cookiecutter
 import pytest
 
 from freezegun import freeze_time

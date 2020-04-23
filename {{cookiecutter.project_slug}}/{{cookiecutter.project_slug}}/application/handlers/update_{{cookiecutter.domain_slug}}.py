@@ -1,4 +1,5 @@
 # fmt: off
+# flake8: noqa
 {% if cookiecutter.database != "None" %}
 from loguru import logger
 

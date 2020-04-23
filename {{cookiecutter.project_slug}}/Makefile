@@ -78,7 +78,7 @@ first_install:
 	@git flow init -d
 	@poetry install
 	@poetry run pre-commit install
-	@docker network create lambda-local
+	@docker network create lambda-local &
 
 .PHONY: install
 # Install application
@@ -104,7 +104,7 @@ test:
 .PHONY: ci
 # Runs pytest for full testing
 ci:
-	@poetry run pytest --disable-warnings --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations --ignore=dependencies
+	@poetry run pytest --disable-warnings --flake8 --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations --ignore=dependencies
 
 .PHONY: format
 # Format code using black

@@ -101,4 +101,3 @@ debug local or remote lambda functions. We strongly recommend his use.
 Please check the following links:
 * [AWS Toolkit for PyCharm](https://aws.amazon.com/pt/pycharm/)
 * [AWS Toolkit for VSCode](https://aws.amazon.com/pt/visualstudiocode/)
-

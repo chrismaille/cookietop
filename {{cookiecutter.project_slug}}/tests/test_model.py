@@ -3,7 +3,6 @@ import arrow
 import pytest
 from freezegun import freeze_time
 
-from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFactory
 
@@ -70,7 +69,7 @@ def test_fixed_time():
     # fmt: off
     test_service = (
         Noverde{{cookiecutter.domain_class}}Model.query()
-        .filter(Noverde{{cookiecutter.domain_class}}Model.id == new_service.id)
+        .filter(Noverde{{cookiecutter.domain_class}}Model.id == new_service.id)  # noqa: E122
     .one()
     )
     # fmt: on

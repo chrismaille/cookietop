@@ -1,13 +1,9 @@
 {%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
-from datetime import datetime
 
 from pynamodb.attributes import UnicodeAttribute
 
-from enterprise.models.{{cookiecutter.domain_slug}}_document import (
-    {{cookiecutter.domain_class}}CreatedIndex,
-    {{cookiecutter.domain_class}}Document,
-    {{cookiecutter.domain_class}}RuleIndex,
-)
+from enterprise.models.{{cookiecutter.domain_slug}}_document import {{cookiecutter.domain_class}}Document  # noqa: E501
+
 from enterprise.rules.noverde_mixin import NoverdeMixin
 
 
