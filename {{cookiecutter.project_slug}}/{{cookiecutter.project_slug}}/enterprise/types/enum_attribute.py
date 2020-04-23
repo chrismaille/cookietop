@@ -53,7 +53,7 @@ class EnumAttribute(UnicodeAttribute):
 
     def deserialize(self, value: str) -> Enum:
         """Deserialize enum object.
-        
+
         :param value: string
         :return: Enum
         """

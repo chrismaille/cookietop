@@ -11,6 +11,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   stepfunctions:
     image: amazon/aws-stepfunctions-local
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
     ports:
       - "8083:8083"
   dynamodb:

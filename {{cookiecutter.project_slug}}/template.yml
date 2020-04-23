@@ -30,7 +30,7 @@ Resources:
   ApiLambdaAuthorizer:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: {{cookiecutter.project_slug}}-api-lambda-authorizer
+      FunctionName: {{cookiecutter.project_slug}}-api_gateway-api-lambda-authorizer
       CodeUri: {{cookiecutter.project_slug}}
       Handler: interface.handlers.authorize.authorize
       Environment:
@@ -47,7 +47,7 @@ Resources:
   HealthCheck:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: {{cookiecutter.project_slug}}-health-check
+      FunctionName: {{cookiecutter.project_slug}}-api_gateway-health-check
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.handlers.health.health_check
       Policies:
@@ -66,7 +66,7 @@ Resources:
   Create{{cookiecutter.domain_class}}:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: create_{{cookiecutter.domain_slug}}
+      FunctionName: {{cookiecutter.project_slug}}-api_gateway-create_{{cookiecutter.domain_slug}}
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.handlers.create_{{cookiecutter.domain_slug}}.create
       Policies:
@@ -85,7 +85,7 @@ Resources:
   Retrieve{{cookiecutter.domain_class}}:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: retrieve_{{cookiecutter.domain_slug}}
+      FunctionName: {{cookiecutter.project_slug}}-api_gateway-retrieve_{{cookiecutter.domain_slug}}
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.handlers.retrieve_{{cookiecutter.domain_slug}}.retrieve
       Policies:
@@ -108,7 +108,7 @@ Resources:
   Update{{cookiecutter.domain_class}}:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: update_{{cookiecutter.domain_slug}}
+      FunctionName: {{cookiecutter.project_slug}}-api_gateway-update_{{cookiecutter.domain_slug}}
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.handlers.update_{{cookiecutter.domain_slug}}.update
       Policies:
@@ -133,7 +133,7 @@ Resources:
   Find{{cookiecutter.domain_class}}Instance:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: {{cookiecutter.project_slug}}-find-{{cookiecutter.domain_slug}}-step
+      FunctionName: {{cookiecutter.project_slug}}-step_function-find-{{cookiecutter.domain_slug}}-step
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.machines.create_{{cookiecutter.domain_slug}}.find_{{cookiecutter.domain_slug}}_step.find_step
       Policies:
@@ -146,7 +146,7 @@ Resources:
   Create{{cookiecutter.domain_class}}Instance:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: {{cookiecutter.project_slug}}-create-{{cookiecutter.domain_slug}}-step
+      FunctionName: {{cookiecutter.project_slug}}-step_function-create-{{cookiecutter.domain_slug}}-step
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.machines.create_{{cookiecutter.domain_slug}}.create_{{cookiecutter.domain_slug}}_step.create_step
       Policies:
@@ -159,7 +159,7 @@ Resources:
   Update{{cookiecutter.domain_class}}Instance:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: {{cookiecutter.project_slug}}-update-{{cookiecutter.domain_slug}}-step
+      FunctionName: {{cookiecutter.project_slug}}-step_function-update-{{cookiecutter.domain_slug}}-step
       CodeUri: {{cookiecutter.project_slug}}
       Handler: application.machines.create_{{cookiecutter.domain_slug}}.update_{{cookiecutter.domain_slug}}_step.update_step
       Policies:
@@ -173,6 +173,7 @@ Resources:
   {{cookiecutter.domain_class}}CreateMachine:
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
+      StateMachineName: {{cookiecutter.project_slug}}-CreateMachineState
       LoggingConfiguration:
         Destinations:
           - CloudWatchLogsLogGroup:

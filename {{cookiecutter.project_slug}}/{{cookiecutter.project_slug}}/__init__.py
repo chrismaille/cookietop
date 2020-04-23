@@ -1,7 +1,7 @@
 """{{cookiecutter.project_name}} Project.
 
 Main domain: {{cookiecutter.domain}}
-Description: {{cookiecutter.project_description}}
+Description: {{cookiecutter.project_description}}  # noqa: E501
 
 Project Structure
 -----------------

@@ -1,4 +1,5 @@
 # fmt: off
+# flake8: noqa
 import json
 from functools import wraps
 from typing import Optional, Type, Any, Dict

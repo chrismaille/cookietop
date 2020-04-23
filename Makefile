@@ -19,7 +19,7 @@ test: cookie
 	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_slug}}
 
 ci: cookie
-	@poetry run pytest --disable-warnings --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations
+	@poetry run pytest --disable-warnings --flake8 --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations --ignore=hooks
 
 watch: cookie
 	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_slug}}

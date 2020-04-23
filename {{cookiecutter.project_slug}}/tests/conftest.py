@@ -7,6 +7,7 @@ from typing import Any, Dict
 from stela import settings
 
 {% if cookiecutter.database != "None" %}
+# flake8: noqa
 # fmt: off
 import pytest
 from loguru import logger

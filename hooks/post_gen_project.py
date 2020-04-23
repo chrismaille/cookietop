@@ -1,3 +1,4 @@
+# flake8: noqa
 """Remove not used files.
 
 From database choices: "DynamoDB (recommended)", "RDS", "Both", "None"

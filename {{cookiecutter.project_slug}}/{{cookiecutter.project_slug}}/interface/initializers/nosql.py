@@ -15,9 +15,13 @@ if test_environment:
 
 def get_nosql_database_url() -> Optional[str]:
     """Get Non relational Database URL.
-    
+
     Return http://localhost:8000 if Pytest
-    Return settings["database.nosql.url"] in Local Development (can be localhost or current docker container)
+
+    Return settings["database.nosql.url"]
+    in Local Development
+    (can be localhost or current docker container)
+
     For everything else, return Connection looking for current AWS Region
 
     :return: string
@@ -32,7 +36,7 @@ def get_nosql_database_url() -> Optional[str]:
 
 class Base(Model):
     """Base relational class.
-    
+
     Use this class to add funcionality
     to PynamoDB Base class.
     """

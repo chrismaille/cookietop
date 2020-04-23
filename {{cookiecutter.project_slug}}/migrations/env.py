@@ -2,7 +2,7 @@ from alembic import context
 from sqlalchemy import create_engine
 
 # noinspection PyUnresolvedReferences
-from enterprise.rulemodels import *
+from enterprise.rulemodels import *  # noqa: F401, F403
 from interface.initializers.sql import Base, get_database_url
 
 target_metadata = Base.metadata
