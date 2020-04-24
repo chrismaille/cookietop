@@ -107,8 +107,9 @@ ci:
 	@poetry run pytest --disable-warnings --flake8 --cov=./{{cookiecutter.project_slug}} --black --mypy --pydocstyle --ignore=migrations --ignore=dependencies
 
 .PHONY: format
-# Format code using black
+# Format code using pre-commit and black
 format:
+	@poetry run pre-commit run --all-files
 	@poetry run black .
 
 .PHONY: clean
