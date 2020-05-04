@@ -1,6 +1,6 @@
 ## Welcome to Cookietop
 
-[![Tests](https://github.com/noverde/noverde_cookiecutter/workflows/tests/badge.svg)](https://github.com/noverde/noverde_cookiecutter/actions)
+[![Tests](https://github.com/noverde/cookietop/workflows/tests/badge.svg)](https://github.com/noverde/cookietop/actions)
 [![Python](https://img.shields.io/badge/python-3.7-green)](https://www.python.org)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 <a href="https://github.com/psf/black"><img alt="Code style: black"
@@ -31,7 +31,7 @@ Our goal with this project are:
 * *This is NOT a mandatory way to work*. We deeply value new ideas,
   libraries, patterns, services, etc.. - if you want to suggest new
   features, libs, commands, etc, please look our
-  [issues](https://github.com/noverde/noverde_cookiecutter/issues).
+  [issues](https://github.com/noverde/cookietop/issues).
 
 ### Requirements
 
