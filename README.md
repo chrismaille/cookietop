@@ -59,18 +59,18 @@ $ make test
 
 ### Developing Cookiecutter
 
-The easy way is creating a Test project from this cookie and development
-in there. We create a helper command:
+The easy way is creating a new Test Project from this project and
+develop in there. For this, you can use this command:
 
 ```shell
 # Create a new test Project
 # called "Noverde Test Project"
 # in ../noverde_test_project folder
-# using Both databases option
+# using "Both Databases" option
 $ make reload
 ```
 
-Then, use the following commands to install and develop the test
+Then, use the following commands to install and develop on test
 project:
 
 ```shell
@@ -91,9 +91,8 @@ $ make ci
 
 ```
 
-After create new code on test project, update the code from this
-repository according, and then use the following command to test
-everything:
+After developing on test project, update the code correspondingly in
+this project, and then, use the following command to test everything:
 
 ```shell
 # Run all CI tests for
