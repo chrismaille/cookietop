@@ -4,8 +4,10 @@ from typing import Dict, Any, Optional, Type
 
 from aws_lambda_context import LambdaContext
 from loguru import logger
-from marshmallow import Schema
+from marshmallow import Schema, ValidationError
 
+from enterprise.rulemodels.rule_index import rule_index
+from enterprise.types.enterprise_resources import EnterpriseResources
 from interface.aws.request import Request
 
 
@@ -30,9 +32,10 @@ class Sherlock:
 
     def get_validated_data_from_schema(self) -> None:
         """Do the validation of data from schema, if schema and body have info."""
-        if self.body_data and self.schema:
-            logger.debug(f"Start creating object using {self.schema.__name__}...")
-            self.validated_data = self.schema().load(self.body_data)
+        request_schema = self.get_schema()
+        if self.body_data and request_schema:
+            logger.debug(f"Start creating object using {request_schema.__name__}...")
+            self.validated_data = request_schema().load(self.body_data)
 
     def get_body(self) -> None:
         """Do decode content from body, if body have info."""
@@ -40,6 +43,36 @@ class Sherlock:
         self.body_data = json.loads(raw_data) if raw_data else None
         if self.body_data:
             logger.debug(f"Body received: {self.body_data}")
+
+    def get_schema(self) -> Optional[Type[Schema]]:
+        """Return request schema.
+
+        Find schema if:
+            * Explicit defined in View decorator
+            * key "rule" in Event body
+
+        This is a very simple example
+        to answer the following question:
+
+        * Which Business Rules
+        control the instance model we
+        will create or update
+        in this handler?
+
+        :return: Marshmallow Schema subclass
+        """
+        if not self.body_data or self.schema:
+            return self.schema
+        rule = self.body_data.get("rule", None)
+        if not rule:
+            return None
+        try:
+            rule_resource = EnterpriseResources[rule]
+        except KeyError:
+            raise ValidationError(f"Invalid Rule: {rule}.")
+        schema = rule_index.get(rule_resource, None)
+        logger.debug(f"Schema from Index is: {schema.__name__}")
+        return schema
 
     def inspect(self) -> Request:
         """Inspect and return Request object.

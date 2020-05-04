@@ -1,7 +1,6 @@
 {%- if cookiecutter.database == "RDS" or cookiecutter.database == "Both" -%}
 import arrow
 import pytest
-from freezegun import freeze_time
 
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFactory
@@ -57,7 +56,7 @@ def test_read_model(noverde_{{cookiecutter.domain_slug}}_model):
     assert test_instance == noverde_{{cookiecutter.domain_slug}}_model
 
 
-@freeze_time("2020-03-30 13:00:00")
+@pytest.mark.freeze_time("2020-03-30 13:00:00")
 def test_fixed_time():
     """Test save model in fixed time.
 

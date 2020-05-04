@@ -9,7 +9,7 @@ cookiecutter.project_slug }}/actions)
 src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 [![GitFlow](https://img.shields.io/badge/GitFlow-Friendly-brightgreen)](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Domain](https://img.shields.io/badge/Domain-{{ cookiecutter.domain_class }}-purple)](https://www.notion.so/noverde/Engineering-5388610204db436a81b992b1b146f83e)
+[![Entity](https://img.shields.io/badge/Domain-{{ cookiecutter.domain_class }}-purple)](https://www.notion.so/noverde/Engineering-5388610204db436a81b992b1b146f83e)
 
 {{ cookiecutter.project_description }}
 

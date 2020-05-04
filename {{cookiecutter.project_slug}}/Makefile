@@ -64,6 +64,7 @@ package: show_config build_dependencies
 .PHONY: deploy
 # Run `sam deploy` command
 deploy: build_dependencies package
+	@rm -rf .aws-sam
 	@poetry run sam deploy \
 		--template-file $(PACKAGE_FILE) \
 		--capabilities CAPABILITY_IAM \

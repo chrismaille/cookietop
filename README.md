@@ -1,4 +1,4 @@
-## Welcome to Noverde Cookiecutter
+## Welcome to Cookietop
 
 [![Tests](https://github.com/noverde/noverde_cookiecutter/workflows/tests/badge.svg)](https://github.com/noverde/noverde_cookiecutter/actions)
 [![Python](https://img.shields.io/badge/python-3.7-green)](https://www.python.org)
@@ -49,24 +49,33 @@ Our goal with this project are:
 $ pip install -U --user cookiecutter
 
 # Create your new Microservice
-$ cookiecutter gh:noverde/noverde_cookiecutter
+$ cd path/to/new_project
+$ cookiecutter gh:noverde/cookietop
 
 # Install and Test new Microservice
-$ cd path/to/new_project
 $ make first_install
 $ make test
 ```
 
 ### Developing Cookiecutter
 
-Use the following commands to install and develop our cookiecutter:
+The easy way is creating a Test project from this cookie and development
+in there. We create a helper command:
 
 ```shell
-# First install
-$ make first_install
+# Create a new test Project
+# called "Noverde Test Project"
+# in ../noverde_test_project folder
+# using Both databases option
+$ make reload
+```
 
-# Reinstall Project
-$ make install
+Then, use the following commands to install and develop the test
+project:
+
+```shell
+# Install and migrate database
+$ make config_cookie
 
 # Run tests once (stop a first error)
 $ make test
@@ -80,29 +89,15 @@ $ make format
 # Run all CI tests
 $ make ci
 
+```
+
+After create new code on test project, update the code from this
+repository according, and then use the following command to test
+everything:
+
+```shell
 # Run all CI tests for
 # all database options
 $ make test_full_ci
-
-# Create test Project
-# called Noverde Test Project
-# in ../noverde_test_project folder
-$ make reload
 ```
 
-Every time you run tests, this project will create a "Noverde Test
-Project" in `noverde_test_project` subfolder using local cookiecutter
-code. Also you can use command `make reload` to install this test
-project in parent folder.
-
-#### Testing Relational Database
-```shell
-# Create new database
-$ make create_db
-
-# Add new migration
-$ make revision message="foo"
-
-# Migrate Database
-$ make migrate
-```

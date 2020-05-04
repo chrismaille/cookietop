@@ -10,20 +10,14 @@ from application.types.handler_response import HandlerResponse
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import (
     Noverde{{cookiecutter.domain_class}}Document as RuleModelClass,
 )
-from application.schemas.noverde_{{cookiecutter.domain_slug}}_document_schema import (
-    Noverde{{cookiecutter.domain_class}}DocumentSchema as Noverde{{cookiecutter.domain_class}}Schema,
-)
 {% endif %}
 {% if cookiecutter.database == "RDS" %}
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import (
     Noverde{{cookiecutter.domain_class}}Model as RuleModelClass
 )
-from application.schemas.noverde_{{cookiecutter.domain_slug}}_model_schema import (
-    Noverde{{cookiecutter.domain_class}}ModelSchema as Noverde{{cookiecutter.domain_class}}Schema,
-)
 
 {% endif %}
-@handler_view(schema=Noverde{{cookiecutter.domain_class}}Schema)
+@handler_view()
 def create(request: Request) -> HandlerResponse:
     """Create new {{cookiecutter.domain_class}}.
 
