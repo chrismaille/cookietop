@@ -15,6 +15,7 @@ services:
       - "8083:8083"
   dynamodb:
     image: amazon/dynamodb-local
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
     networks:
       lambda-local:
     ports:

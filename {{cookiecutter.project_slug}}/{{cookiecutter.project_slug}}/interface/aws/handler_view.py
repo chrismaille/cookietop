@@ -135,4 +135,4 @@ def handler_view(
         return wrapper
 
     return config
-# fmt: on'
+# fmt: on

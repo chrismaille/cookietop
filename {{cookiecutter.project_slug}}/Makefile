@@ -56,6 +56,7 @@ build_dependencies:
 # Run `sam package` command
 # for different profiles use AWS_PROFILE environment variable
 package: show_config build_dependencies
+	@rm -rf .aws-sam
 	@aws s3 mb s3://$(S3_BUCKET)
 	@poetry run sam package \
 		--output-template-file $(PACKAGE_FILE) \
@@ -63,7 +64,7 @@ package: show_config build_dependencies
 
 .PHONY: deploy
 # Run `sam deploy` command
-deploy: build_dependencies package
+deploy: package
 	@poetry run sam deploy \
 		--template-file $(PACKAGE_FILE) \
 		--capabilities CAPABILITY_IAM \

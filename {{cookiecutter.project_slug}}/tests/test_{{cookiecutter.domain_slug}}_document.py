@@ -3,7 +3,6 @@ import json
 import arrow
 import pytest
 
-from freezegun import freeze_time
 from loguru import logger
 
 from application.handlers.create_{{cookiecutter.domain_slug}} import create
@@ -17,7 +16,7 @@ from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import 
 
 
 @pytest.fixture
-@freeze_time("2020-04-12 12:00:01")
+@pytest.mark.freeze_time("2020-04-12 12:00:01")
 def dynamo_document() -> Noverde{{cookiecutter.domain_class}}Document:
     payload = {
         "noverde_unique_field": "foo",
@@ -46,6 +45,7 @@ def test_create_{{cookiecutter.domain_slug}}_document():
     }
 
 
+@pytest.mark.freeze_time("2020-04-12 12:00:01")
 def test_retrieve_{{cookiecutter.domain_slug}}_document(dynamo_document):
     event = {"pathParameters": {"uuid": dynamo_document.uuid}}
     response = retrieve(event, None)

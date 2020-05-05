@@ -3,7 +3,6 @@ from uuid import uuid4
 
 import arrow
 import pytest
-from freezegun import freeze_time
 from pynamodb.exceptions import DoesNotExist
 
 from enterprise.types.enterprise_resources import EnterpriseResources
@@ -75,7 +74,7 @@ def test_read_document(noverde_{{cookiecutter.domain_slug}}_document):
     assert new_instance == noverde_{{cookiecutter.domain_slug}}_document
 
 
-@freeze_time("2020-03-30 13:00:00")
+@pytest.mark.freeze_time("2020-03-30 13:00:00")
 def test_fixed_time():
     """Test save document in fixed time.
 

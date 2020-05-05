@@ -1,6 +1,6 @@
-## Welcome to Noverde Cookiecutter
+## Welcome to Cookietop
 
-[![Tests](https://github.com/noverde/noverde_cookiecutter/workflows/tests/badge.svg)](https://github.com/noverde/noverde_cookiecutter/actions)
+[![Tests](https://github.com/noverde/cookietop/workflows/tests/badge.svg)](https://github.com/noverde/cookietop/actions)
 [![Python](https://img.shields.io/badge/python-3.7-green)](https://www.python.org)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 <a href="https://github.com/psf/black"><img alt="Code style: black"
@@ -31,7 +31,7 @@ Our goal with this project are:
 * *This is NOT a mandatory way to work*. We deeply value new ideas,
   libraries, patterns, services, etc.. - if you want to suggest new
   features, libs, commands, etc, please look our
-  [issues](https://github.com/noverde/noverde_cookiecutter/issues).
+  [issues](https://github.com/noverde/cookietop/issues).
 
 ### Requirements
 
@@ -49,24 +49,33 @@ Our goal with this project are:
 $ pip install -U --user cookiecutter
 
 # Create your new Microservice
-$ cookiecutter gh:noverde/noverde_cookiecutter
+$ cd path/to/new_project
+$ cookiecutter gh:noverde/cookietop
 
 # Install and Test new Microservice
-$ cd path/to/new_project
 $ make first_install
 $ make test
 ```
 
 ### Developing Cookiecutter
 
-Use the following commands to install and develop our cookiecutter:
+The easy way is creating a new Test Project from this project and
+develop in there. For this, you can use this command:
 
 ```shell
-# First install
-$ make first_install
+# Create a new test Project
+# called "Noverde Test Project"
+# in ../noverde_test_project folder
+# using "Both Databases" option
+$ make reload
+```
 
-# Reinstall Project
-$ make install
+Then, use the following commands to install and develop on test
+project:
+
+```shell
+# Install and migrate database
+$ make config_cookie
 
 # Run tests once (stop a first error)
 $ make test
@@ -80,29 +89,14 @@ $ make format
 # Run all CI tests
 $ make ci
 
+```
+
+After developing on test project, update the code correspondingly in
+this project, and then, use the following command to test everything:
+
+```shell
 # Run all CI tests for
 # all database options
 $ make test_full_ci
-
-# Create test Project
-# called Noverde Test Project
-# in ../noverde_test_project folder
-$ make reload
 ```
 
-Every time you run tests, this project will create a "Noverde Test
-Project" in `noverde_test_project` subfolder using local cookiecutter
-code. Also you can use command `make reload` to install this test
-project in parent folder.
-
-#### Testing Relational Database
-```shell
-# Create new database
-$ make create_db
-
-# Add new migration
-$ make revision message="foo"
-
-# Migrate Database
-$ make migrate
-```

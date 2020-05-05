@@ -4,11 +4,12 @@
 From database choices: "DynamoDB (recommended)", "RDS", "Both", "None"
 
 """
+import logging
 import os
 import shutil
 from pathlib import Path
 
-from loguru import logger
+logger = logging.getLogger(__name__)
 
 manifest = {
     "dynamo": [
