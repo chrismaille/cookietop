@@ -8,61 +8,56 @@ from pynamodb.connection import Connection  # type: ignore
 from pynamodb.models import Model
 from stela import settings
 
+from interface.aws.sam_data import get_sam_data
+
 test_environment = "pytest" in sys.modules
 if test_environment:
     logger.warning(f"Running in Test Environment")
 
 
+def get_table_name() -> str:
+    """Return table name.
+
+    Return real name if running in real Lambda.
+
+    :return: String
+    """
+    developing = get_nosql_database_url() is not None
+    if developing:
+        return "{{ cookiecutter.project_slug }}_development"
+    SAM_DATA = get_sam_data()
+    dynamo_data = SAM_DATA["Resources"]["{{ cookiecutter.domain_class }}Document"]
+    table_name = dynamo_data["Properties"]["TableName"]
+    return table_name
+
+
 def get_nosql_database_url() -> Optional[str]:
     """Get Non relational Database URL.
 
-    Return http://localhost:8000 if Pytest
-
-    Return settings["database.nosql.url"]
-    in Local Development
-    (can be localhost or current docker container)
-
-    For everything else, return Connection looking for current AWS Region
+    Return None if running real Lambda in AWS.
 
     :return: string
     """
-    if test_environment:
-        return "http://localhost:8000"
-    elif settings.stela_options.current_environment == "development":
-        if not os.environ.get("LAMBDA_TASK_ROOT", False):
-            return str(settings["database.nosql.url"])
-    return None
+    if (
+        os.environ.get("LAMBDA_TASK_ROOT", None) is not None  # Running inside Lambda
+        and bool(os.getenv("AWS_SAM_LOCAL")) is False  # But not on SAM local
+    ):
+        return None
+    return "http://localhost:8000"
 
 
 class Base(Model):
     """Base relational class.
 
-    Use this class to add funcionality
+    Use this class to add functionality
     to PynamoDB Base class.
     """
 
     def __eq__(self, other):
         return self.uuid == other.uuid  # type: ignore
 
-    def table_exists(self) -> None:
-        """Check if Table exists.
-
-        Running only in Development.
-
-        :return: None
-        """
-        environment = settings.stela_options.current_environment
-        if environment == "development":
-            if not self.exists():
-                logger.warning(
-                    f"Table {self.Meta.table_name} in {environment} "  # type: ignore
-                    f"does not exist. Creating..."
-                )
-                self.create_table(wait=True)
-
     def save(self, **kwargs):
         """Validate before save DynamoDB."""
-        self.table_exists()
         if self.validate():  # type: ignore
             return super().save(**kwargs)
 

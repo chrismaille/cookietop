@@ -8,8 +8,7 @@ url = "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develo
 echo = true
 {% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
-[databae.nosql]
-url = ""
+[database.nosql]
 capacity.read = 1
 capacity.write = 1
 {% endif %}

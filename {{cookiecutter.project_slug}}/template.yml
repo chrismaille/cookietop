@@ -18,7 +18,9 @@ Globals:
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
         DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
+        {% endif %}
         {% endraw %}
   Api:
     Cors:
@@ -187,7 +189,7 @@ Resources:
           "States": {
             "Find {{cookiecutter.domain}}": {
               "Type": "Task",
-              "Resource": "${FindMydomainInstance.Arn}",
+              "Resource": "${Find{{cookiecutter.domain_class}}Instance.Arn}",
               "Next": "{{cookiecutter.domain}} exists?"
             },
             "{{cookiecutter.domain}} exists?": {
@@ -203,12 +205,12 @@ Resources:
             },
             "Update {{cookiecutter.domain}}": {
               "Type": "Task",
-              "Resource": "${UpdateMydomainInstance.Arn}",
+              "Resource": "${Update{{cookiecutter.domain_class}}Instance.Arn}",
               "Next": "Success"
             },
             "Create new {{cookiecutter.domain}}": {
               "Type": "Task",
-              "Resource": "${CreateMydomainInstance.Arn}",
+              "Resource": "${Create{{cookiecutter.domain_class}}Instance.Arn}",
               "Next": "Success"
             },
             "Success": {
@@ -217,8 +219,6 @@ Resources:
           }
         }
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
-      # ALWAYS use "EXPRESS" unless you know what your doing
-      # https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html
       StateMachineType: "EXPRESS"
 
   # Step Function Log Group
@@ -262,7 +262,9 @@ Resources:
   {{cookiecutter.domain_class}}Document:
     Type: "AWS::DynamoDB::Table"
     Properties:
-      TableName: "{{cookiecutter.project_slug}}_{{ cookiecutter.domain_class }}Document"
+      TableName: Fn::Sub:
+        - "{{cookiecutter.project_slug}}-${ENVIRONMENT}-{{ cookiecutter.domain_class }}Document"
+        - ENVIRONMENT: {% raw %}'{{resolve:ssm:NoverdeEnvironment:1}}'{% endraw %}
       AttributeDefinitions:
         - AttributeName: uuid
           AttributeType: S
