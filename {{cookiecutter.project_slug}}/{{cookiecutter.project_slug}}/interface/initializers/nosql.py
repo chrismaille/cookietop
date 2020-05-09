@@ -1,5 +1,6 @@
 {%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 import os
+import platform
 import sys
 
 from typing import Optional
@@ -43,7 +44,15 @@ def get_nosql_database_url() -> Optional[str]:
         and bool(os.getenv("AWS_SAM_LOCAL")) is False  # But not on SAM local
     ):
         return None
-    return "http://localhost:8000"
+
+    if "Win" in platform.system():
+        url = "docker.for.windows.localhost"
+    elif "Linux" in platform.system():
+        url = "dynamodb" if bool(os.getenv("AWS_SAM_LOCAL")) else "localhost"
+    else:  # ex. Darwin
+        url = "docker.for.mac.localhost"
+
+    return f"http://{url}:8000"
 
 
 class Base(Model):
@@ -56,8 +65,23 @@ class Base(Model):
     def __eq__(self, other):
         return self.uuid == other.uuid  # type: ignore
 
+    def table_exists(self) -> None:
+        """Check if Table exists.
+        Running only in Development.
+        :return: None
+        """
+        environment = os.getenv("ENVIRONMENT", "development")
+        if environment == "development":
+            if not self.exists():
+                logger.warning(
+                    f"Table {self.Meta.table_name} in {environment} "  # type: ignore
+                    f"does not exist. Creating..."
+                )
+                self.create_table(wait=True)
+
     def save(self, **kwargs):
         """Validate before save DynamoDB."""
+        self.table_exists()
         if self.validate():  # type: ignore
             return super().save(**kwargs)
 
