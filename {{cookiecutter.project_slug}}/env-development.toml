@@ -8,6 +8,7 @@ echo = true
 {% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 [database.nosql]
+table_name = "{{cookiecutter.project_slug}}-development-{{ cookiecutter.domain_class }}Document"
 capacity.read = 1
 capacity.write = 1
 {% endif %}

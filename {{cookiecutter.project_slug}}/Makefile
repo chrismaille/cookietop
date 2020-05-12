@@ -12,8 +12,9 @@ ARTIFACTS		:= \
 	./{{cookiecutter.project_slug}}/dependencies
 
 # External variables and his default values
-ENVIRONMENT		?= "develop"
-S3_BUCKET		?= "noverde-{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
+AWS_ACCOUNT_ID	?= $(shell aws sts get-caller-identity --query Account --output text)
+ENVIRONMENT		?= "development"
+S3_BUCKET		?= "noverde-"$(AWS_ACCOUNT_ID)"-{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
 STACK_NAME		?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)"-stack"
 AWS_PROFILE		?= "default"
 
@@ -99,6 +100,7 @@ install:
 .PHONY: serve
 # Runs local API via SAM client
 serve: build_dependencies
+	@rm -rf .aws-sam
 	@poetry run sam local start-api --debug -n local.json --docker-network lambda-local
 
 .PHONY: watch

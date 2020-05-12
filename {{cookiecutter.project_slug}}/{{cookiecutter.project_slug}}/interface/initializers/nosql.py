@@ -1,6 +1,5 @@
 {%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 import os
-import platform
 import sys
 
 from typing import Optional
@@ -8,8 +7,6 @@ from loguru import logger
 from pynamodb.connection import Connection  # type: ignore
 from pynamodb.models import Model
 from stela import settings
-
-from interface.aws.sam_data import get_sam_data
 
 test_environment = "pytest" in sys.modules
 if test_environment:
@@ -23,36 +20,38 @@ def get_table_name() -> str:
 
     :return: String
     """
+    table_name = settings["database.nosql.table_name"]
     developing = get_nosql_database_url() is not None
-    if developing:
-        return "{{ cookiecutter.project_slug }}_development"
-    SAM_DATA = get_sam_data()
-    dynamo_data = SAM_DATA["Resources"]["{{ cookiecutter.domain_class }}Document"]
-    table_name = dynamo_data["Properties"]["TableName"]
-    return table_name
+    return "{{cookiecutter.project_slug}}_development" if developing else table_name
 
 
 def get_nosql_database_url() -> Optional[str]:
     """Get Non relational Database URL.
 
+                            | Windows   | Mac       | Linux
+    SAM local via Docker    | dynamodb  | dynamodb  | dynamodb
+    AWS Lambda              | Region    | Region    | Region
+    Pytest                  | localhost | localhost | localhost
+
     Return None if running real Lambda in AWS.
 
     :return: string
     """
+    # Pytest
+    if test_environment:
+        return "http://localhost:8000"
+
+    # AWS Lambda
     if (
         os.environ.get("LAMBDA_TASK_ROOT", None) is not None  # Running inside Lambda
         and bool(os.getenv("AWS_SAM_LOCAL")) is False  # But not on SAM local
     ):
         return None
 
-    if "Win" in platform.system():
-        url = "docker.for.windows.localhost"
-    elif "Linux" in platform.system():
-        url = "dynamodb" if bool(os.getenv("AWS_SAM_LOCAL")) else "localhost"
-    else:  # ex. Darwin
-        url = "docker.for.mac.localhost"
-
-    return f"http://{url}:8000"
+    # SAM Local
+    # `dynamodb` is the service name inside
+    # docker-compose.yml
+    return f"http://dynamodb:8000"
 
 
 class Base(Model):

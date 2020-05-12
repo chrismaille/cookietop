@@ -21,6 +21,9 @@ Globals:
         {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
         DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
         {% endif %}
+        {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
+        DATABASE_NOSQL_TABLE_NAME: "{{cookiecutter.project_slug}}-{{resolve:ssm:NoverdeEnvironment:1}}-{{ cookiecutter.domain_class }}Document"
+        {% endif %}
         {% endraw %}
   Api:
     Cors:

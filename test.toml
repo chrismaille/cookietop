@@ -9,7 +9,7 @@ url = "postgres://noverde:noverde@localhost/noverde_test_project_develop"
 echo = true
 
 [database.nosql]
-url = "http://localhost:8000"
+table_name = "cookie_test"
 capacity.read = 1
 capacity.write = 1
 
