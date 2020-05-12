@@ -10,7 +10,7 @@ from stela import settings
 
 test_environment = "pytest" in sys.modules
 if test_environment:
-    logger.warning(f"Running in Test Environment")
+    logger.warning("Running in Test Environment")
 
 
 def get_table_name() -> str:
@@ -51,7 +51,7 @@ def get_nosql_database_url() -> Optional[str]:
     # SAM Local
     # `dynamodb` is the service name inside
     # docker-compose.yml
-    return f"http://dynamodb:8000"
+    return "http://dynamodb:8000"
 
 
 class Base(Model):

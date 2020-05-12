@@ -53,7 +53,7 @@ stela = "*"
 
 [tool.poetry.dev-dependencies]
 alembic = "*"
-flake8 = "3.7.9"  # until its fixed: https://github.com/tholo/pytest-flake8/issues/66
+flake8 = "*"
 aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"
