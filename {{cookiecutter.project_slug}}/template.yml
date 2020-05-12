@@ -17,14 +17,13 @@ Globals:
         {% raw %}
         ENVIRONMENT: '{{resolve:ssm:NoverdeEnvironment:1}}'
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/settings/logLevel:1}}'
-        SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'
+        SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/sentry:1}}'{% endraw %}
         {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
-        DATABASE_SQL_URL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'
+        DATABASE_SQL_URL: {% raw %}'{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'{% endraw %}
         {% endif %}
         {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
-        DATABASE_NOSQL_TABLE_NAME: "{{cookiecutter.project_slug}}-{{resolve:ssm:NoverdeEnvironment:1}}-{{ cookiecutter.domain_class }}Document"
+        DATABASE_NOSQL_TABLE_NAME: {% raw %}"{{cookiecutter.project_slug}}-{{resolve:ssm:NoverdeEnvironment:1}}-{{ cookiecutter.domain_class }}Document"{% endraw %}
         {% endif %}
-        {% endraw %}
   Api:
     Cors:
       AllowOrigin: "'*'"
