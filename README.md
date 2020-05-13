@@ -47,10 +47,10 @@ Our goal with this project are:
 ```shell
 # Install Cookiecutter if you dont have.
 $ pip install -U --user cookiecutter
+# or sudo apt install cookiecutter
 
 # Create your new Microservice
-$ cd path/to/new_project
-$ cookiecutter gh:noverde/cookietop
+$ cookiecutter git@github.com:noverde/cookietop.git
 
 # Install and Test new Microservice
 $ make first_install

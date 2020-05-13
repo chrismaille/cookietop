@@ -38,7 +38,7 @@ manifest = {
 }
 
 database_choice = "{{ cookiecutter.database }}"
-logger.debug(f"database choose: {database_choice}")
+logger.debug("database choose: {}".format(database_choice))
 
 exclude_files = []
 
