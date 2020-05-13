@@ -50,7 +50,7 @@ $ pip install -U --user cookiecutter
 # or sudo apt install cookiecutter
 
 # Create your new Microservice
-$ cookiecutter git@github.com:noverde/cookietop.git
+$ python3 -m cookiecutter git@github.com:noverde/cookietop.git
 
 # Install and Test new Microservice
 $ make first_install
