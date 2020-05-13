@@ -10,34 +10,54 @@ from stela import settings
 
 test_environment = "pytest" in sys.modules
 if test_environment:
-    logger.warning(f"Running in Test Environment")
+    logger.warning("Running in Test Environment")
+
+
+def get_table_name() -> str:
+    """Return table name.
+
+    Return real name if running in real Lambda.
+
+    :return: String
+    """
+    table_name = settings["database.nosql.table_name"]
+    developing = get_nosql_database_url() is not None
+    return "{{cookiecutter.project_slug}}_development" if developing else table_name
 
 
 def get_nosql_database_url() -> Optional[str]:
     """Get Non relational Database URL.
 
-    Return http://localhost:8000 if Pytest
+                            | Windows   | Mac       | Linux
+    SAM local via Docker    | dynamodb  | dynamodb  | dynamodb
+    AWS Lambda              | Region    | Region    | Region
+    Pytest                  | localhost | localhost | localhost
 
-    Return settings["database.nosql.url"]
-    in Local Development
-    (can be localhost or current docker container)
-
-    For everything else, return Connection looking for current AWS Region
+    Return None if running real Lambda in AWS.
 
     :return: string
     """
+    # Pytest
     if test_environment:
         return "http://localhost:8000"
-    elif settings.stela_options.current_environment == "development":
-        if not os.environ.get("LAMBDA_TASK_ROOT", False):
-            return str(settings["database.nosql.url"])
-    return None
+
+    # AWS Lambda
+    if (
+        os.environ.get("LAMBDA_TASK_ROOT", None) is not None  # Running inside Lambda
+        and bool(os.getenv("AWS_SAM_LOCAL")) is False  # But not on SAM local
+    ):
+        return None
+
+    # SAM Local
+    # `dynamodb` is the service name inside
+    # docker-compose.yml
+    return "http://dynamodb:8000"
 
 
 class Base(Model):
     """Base relational class.
 
-    Use this class to add funcionality
+    Use this class to add functionality
     to PynamoDB Base class.
     """
 
@@ -46,12 +66,10 @@ class Base(Model):
 
     def table_exists(self) -> None:
         """Check if Table exists.
-
         Running only in Development.
-
         :return: None
         """
-        environment = settings.stela_options.current_environment
+        environment = os.getenv("ENVIRONMENT", "development")
         if environment == "development":
             if not self.exists():
                 logger.warning(

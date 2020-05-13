@@ -45,7 +45,7 @@ marshmallow_enum = "*"
 marshmallow-sqlalchemy = "*"
 marshmallow-pynamo-db = "*"
 python-json-logger = "*"
-pynamodb = "4.3.0"
+pynamodb = "*"
 psycopg2 = "*"
 sentry-sdk = "*"
 SQLAlchemy = "*"
@@ -53,6 +53,7 @@ stela = "*"
 
 [tool.poetry.dev-dependencies]
 alembic = "*"
+flake8 = "*"
 aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"

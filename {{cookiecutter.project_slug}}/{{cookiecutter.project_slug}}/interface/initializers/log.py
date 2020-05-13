@@ -17,7 +17,7 @@ def initialize_log() -> None:
     Otherwise format will be Loguru standard.
 
     """
-    logger.info(f"Initializing Logger...")
+    logger.info("Initializing Logger...")
     if settings["logger.use_json_format"]:
         log_handler = logging.StreamHandler()
         formatter = jsonlogger.JsonFormatter(

@@ -18,7 +18,7 @@ from stela import settings
 
 test_environment = "pytest" in sys.modules
 if test_environment:
-    logger.warning(f"Running in Test Environment")
+    logger.warning("Running in Test Environment")
 
 
 def get_database_url() -> str:

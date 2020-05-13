@@ -19,7 +19,7 @@ def initialize_sentry() -> None:
     """
     endpoint = settings["sentry.endpoint"]
     if not endpoint:
-        logger.warning(f"Sentry not initialized.")
+        logger.warning("Sentry not initialized.")
         return
 
     toml_path = Path().cwd().joinpath("pyproject.toml")
@@ -34,6 +34,6 @@ def initialize_sentry() -> None:
             environment=settings.stela_options.current_environment,
             release=current_version,
         )
-        logger.info(f"Sentry initialized.")
+        logger.info("Sentry initialized.")
     except BadDsn as error:
         logger.error(f"Error when initializing Sentry: {error}")

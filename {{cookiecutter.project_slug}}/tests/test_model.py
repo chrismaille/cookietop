@@ -68,8 +68,8 @@ def test_fixed_time():
     # fmt: off
     test_service = (
         Noverde{{cookiecutter.domain_class}}Model.query()
-        .filter(Noverde{{cookiecutter.domain_class}}Model.id == new_service.id)  # noqa: E122
-    .one()
+        .filter(Noverde{{cookiecutter.domain_class}}Model.id == new_service.id)
+    .one()  # noqa: E122
     )
     # fmt: on
     assert test_service.created == arrow.get("2020-03-30 13:00:00").datetime

@@ -6,7 +6,7 @@ from datetime import datetime
 from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 
-from interface.initializers.nosql import Base, connection
+from interface.initializers.nosql import Base, connection, get_table_name
 from enterprise.helpers.get_uuid import get_uuid
 from enterprise.types.enterprise_resources import EnterpriseResources
 from enterprise.types.enum_attribute import EnumAttribute
@@ -49,5 +49,5 @@ class {{cookiecutter.domain_class}}Document(Base):
     class Meta(Base.Meta):
         abstract = False
         connection = connection
-        table_name = "{{cookiecutter.project_slug}}_{{cookiecutter.domain_class}}Document"
+        table_name = get_table_name()
 {% endif %}

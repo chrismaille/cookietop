@@ -12,14 +12,24 @@ ARTIFACTS		:= \
 	./{{cookiecutter.project_slug}}/dependencies
 
 # External variables and his default values
-ENVIRONMENT		?= "develop"
-S3_BUCKET		?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
+AWS_ACCOUNT_ID	?= $(shell aws sts get-caller-identity --query Account --output text)
+ENVIRONMENT		?= "development"
+S3_BUCKET		?= "noverde-"$(AWS_ACCOUNT_ID)"-{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
 STACK_NAME		?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)"-stack"
 AWS_PROFILE		?= "default"
 
 # Exported variables for subshells
 export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}
 
+
+.PHONY: requirements
+# Copy needed files in {{cookiecutter.project_slug}} folder
+# for AWS Toolkit Plugin and `sam invoke` command work
+requirements:
+	@rm -rf .aws-sam
+	@cp -f *.toml ./{{cookiecutter.project_slug}}
+	@cp -f ./template.yml ./{{cookiecutter.project_slug}}/template.yml
+	@poetry export --without-hashes -f requirements.txt -o ./{{cookiecutter.project_slug}}/requirements.txt
 
 .PHONY: show_config
 # Show configuration used in SAM operations
@@ -90,6 +100,7 @@ install:
 .PHONY: serve
 # Runs local API via SAM client
 serve: build_dependencies
+	@rm -rf .aws-sam
 	@poetry run sam local start-api --debug -n local.json --docker-network lambda-local
 
 .PHONY: watch
