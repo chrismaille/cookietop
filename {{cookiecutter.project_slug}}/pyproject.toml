@@ -55,6 +55,7 @@ typing_extensions = "*"
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 # DynamoDB Libraries
 pynamodb = "*"
+pynamodb-attributes = "*"
 marshmallow-pynamo-db = "*"
 {% endif %}
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}

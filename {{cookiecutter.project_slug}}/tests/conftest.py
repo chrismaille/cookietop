@@ -24,7 +24,6 @@ from enterprise.types.enterprise_resources import EnterpriseResources
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 from enterprise.models.{{cookiecutter.domain_slug}}_document import {{cookiecutter.domain_class}}Document
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
-from tests.factories.documents import Noverde{{cookiecutter.domain_class}}DocumentFactory
 {% endif %}
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 @pytest.fixture(scope="session", autouse=True)
@@ -102,7 +101,7 @@ def document_session():
     {{cookiecutter.domain_class}}Document.delete_table()
 {% endif %}
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
-@pytest.fixture()
+@pytest.fixture
 def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain_class}}Model:
     """Return Noverde{{cookiecutter.domain_class}}Model Fixture.
 
@@ -111,15 +110,19 @@ def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain
     return Noverde{{cookiecutter.domain_class}}ModelFactory.create(rule=EnterpriseResources.noverde)
 {% endif %}
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
-@pytest.fixture()
-def noverde_{{cookiecutter.domain_slug}}_document() -> Noverde{{cookiecutter.domain_class}}Document:
+@pytest.fixture
+def new_{{cookiecutter.domain_slug}}_document_data():
+    return {
+        "noverde_unique_field": "foo"
+    }
+
+@pytest.fixture
+def noverde_{{cookiecutter.domain_slug}}_document(new_{{cookiecutter.domain_slug}}_document_data) -> Noverde{{cookiecutter.domain_class}}Document:
     """Return Noverde{{cookiecutter.domain_class}}Document Fixture.
 
     :return: Noverde{{cookiecutter.domain_class}}Document instance
     """
-    new_instance = Noverde{{cookiecutter.domain_class}}DocumentFactory.create(
-        rule=EnterpriseResources.noverde
-    )
+    new_instance = Noverde{{cookiecutter.domain_class}}Document(**new_{{cookiecutter.domain_slug}}_document_data)
     new_instance.save()
     return new_instance
 {% endif %}

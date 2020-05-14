@@ -21,7 +21,7 @@ class {{cookiecutter.domain_class}}Model(Base):
     __tablename__ = "{{cookiecutter.domain_slug}}_model"
 
     id = sa.Column(sa.Integer, primary_key=True)
-    uuid = sa.Column(UUID, nullable=False, unique=True, default=get_uuid)
+    uuid = sa.Column(UUID(as_uuid=True), nullable=False, unique=True, default=get_uuid)
     created = sa.Column(sa.DateTime, nullable=False, default=datetime.utcnow)
     rule = sa.Column(ENUM(EnterpriseResources), nullable=False)
     __mapper_args__ = {"polymorphic_on": rule}

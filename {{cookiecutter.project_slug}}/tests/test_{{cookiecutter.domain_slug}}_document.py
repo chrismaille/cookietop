@@ -40,7 +40,7 @@ def test_create_{{cookiecutter.domain_slug}}_document():
     }
     response = create(event, None)
     assert response == {
-        "body": '{"uuid": "cd4ab3c099464e52bfa1bc84c1ec3db4"}',
+        "body": '{"uuid": "cd4ab3c0-9946-4e52-bfa1-bc84c1ec3db4"}',
         "statusCode": 201,
     }
 
@@ -56,7 +56,7 @@ def test_retrieve_{{cookiecutter.domain_slug}}_document(dynamo_document):
         "created": "2020-04-12T12:00:01+00:00",
         "noverde_unique_field": "foo",
         "rule": "noverde",
-        "uuid": dynamo_document.uuid,
+        "uuid": str(dynamo_document.uuid),
     }
 
 
