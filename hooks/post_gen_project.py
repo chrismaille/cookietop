@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 manifest = {
     "dynamo": [
-        "tests/factories/documents.py",
         "tests/test_document.py",
         "tests/test_document_schema.py",
         "tests/test_rule_document.py",
