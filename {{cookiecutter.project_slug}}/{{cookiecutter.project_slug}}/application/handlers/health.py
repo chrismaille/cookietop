@@ -1,3 +1,5 @@
+from typing import Any
+
 from stela import settings
 
 from interface.aws.handler_view import handler_view
@@ -7,7 +9,7 @@ from application.types.handler_response import HandlerResponse
 
 
 @handler_view()
-def health_check(request: Request) -> HandlerResponse:
+def health_check(request: Request, **kwargs: Any) -> HandlerResponse:
     """Return application's health status.
 
     This is a very simple example for a GET request.

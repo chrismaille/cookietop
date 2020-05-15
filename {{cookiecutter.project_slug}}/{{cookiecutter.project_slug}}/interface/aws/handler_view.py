@@ -67,7 +67,7 @@ def handler_view(
                 if format_response:
                     response = {
                         "statusCode": ret.get("status_code", StatusCode.OK).value,
-                        "body": json.dumps(ret["message"]),
+                        "body": json.dumps(ret["message"], default=lambda x: str(x)),
                     }
                 else:
                     response = ret
@@ -86,7 +86,7 @@ def handler_view(
                 ]
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
-                    "body": json.dumps({"errors": error_list}),
+                    "body": json.dumps({"errors": error_list}, default=lambda x: str(x)),
                 }
             {% if cookiecutter.database == "DynamoDB (recommended)" %}
             except DoesNotExist as error:
@@ -99,7 +99,7 @@ def handler_view(
             except NoResultFound as error:
                 return {
                     "statusCode": StatusCode.NOT_FOUND.value,
-                    "body": json.dumps({"errors": [f"{error}"]}),
+                    "body": json.dumps({"errors": [f"{error}"]}, default=lambda x: str(x)),
                 }
             {% endif %}
             except RequestUnauthorizedError as error:
@@ -115,7 +115,7 @@ def handler_view(
                 logger.error(f"Rules Validation Error during request: {error}")
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
-                    "body": json.dumps({"errors": [f"{error}"]}),
+                    "body": json.dumps({"errors": [f"{error}"]}, default=lambda x: str(x)),
                 }
             except Exception as error:
                 # Handle Internal Server Errors
@@ -126,7 +126,7 @@ def handler_view(
                 logger.error(f"Internal Error during request: {error}")
                 return {
                     "statusCode": StatusCode.INTERNAL_ERROR.value,
-                    "body": json.dumps({"errors": [str(error)]}),
+                    "body": json.dumps({"errors": [str(error)]}, default=lambda x: str(x)),
                 }
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
             finally:

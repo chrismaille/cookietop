@@ -3,13 +3,14 @@ from stela import settings
 
 from datetime import datetime
 
-from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute
+from pynamodb.attributes import UTCDateTimeAttribute
+from pynamodb_attributes import UnicodeEnumAttribute, UUIDAttribute
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 
 from interface.initializers.nosql import Base, connection, get_table_name
 from enterprise.helpers.get_uuid import get_uuid
+from enterprise.helpers.get_now import get_now
 from enterprise.types.enterprise_resources import EnterpriseResources
-from enterprise.types.enum_attribute import EnumAttribute
 
 
 class {{cookiecutter.domain_class}}CreatedIndex(GlobalSecondaryIndex):  # type: ignore
@@ -29,7 +30,7 @@ class {{cookiecutter.domain_class}}RuleIndex(GlobalSecondaryIndex):  # type: ign
         write_capacity_units = settings["database.nosql.capacity.write"]
         projection = AllProjection()
 
-    rule = EnumAttribute(EnterpriseResources, hash_key=True)
+    rule = UnicodeEnumAttribute(EnterpriseResources, hash_key=True)
 
 
 class {{cookiecutter.domain_class}}Document(Base):
@@ -40,11 +41,13 @@ class {{cookiecutter.domain_class}}Document(Base):
 
     """
 
-    uuid = UnicodeAttribute(hash_key=True, default=get_uuid)
+    uuid = UUIDAttribute(hash_key=True, default=get_uuid)
     search_by_date = {{cookiecutter.domain_class}}CreatedIndex()
     search_by_rule = {{cookiecutter.domain_class}}RuleIndex()
-    created = UTCDateTimeAttribute(default=datetime.utcnow)
-    rule = EnumAttribute(EnterpriseResources)
+    created = UTCDateTimeAttribute(default=get_now)
+    rule = UnicodeEnumAttribute(
+        EnterpriseResources, default=EnterpriseResources.noverde
+    )
 
     class Meta(Base.Meta):
         abstract = False

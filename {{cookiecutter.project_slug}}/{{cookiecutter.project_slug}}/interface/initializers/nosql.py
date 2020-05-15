@@ -66,6 +66,7 @@ class Base(Model):
 
     def table_exists(self) -> None:
         """Check if Table exists.
+
         Running only in Development.
         :return: None
         """
