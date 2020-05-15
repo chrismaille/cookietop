@@ -7,6 +7,7 @@ from interface.aws.handler_view import handler_view
 from interface.aws.request import Request
 from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
+from typing import Any
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import (
     Noverde{{cookiecutter.domain_class}}Document as RuleModelClass,
@@ -25,7 +26,7 @@ from application.schemas.noverde_{{cookiecutter.domain_slug}}_model_schema impor
 
 {% endif %}
 @handler_view()
-def retrieve(request: Request) -> HandlerResponse:
+def retrieve(request: Request, **kwargs: Any) -> HandlerResponse:
     """Retrieve {{cookiecutter.domain_class}}.
 
     :param: request: Sherlock instance
@@ -46,6 +47,7 @@ def retrieve(request: Request) -> HandlerResponse:
     return response
 {% else %}
 from loguru import logger
+from typing import Any
 
 from interface.aws.handler_view import handler_view
 from interface.aws.request import Request
@@ -53,7 +55,7 @@ from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
 
 @handler_view()
-def retrieve(request: Request) -> HandlerResponse:
+def retrieve(request: Request, **kwargs: Any) -> HandlerResponse:
     """Retrieve {{cookiecutter.domain_class}}.
 
     TODO: Without databases its up to you

@@ -11,7 +11,6 @@ from interface.initializers.nosql import Base, connection, get_table_name
 from enterprise.helpers.get_uuid import get_uuid
 from enterprise.helpers.get_now import get_now
 from enterprise.types.enterprise_resources import EnterpriseResources
-from enterprise.types.enum_attribute import EnumAttribute
 
 
 class {{cookiecutter.domain_class}}CreatedIndex(GlobalSecondaryIndex):  # type: ignore
@@ -31,7 +30,7 @@ class {{cookiecutter.domain_class}}RuleIndex(GlobalSecondaryIndex):  # type: ign
         write_capacity_units = settings["database.nosql.capacity.write"]
         projection = AllProjection()
 
-    rule = EnumAttribute(EnterpriseResources, hash_key=True)
+    rule = UnicodeEnumAttribute(EnterpriseResources, hash_key=True)
 
 
 class {{cookiecutter.domain_class}}Document(Base):

@@ -3,6 +3,8 @@
 As per: https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html  # noqa: E501
 And https://github.com/awslabs/aws-apigateway-lambda-authorizer-blueprints/blob/master/blueprints/python/api-gateway-authorizer-python.py  # noqa: E501
 """
+from typing import Any
+
 from loguru import logger
 from stela import settings
 
@@ -14,7 +16,7 @@ from interface.types.auth_response import AuthResponse, PolicyEffect
 
 
 @handler_view(format_response=False)
-def authorize(request: Request) -> AuthResponse:
+def authorize(request: Request, **kwargs: Any) -> AuthResponse:
     """Return request IAM policy.
 
     Check for the 'authorizationToken' in request's Header.
