@@ -1,6 +1,7 @@
 {
   "HealthCheck": {
     "ENVIRONMENT": "development",
+    "DEBUG": "false",
     "LOGGER_LEVEL": "DEBUG",
     "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/{{cookiecutter.project_slug}}_develop",
@@ -8,6 +9,7 @@
   },
   "Create{{cookiecutter.domain_class}}": {
     "ENVIRONMENT": "development",
+    "DEBUG": "false",
     "LOGGER_LEVEL": "DEBUG",
     "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/noverde_test_project_develop",
@@ -15,6 +17,7 @@
   },
   "Update{{cookiecutter.domain_class}}": {
     "ENVIRONMENT": "development",
+    "DEBUG": "false",
     "LOGGER_LEVEL": "DEBUG",
     "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/noverde_test_project_develop",
@@ -22,6 +25,7 @@
   },
   "Retrieve{{cookiecutter.domain_class}}": {
     "ENVIRONMENT": "development",
+    "DEBUG": "false",
     "LOGGER_LEVEL": "DEBUG",
     "SENTRY_ENDPOINT": null,
     "DATABASE_SQL_URL": "postgres://noverde:noverde@localhost/noverde_test_project_develop",

@@ -11,3 +11,7 @@ Workflow
 ========
     (From) Payload -> (Call) Schema -> (Get) RuleModel -> (Run) User Cases.
 """
+
+from interface.initializers.debugger import initialize_debug
+
+initialize_debug()
