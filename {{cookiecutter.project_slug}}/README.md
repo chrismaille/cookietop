@@ -70,6 +70,12 @@ $ make ci
 
 # Format code
 $ make format
+ 
+# Enable debug using [ptvsd](https://github.com/microsoft/ptvsd)
+$ make enable_debug
+
+# Disable debug
+$ make disable_debug
 
 # Run Local server
 $ make serve
