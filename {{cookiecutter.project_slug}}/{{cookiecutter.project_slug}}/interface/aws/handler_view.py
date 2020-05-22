@@ -9,6 +9,7 @@ from marshmallow import Schema, ValidationError
 from sentry_sdk import capture_exception  # type: ignore
 
 from aws_lambda_context import LambdaContext
+from stela import settings
 
 from enterprise.rules.exceptions import EnterpriseValidationErrors
 from interface.aws.sherlock import Sherlock
@@ -16,7 +17,6 @@ from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
 from interface.initializers.log import initialize_log
 from interface.initializers.sentry import initialize_sentry
-from interface.aws.exceptions import RequestUnauthorizedError
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 from interface.initializers.sql import Session
 from sqlalchemy.orm.exc import NoResultFound
@@ -52,6 +52,9 @@ def handler_view(
     def config(f: Any) -> Any:
         @wraps(f)
         def wrapper(event: Dict[str, Any], context: LambdaContext, *args, **kwargs):  # type: ignore
+            headers = {
+                "Access-Control-Allow-Origin": settings["cors.allow_origin"]
+            }
             try:
                 # Inspect and generate request object.
                 sherlock = Sherlock(
@@ -68,6 +71,7 @@ def handler_view(
                     response = {
                         "statusCode": ret.get("status_code", StatusCode.OK).value,
                         "body": json.dumps(ret["message"], default=lambda x: str(x)),
+                        "headers": headers,
                     }
                 else:
                     response = ret
@@ -87,12 +91,14 @@ def handler_view(
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
                     "body": json.dumps({"errors": error_list}, default=lambda x: str(x)),
+                    "headers": headers,
                 }
             {% if cookiecutter.database == "DynamoDB (recommended)" %}
             except DoesNotExist as error:
                 return {
                     "statusCode": StatusCode.NOT_FOUND.value,
                     "body": json.dumps({"errors": [f"{error}"]}),
+                    "headers": headers,
                 }
             {% endif %}
             {% if cookiecutter.database == "RDS" %}
@@ -100,12 +106,9 @@ def handler_view(
                 return {
                     "statusCode": StatusCode.NOT_FOUND.value,
                     "body": json.dumps({"errors": [f"{error}"]}, default=lambda x: str(x)),
+                    "headers": headers,
                 }
             {% endif %}
-            except RequestUnauthorizedError as error:
-                # handle requests without authorizationToken header - status 401
-                capture_exception(error)
-                raise RequestUnauthorizedError("Unauthorized")
             except EnterpriseValidationErrors as error:
                 # Handle Enterprise Rules Validation Errors.
                 capture_exception(error)
@@ -116,6 +119,7 @@ def handler_view(
                 return {
                     "statusCode": StatusCode.BAD_REQUEST.value,
                     "body": json.dumps({"errors": [f"{error}"]}, default=lambda x: str(x)),
+                    "headers": headers,
                 }
             except Exception as error:
                 # Handle Internal Server Errors
@@ -127,6 +131,7 @@ def handler_view(
                 return {
                     "statusCode": StatusCode.INTERNAL_ERROR.value,
                     "body": json.dumps({"errors": [str(error)]}, default=lambda x: str(x)),
+                    "headers": headers,
                 }
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
             finally:

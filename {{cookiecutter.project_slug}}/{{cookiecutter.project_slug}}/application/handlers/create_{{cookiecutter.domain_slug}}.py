@@ -2,6 +2,7 @@
 {% if cookiecutter.database != "None" %}
 from loguru import logger
 
+from enterprise.rules.exceptions import EnterpriseValidationErrors
 from interface.aws.handler_view import handler_view
 from interface.aws.request import Request
 from application.types.status_code import StatusCode
@@ -26,6 +27,9 @@ def create(request: Request, **kwargs: Any) -> HandlerResponse:
     :return: HandlerResponse Dict
     """
     logger.info(f"Data received: {request.original_body}")
+
+    if not request.validated_data:
+        raise EnterpriseValidationErrors("Data not found in request body.")
 
     new_instance: RuleModelClass = request.validated_data
     new_instance.save()

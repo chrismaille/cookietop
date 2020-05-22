@@ -1,2 +1,0 @@
-class RequestUnauthorizedError(Exception):
-    pass

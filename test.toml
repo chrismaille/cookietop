@@ -13,6 +13,9 @@ table_name = "cookie_test"
 capacity.read = 1
 capacity.write = 1
 
+[cors]
+allow_origin = "*"
+
 [sentry]
 endpoint = ""
 
