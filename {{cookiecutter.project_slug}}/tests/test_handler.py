@@ -11,6 +11,7 @@ def test_health_check():
     response = health_check({}, LambdaContext())
     expected_response = {
         "statusCode": StatusCode.OK.value,
+        "headers": {"Access-Control-Allow-Origin": "*"},
         "body": json.dumps(
             {"status": "OK", "environment": settings.stela_options.current_environment}
         ),

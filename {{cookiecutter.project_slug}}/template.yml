@@ -27,7 +27,8 @@ Globals:
   Api:
     Cors:
       AllowOrigin: "'*'"
-      AllowHeaders: "'Content-Type,Authorization'"
+      AllowMethods: "'OPTIONS,POST,GET'"
+      AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Authorization'"
 
 Resources:
   # Request Lambda Authorizer
@@ -249,15 +250,39 @@ Resources:
       TracingEnabled: true
       StageName: v1
       Auth:
+        AddDefaultAuthorizerToCorsPreflight: False
         DefaultAuthorizer: RequestLambdaAuthorizer
         Authorizers:
           RequestLambdaAuthorizer:
-            FunctionPayloadType: REQUEST
-            FunctionArn: !GetAtt ApiLambdaAuthorizer.Arn
+            FunctionArn:
+              Fn::ImportValue: profile-authorizer-arn
             Identity:
               ReauthorizeEvery: 300
-              Headers:
-                - Authorization
+      GatewayResponses:
+        DEFAULT_4XX:
+          StatusCode: 400
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        DEFAULT_5XX:
+          StatusCode: 500
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        UNAUTHORIZED:
+          StatusCode: 401
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        ACCESS_DENIED:
+          StatusCode: 403
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
 
   {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
   # DynamoDB Table

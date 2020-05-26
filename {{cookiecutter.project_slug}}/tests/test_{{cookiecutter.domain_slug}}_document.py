@@ -42,6 +42,7 @@ def test_create_{{cookiecutter.domain_slug}}_document():
     assert response == {
         "body": '{"uuid": "cd4ab3c0-9946-4e52-bfa1-bc84c1ec3db4"}',
         "statusCode": 201,
+        "headers": {"Access-Control-Allow-Origin": "*"},
     }
 
 
@@ -69,4 +70,5 @@ def test_update_{{cookiecutter.domain_slug}}_document(dynamo_document):
     assert response == {
         "body": {% raw %}f'{{"uuid": "{dynamo_document.uuid}"}}',{% endraw %}
         "statusCode": 200,
+        "headers": {"Access-Control-Allow-Origin": "*"},
     }
