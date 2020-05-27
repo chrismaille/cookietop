@@ -78,7 +78,7 @@ marker = "platform_system != \"Windows\""
 name = "aws-lambda-builders"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
-version = "0.8.0"
+version = "0.9.0"
 
 [package.dependencies]
 setuptools = "*"
@@ -106,14 +106,14 @@ marker = "platform_system != \"Windows\""
 name = "aws-sam-cli"
 optional = false
 python-versions = ">=3.6, <=4.0, !=4.0"
-version = "0.48.0"
+version = "0.51.0"
 
 [package.dependencies]
 Flask = ">=1.0.2,<1.1.0"
 PyYAML = ">=5.1,<6.0"
-aws-lambda-builders = "0.8.0"
-aws-sam-translator = "1.22.0"
-boto3 = ">=1.10.29,<2.0"
+aws-lambda-builders = "0.9.0"
+aws-sam-translator = "1.23.0"
+boto3 = ">=1.13.0,<1.14.0"
 chevron = ">=0.12,<1.0"
 click = ">=7.0,<8.0"
 cookiecutter = ">=1.6.0,<1.7.0"
@@ -135,7 +135,7 @@ marker = "platform_system != \"Windows\""
 name = "aws-sam-translator"
 optional = false
 python-versions = "*"
-version = "1.22.0"
+version = "1.23.0"
 
 [package.dependencies]
 boto3 = ">=1.5,<2.0"
@@ -193,10 +193,10 @@ marker = "platform_system != \"Windows\""
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.13.10"
+version = "1.13.17"
 
 [package.dependencies]
-botocore = ">=1.16.10,<1.17.0"
+botocore = ">=1.16.17,<1.17.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -206,13 +206,16 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.16.10"
+version = "1.16.17"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
 jmespath = ">=0.7.1,<1.0.0"
 python-dateutil = ">=2.1,<3.0.0"
-urllib3 = ">=1.20,<1.26"
+
+[package.dependencies.urllib3]
+python = "<3.4.0 || >=3.5.0"
+version = ">=1.20,<1.26"
 
 [[package]]
 category = "main"
@@ -415,7 +418,7 @@ description = "the modular source code checker: pep8 pyflakes and co"
 name = "flake8"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "3.8.1"
+version = "3.8.2"
 
 [package.dependencies]
 mccabe = ">=0.6.0,<0.7.0"
@@ -473,7 +476,7 @@ description = "File identification library for Python"
 name = "identify"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "1.4.15"
+version = "1.4.17"
 
 [package.extras]
 license = ["editdistance"]
@@ -650,7 +653,7 @@ description = "Python logging made (stupidly) simple"
 name = "loguru"
 optional = false
 python-versions = ">=3.5"
-version = "0.4.1"
+version = "0.5.0"
 
 [package.dependencies]
 colorama = ">=0.3.4"
@@ -713,7 +716,7 @@ description = "PynamoDB integration with the Marshmallow (de)serialization libra
 name = "marshmallow-pynamo-db"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "0.10.2"
+version = "0.10.4"
 
 [package.dependencies]
 marshmallow = ">=3.0.0"
@@ -767,7 +770,7 @@ description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
 optional = false
 python-versions = ">=3.5"
-version = "8.2.0"
+version = "8.3.0"
 
 [[package]]
 category = "dev"
@@ -809,7 +812,7 @@ description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "20.3"
+version = "20.4"
 
 [package.dependencies]
 pyparsing = ">=2.0.2"
@@ -1108,15 +1111,15 @@ category = "dev"
 description = "Pytest plugin for measuring coverage."
 name = "pytest-cov"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "2.8.1"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "2.9.0"
 
 [package.dependencies]
 coverage = ">=4.4"
 pytest = ">=3.6"
 
 [package.extras]
-testing = ["fields", "hunter", "process-tests (2.0.2)", "six", "virtualenv"]
+testing = ["fields", "hunter", "process-tests (2.0.2)", "six", "pytest-xdist", "virtualenv"]
 
 [[package]]
 category = "dev"
@@ -1399,7 +1402,7 @@ description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-version = "1.14.0"
+version = "1.15.0"
 
 [[package]]
 category = "dev"
@@ -1533,7 +1536,7 @@ description = "Virtual Python Environment builder"
 name = "virtualenv"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "20.0.20"
+version = "20.0.21"
 
 [package.dependencies]
 appdirs = ">=1.4.3,<2"
@@ -1674,20 +1677,22 @@ attrs = [
     {file = "attrs-19.3.0.tar.gz", hash = "sha256:f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"},
 ]
 aws-lambda-builders = [
-    {file = "aws_lambda_builders-0.8.0-py2-none-any.whl", hash = "sha256:d365f1a6950480df905e8429312f1070c5ea464c286eb1319aa596a87940e4fd"},
-    {file = "aws_lambda_builders-0.8.0-py3-none-any.whl", hash = "sha256:8057b437884cb0fbac9f9dc4acc0e24c8447f2e8ee8a22ed80508877f533a851"},
-    {file = "aws_lambda_builders-0.8.0.tar.gz", hash = "sha256:c35c013560bc3ae991e39c83e35d77bedadbf53083fe17d0d508cedefe3e33f6"},
+    {file = "aws_lambda_builders-0.9.0-py2-none-any.whl", hash = "sha256:036cabf8aae2482aca4b37e4f6c36a2dd1df65b05eed6de605410c30ca3e4a63"},
+    {file = "aws_lambda_builders-0.9.0-py3-none-any.whl", hash = "sha256:f4c5c7a14652a6f6256cb0254e45ae5aa413dd4b62b9854cd5a3f01c4fe9c889"},
+    {file = "aws_lambda_builders-0.9.0.tar.gz", hash = "sha256:660028424c8ce4677debbec33f56e37498f71170da80cc91fa322d1b2071bb0a"},
 ]
 aws-lambda-context = [
     {file = "aws-lambda-context-1.1.0.tar.gz", hash = "sha256:b6a6d3360671b25bb171335c7e6510b22e60c6fd5db99803f478c986d3230220"},
     {file = "aws_lambda_context-1.1.0-py3-none-any.whl", hash = "sha256:d03b16aaf8abac30b71bc5d66ed8edadd8805e0d581f73f1e9b4b171635c817d"},
 ]
 aws-sam-cli = [
-    {file = "aws-sam-cli-0.48.0.tar.gz", hash = "sha256:2cb766b29000ec5e47c4bd6218e7abc6093e6153a6ac7a437633b96c705efe41"},
-    {file = "aws_sam_cli-0.48.0-py3-none-any.whl", hash = "sha256:0c6b2bb0605162bd64ee1f9216508b4e4cda296bd4e86ad31c68786ee4d06da0"},
+    {file = "aws-sam-cli-0.51.0.tar.gz", hash = "sha256:f0947f5f02dd8166e311293d4ed2df42522b0aef07929d57dd6ce517d48100b4"},
+    {file = "aws_sam_cli-0.51.0-py3-none-any.whl", hash = "sha256:e8c260717386f042e846b72b1517e65cd0d222de2536fa2d6bd940f58e9a9eb7"},
 ]
 aws-sam-translator = [
-    {file = "aws-sam-translator-1.22.0.tar.gz", hash = "sha256:3ba6a821eda29ca8ea1306e27a8135256d6136f1b0b29c6cbf9a107dfd1c2dd9"},
+    {file = "aws-sam-translator-1.23.0.tar.gz", hash = "sha256:6e847b02661247e5d9b99b3bd22351fc6ed614e0f12e0598c0181cb796b3967e"},
+    {file = "aws_sam_translator-1.23.0-py2-none-any.whl", hash = "sha256:0dabd2fd57e63fca1cdd511fa73e9fe4f9ca869f5cbcd5749a0c0c9c532a0b2a"},
+    {file = "aws_sam_translator-1.23.0-py3-none-any.whl", hash = "sha256:75dc45e4d8609696f847369a7497774f04ec992f58c9bc4aae4ead77a46e7991"},
 ]
 backcall = [
     {file = "backcall-0.1.0.tar.gz", hash = "sha256:38ecd85be2c1e78f77fd91700c76e14667dc21e2713b63876c0eb901196e01e4"},
@@ -1702,11 +1707,12 @@ black = [
     {file = "black-19.10b0.tar.gz", hash = "sha256:c2edb73a08e9e0e6f65a0e6af18b059b8b1cdd5bef997d7a0b181df93dc81539"},
 ]
 boto3 = [
-    {file = "boto3-1.13.10-py2.py3-none-any.whl", hash = "sha256:2c00bad7d049e363111d67f9eb1bdde34df0bfe4083fd8602ce1249aca691093"},
-    {file = "boto3-1.13.10.tar.gz", hash = "sha256:6d8459706a17752a98f5c8e8258b8c207189960c60da74384de81b6f68732f26"},
+    {file = "boto3-1.13.17-py2.py3-none-any.whl", hash = "sha256:f5218afc43c4c21ae2e8a1d4620d27ab6765250fe1f913ab234fbb686de87ae1"},
+    {file = "boto3-1.13.17.tar.gz", hash = "sha256:009d0b483513e4c8639895c2b8dc451b41c9b863116d0234506b8b88b30a3d1b"},
 ]
 botocore = [
-    {file = "botocore-1.16.10.tar.gz", hash = "sha256:76c3ee2e2f2d37e69e697946b24806c6686e68380599d3e6509da1b39f6dec19"},
+    {file = "botocore-1.16.17-py2.py3-none-any.whl", hash = "sha256:cca04cd4bdb092a727772c38808f97e15f07dc609f6fbd7d7ba09c7734058794"},
+    {file = "botocore-1.16.17.tar.gz", hash = "sha256:f9627c718d480225cbfeeeb7b4a694b9cea3cae67940a4b673770cfaca328a81"},
 ]
 certifi = [
     {file = "certifi-2020.4.5.1-py2.py3-none-any.whl", hash = "sha256:1d987a998c75633c40847cc966fcf5904906c920a7f17ef374f5aa4282abd304"},
@@ -1809,8 +1815,8 @@ filelock = [
     {file = "filelock-3.0.12.tar.gz", hash = "sha256:18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59"},
 ]
 flake8 = [
-    {file = "flake8-3.8.1-py2.py3-none-any.whl", hash = "sha256:6c1193b0c3f853ef763969238f6c81e9e63ace9d024518edc020d5f1d6d93195"},
-    {file = "flake8-3.8.1.tar.gz", hash = "sha256:ea6623797bf9a52f4c9577d780da0bb17d65f870213f7b5bcc9fca82540c31d5"},
+    {file = "flake8-3.8.2-py2.py3-none-any.whl", hash = "sha256:ccaa799ef9893cebe69fdfefed76865aeaefbb94cb8545617b2298786a4de9a5"},
+    {file = "flake8-3.8.2.tar.gz", hash = "sha256:c69ac1668e434d37a2d2880b3ca9aafd54b3a10a3ac1ab101d22f29e29cf8634"},
 ]
 flask = [
     {file = "Flask-1.0.4-py2.py3-none-any.whl", hash = "sha256:1a21ccca71cee5e55b6a367cc48c6eb47e3c447f76e64d41f3f3f931c17e7c96"},
@@ -1824,8 +1830,8 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 identify = [
-    {file = "identify-1.4.15-py2.py3-none-any.whl", hash = "sha256:88ed90632023e52a6495749c6732e61e08ec9f4f04e95484a5c37b9caf40283c"},
-    {file = "identify-1.4.15.tar.gz", hash = "sha256:23c18d97bb50e05be1a54917ee45cc61d57cb96aedc06aabb2b02331edf0dbf0"},
+    {file = "identify-1.4.17-py2.py3-none-any.whl", hash = "sha256:ef6fa3d125c27516f8d1aaa2038c3263d741e8723825eb38350cdc0288ab35eb"},
+    {file = "identify-1.4.17.tar.gz", hash = "sha256:be66b9673d59336acd18a3a0e0c10d35b8a780309561edf16c46b6b74b83f6af"},
 ]
 idna = [
     {file = "idna-2.9-py2.py3-none-any.whl", hash = "sha256:a068a21ceac8a4d63dbfd964670474107f541babbd2250d61922f029858365fa"},
@@ -1871,8 +1877,8 @@ jsonschema = [
     {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
 ]
 loguru = [
-    {file = "loguru-0.4.1-py3-none-any.whl", hash = "sha256:074b3caa6748452c1e4f2b302093c94b65d5a4c5a4d7743636b4121e06437b0e"},
-    {file = "loguru-0.4.1.tar.gz", hash = "sha256:a6101fd435ac89ba5205a105a26a6ede9e4ddbb4408a6e167852efca47806d11"},
+    {file = "loguru-0.5.0-py3-none-any.whl", hash = "sha256:4688d9e1f31d70e1ec7ccce5305967bc28f377eb1048d009108c11faebe05bcf"},
+    {file = "loguru-0.5.0.tar.gz", hash = "sha256:1e0e6ff59be5e22f863d909ca989e34bb14c21b374f6af45281e603d003dbb96"},
 ]
 mako = [
     {file = "Mako-1.1.2-py2.py3-none-any.whl", hash = "sha256:8e8b53c71c7e59f3de716b6832c4e401d903af574f6962edbbbf6ecc2a5fe6c9"},
@@ -1922,8 +1928,8 @@ marshmallow-enum = [
     {file = "marshmallow_enum-1.5.1-py2.py3-none-any.whl", hash = "sha256:57161ab3dbfde4f57adeb12090f39592e992b9c86d206d02f6bd03ebec60f072"},
 ]
 marshmallow-pynamo-db = [
-    {file = "marshmallow-pynamo-db-0.10.2.tar.gz", hash = "sha256:98fb2fca760af8b70724d61004245cecb77e71d6260a3991011cc5e41b107b1a"},
-    {file = "marshmallow_pynamo_db-0.10.2-py3-none-any.whl", hash = "sha256:664656743095546e567137a3b9aec1bfdae51e28afb28f357e03241d3dde1d97"},
+    {file = "marshmallow-pynamo-db-0.10.4.tar.gz", hash = "sha256:1f2028d72c6d6d8950e2b81ce0f8625c6e30bf303cc1c8fc15756084ceb33b8e"},
+    {file = "marshmallow_pynamo_db-0.10.4-py3-none-any.whl", hash = "sha256:0edca411eab110b70244c29e6b55dbc032604a02cef9af880d56eef086408a3d"},
 ]
 marshmallow-sqlalchemy = [
     {file = "marshmallow-sqlalchemy-0.23.0.tar.gz", hash = "sha256:3247e41e424146340b03a369f2b7c6f0364477ccedc4e2481e84d5f3a8d3c67f"},
@@ -1938,8 +1944,8 @@ mirakuru = [
     {file = "mirakuru-2.3.0.tar.gz", hash = "sha256:cb90f587ebd2ca5b8c9c61ce025be86ec123522a8b100b2a419bc7e8d28259f0"},
 ]
 more-itertools = [
-    {file = "more-itertools-8.2.0.tar.gz", hash = "sha256:b1ddb932186d8a6ac451e1d95844b382f55e12686d51ca0c68b6f61f2ab7a507"},
-    {file = "more_itertools-8.2.0-py3-none-any.whl", hash = "sha256:5dd8bcf33e5f9513ffa06d5ad33d78f31e1931ac9a18f33d37e77a180d393a7c"},
+    {file = "more-itertools-8.3.0.tar.gz", hash = "sha256:558bb897a2232f5e4f8e2399089e35aecb746e1f9191b6584a151647e89267be"},
+    {file = "more_itertools-8.3.0-py3-none-any.whl", hash = "sha256:7818f596b1e87be009031c7653d01acc46ed422e6656b394b0f765ce66ed4982"},
 ]
 mypy = [
     {file = "mypy-0.770-cp35-cp35m-macosx_10_6_x86_64.whl", hash = "sha256:a34b577cdf6313bf24755f7a0e3f3c326d5c1f4fe7422d1d06498eb25ad0c600"},
@@ -1965,8 +1971,8 @@ nodeenv = [
     {file = "nodeenv-1.3.5-py2.py3-none-any.whl", hash = "sha256:5b2438f2e42af54ca968dd1b374d14a1194848955187b0e5e4be1f73813a5212"},
 ]
 packaging = [
-    {file = "packaging-20.3-py2.py3-none-any.whl", hash = "sha256:82f77b9bee21c1bafbf35a84905d604d5d1223801d639cf3ed140bd651c08752"},
-    {file = "packaging-20.3.tar.gz", hash = "sha256:3c292b474fda1671ec57d46d739d072bfd495a4f51ad01a055121d81e952b7a3"},
+    {file = "packaging-20.4-py2.py3-none-any.whl", hash = "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"},
+    {file = "packaging-20.4.tar.gz", hash = "sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8"},
 ]
 parso = [
     {file = "parso-0.7.0-py2.py3-none-any.whl", hash = "sha256:158c140fc04112dc45bca311633ae5033c2c2a7b732fa33d0955bad8152a8dd0"},
@@ -2085,8 +2091,8 @@ pytest-black = [
     {file = "pytest-black-0.3.9.tar.gz", hash = "sha256:c743dfeffe6b2cb25c0ed1a84cc306dff4b504b713b5a6d1bc3824fa73a7d693"},
 ]
 pytest-cov = [
-    {file = "pytest-cov-2.8.1.tar.gz", hash = "sha256:cc6742d8bac45070217169f5f72ceee1e0e55b0221f54bcf24845972d3a47f2b"},
-    {file = "pytest_cov-2.8.1-py2.py3-none-any.whl", hash = "sha256:cdbdef4f870408ebdbfeb44e63e07eb18bb4619fae852f6e760645fa36172626"},
+    {file = "pytest-cov-2.9.0.tar.gz", hash = "sha256:b6a814b8ed6247bd81ff47f038511b57fe1ce7f4cc25b9106f1a4b106f1d9322"},
+    {file = "pytest_cov-2.9.0-py2.py3-none-any.whl", hash = "sha256:c87dfd8465d865655a8213859f1b4749b43448b5fae465cb981e16d52a811424"},
 ]
 pytest-flake8 = [
     {file = "pytest-flake8-1.0.6.tar.gz", hash = "sha256:1b82bb58c88eb1db40524018d3fcfd0424575029703b4e2d8e3ee873f2b17027"},
@@ -2209,8 +2215,8 @@ serverlessrepo = [
     {file = "serverlessrepo-0.1.9.tar.gz", hash = "sha256:0c340d0e4437b5043eed2f2aafcb8fd6b16ab3d62ace19e70186542f4f7ac0f5"},
 ]
 six = [
-    {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
-    {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
+    {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
+    {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
 snowballstemmer = [
     {file = "snowballstemmer-2.0.0-py2.py3-none-any.whl", hash = "sha256:209f257d7533fdb3cb73bdbd24f436239ca3b2fa67d56f6ff88e86be08cc5ef0"},
@@ -2303,8 +2309,8 @@ urllib3 = [
     {file = "urllib3-1.25.9.tar.gz", hash = "sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.0.20-py2.py3-none-any.whl", hash = "sha256:b4c14d4d73a0c23db267095383c4276ef60e161f94fde0427f2f21a0132dde74"},
-    {file = "virtualenv-20.0.20.tar.gz", hash = "sha256:fd0e54dec8ac96c1c7c87daba85f0a59a7c37fe38748e154306ca21c73244637"},
+    {file = "virtualenv-20.0.21-py2.py3-none-any.whl", hash = "sha256:a730548b27366c5e6cbdf6f97406d861cccece2e22275e8e1a757aeff5e00c70"},
+    {file = "virtualenv-20.0.21.tar.gz", hash = "sha256:a116629d4e7f4d03433b8afa27f43deba09d48bc48f5ecefa4f015a178efb6cf"},
 ]
 watchdog = [
     {file = "watchdog-0.10.2.tar.gz", hash = "sha256:c560efb643faed5ef28784b2245cf8874f939569717a4a12826a173ac644456b"},

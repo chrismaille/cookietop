@@ -69,10 +69,10 @@ class Request:
 
     """
 
-    validated_data: Dict[Any, Any]
-    original_body: Optional[str]
-    body: Optional[Dict[Any, Any]]
+    validated_data: Any
     aws_event: Dict[Any, Any]
     aws_context: LambdaContext
-    path: Optional[Dict[Any, Any]]
-    headers: Optional[Dict[Any, Any]]
+    original_body: Optional[str] = None
+    body: Optional[Dict[Any, Any]] = None
+    path: Optional[Dict[Any, Any]] = None
+    headers: Optional[Dict[Any, Any]] = None

@@ -22,7 +22,7 @@ Globals:
         DATABASE_SQL_URL: {% raw %}'{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/endpoints/rds:1}}'{% endraw %}
         {% endif %}
         {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
-        DATABASE_NOSQL_TABLE_NAME: {% raw %}"{{cookiecutter.project_slug}}-{{resolve:ssm:NoverdeEnvironment:1}}-{{ cookiecutter.domain_class }}Document"{% endraw %}
+        DATABASE_NOSQL_TABLE_NAME: "{{cookiecutter.project_slug}}-{% raw %}{{resolve:ssm:NoverdeEnvironment:1}}{% endraw %}-{{ cookiecutter.domain_class }}Document"
         {% endif %}
   Api:
     Cors:
@@ -31,23 +31,6 @@ Globals:
       AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Authorization'"
 
 Resources:
-  # Request Lambda Authorizer
-  ApiLambdaAuthorizer:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: {{cookiecutter.project_slug}}-api_gateway-api-lambda-authorizer
-      CodeUri: {{cookiecutter.project_slug}}
-      Handler: interface.handlers.authorize.authorize
-      Environment:
-        Variables:
-          {% raw %}
-          AUTHORIZATION_TOKEN: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/secrets/access_token:1}}'
-          {% endraw %}
-      Policies:
-        - AWSLambdaFullAccess
-        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
-        - AmazonRDSDataFullAccess
-        {% endif %}
   # API Gateway Handlers
   HealthCheck:
     Type: AWS::Serverless::Function
@@ -133,7 +116,23 @@ Resources:
                 Caching: false
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
+  StartCreate{{cookiecutter.domain_class}}Machine:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_slug}}-api_gateway-start_create_{{cookiecutter.domain_slug}}_machine
+      CodeUri: {{cookiecutter.project_slug}}
+      Handler: application.handlers.start_create_{{cookiecutter.domain_slug}}_machine.start_machine
+      Policies:
+        - AWSLambdaFullAccess
+        {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
+        - AmazonRDSDataFullAccess
+        {% endif %}
+      Role: !GetAtt [ LambdaHandleStepMachineRole , Arn ]
+      Environment:
+        Variables:
+          CREATE_MACHINE_NAME: !GetAtt [ {{cookiecutter.domain_class}}CreateMachine , Name ]
 
+  {% if cookiecutter.add_step_functions == "yes" %}
   # Step Functions Handlers
   Find{{cookiecutter.domain_class}}Instance:
     Type: AWS::Serverless::Function
@@ -229,7 +228,7 @@ Resources:
     Type: "AWS::Logs::LogGroup"
     Properties:
       RetentionInDays: 1
-
+  {% endif %}
   # Lambda Layer Configuration
   {{cookiecutter.project_name_camel}}DepLayer:
     Type: AWS::Serverless::LayerVersion
@@ -289,9 +288,7 @@ Resources:
   {{cookiecutter.domain_class}}Document:
     Type: "AWS::DynamoDB::Table"
     Properties:
-      TableName: Fn::Sub:
-        - "{{cookiecutter.project_slug}}-${ENVIRONMENT}-{{ cookiecutter.domain_class }}Document"
-        - ENVIRONMENT: {% raw %}'{{resolve:ssm:NoverdeEnvironment:1}}'{% endraw %}
+      TableName: "{{cookiecutter.project_slug}}-{% raw %}{{resolve:ssm:NoverdeEnvironment:1}}{% endraw %}-{{ cookiecutter.domain_class }}Document"
       AttributeDefinitions:
         - AttributeName: uuid
           AttributeType: S
@@ -330,7 +327,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: !Sub lambda.${AWS::Region}.amazonaws.com
+              Service: "lambda.amazonaws.com"
             Action: "sts:AssumeRole"
       Policies:
         - PolicyName: AccessXRayFromLambda
@@ -368,7 +365,7 @@ Resources:
                 Effect: Allow
                 Resource: "*"
         {% endif %}
-
+  {% if cookiecutter.add_step_functions == "yes" %}
   StatesExecutionRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -377,11 +374,20 @@ Resources:
         Statement:
           - Effect: "Allow"
             Principal:
-              Service:
-                - !Sub states.${AWS::Region}.amazonaws.com
+              Service: "lambda.amazonaws.com"
             Action: "sts:AssumeRole"
       Path: "/"
       Policies:
+        - PolicyName: HandleSQSMessages
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "sqs:ReceiveMessage"
+                  - "sqs:DeleteMessage"
+                  - "sqs:GetQueueAttributes"
+                Effect: Allow
+                Resource: "*"
         - PolicyName: StatesExecutionPolicy
           PolicyDocument:
             Version: "2012-10-17"
@@ -405,3 +411,25 @@ Resources:
                   - "logs:DescribeResourcePolicies"
                   - "logs:DescribeLogGroups"
                 Resource: "*"
+
+  LambdaHandleStepMachineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: HandleStateMachinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "states:ListStateMachines"
+                  - "states:StartExecution"
+                Effect: Allow
+                Resource: "arn:aws:states:*:*:*"
+{% endif %}

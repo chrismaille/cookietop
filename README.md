@@ -77,6 +77,10 @@ project:
 # Install and migrate database
 $ make config_cookie
 
+# Run pre-commit for errors
+$ git add .
+$ git commit -m "First commit" 
+
 # Run tests once (stop a first error)
 $ make test
 
