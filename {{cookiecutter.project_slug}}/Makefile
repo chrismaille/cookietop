@@ -53,6 +53,8 @@ autoenv:
 # Run SAM build command
 build: build_dependencies
 	@rm -rf .aws-sam
+	# Need requirements in profile folder for AWS Toolkit plugin works
+	@poetry export --without-hashes -f requirements.txt -o ./notification/requirements.txt
 	@sam build
 
 .PHONY: build_dependencies
@@ -68,7 +70,7 @@ build_dependencies:
 # for different profiles use AWS_PROFILE environment variable
 package: show_config build_dependencies
 	@rm -rf .aws-sam
-	@aws --profile $(AWS_PROFILE) s3api create-bucket --bucket $(S3_BUCKET)
+	@aws --profile $(AWS_PROFILE) s3api create-bucket --bucket $(S3_BUCKET) 1> /dev/null
 	@poetry run sam package \
 		--output-template-file $(PACKAGE_FILE) \
 		--s3-bucket $(S3_BUCKET) \
@@ -85,6 +87,7 @@ deploy: package
 		--region $(AWS_REGION)
 
 	@rm -f ./{{cookiecutter.project_slug}}/env-*.toml
+	@rm -f ./{{cookiecutter.project_slug}}/pyproject.toml
 	@rm -f ./{{cookiecutter.project_slug}}/packaged.yaml
 
 .PHONY: first_install

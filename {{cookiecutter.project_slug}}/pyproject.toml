@@ -66,6 +66,7 @@ SQLAlchemy = "*"
 {% endif %}
 [tool.poetry.dev-dependencies]
 aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
+boto3 = "*"
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"
 freezegun = "*"

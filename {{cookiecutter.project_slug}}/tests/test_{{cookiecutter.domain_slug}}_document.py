@@ -4,6 +4,7 @@ import arrow
 import pytest
 
 from loguru import logger
+from enterprise.helpers.get_uuid import get_uuid
 
 from application.handlers.create_{{cookiecutter.domain_slug}} import create
 from application.handlers.retrieve_{{cookiecutter.domain_slug}} import retrieve
@@ -19,9 +20,8 @@ from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import 
 @pytest.mark.freeze_time("2020-04-12 12:00:01")
 def dynamo_document() -> Noverde{{cookiecutter.domain_class}}Document:
     payload = {
-        "noverde_unique_field": "foo",
         "rule": "noverde",
-        "created": arrow.utcnow().isoformat(),
+        "created_at": arrow.utcnow().isoformat(),
     }
     instance = Noverde{{cookiecutter.domain_class}}DocumentSchema().load(payload)
     instance.save()
@@ -29,18 +29,15 @@ def dynamo_document() -> Noverde{{cookiecutter.domain_class}}Document:
 
 
 def test_create_{{cookiecutter.domain_slug}}_document():
-    event = {
-        "body": json.dumps(
-            {
-                "uuid": "cd4ab3c099464e52bfa1bc84c1ec3db4",
-                "noverde_unique_field": "foo",
-                "rule": "noverde",
-            }
-        )
+    test_uuid = get_uuid(as_string=True)
+    payload = {
+        "uuid": test_uuid,
+        "rule": "noverde",
     }
+    event = {"body": json.dumps(payload)}
     response = create(event, None)
     assert response == {
-        "body": '{"uuid": "cd4ab3c0-9946-4e52-bfa1-bc84c1ec3db4"}',
+        "body": {% raw %}f'{{"uuid": "{test_uuid}"}}',{% endraw %}
         "statusCode": 201,
         "headers": {"Access-Control-Allow-Origin": "*"},
     }
@@ -54,9 +51,8 @@ def test_retrieve_{{cookiecutter.domain_slug}}_document(dynamo_document):
     body = json.loads(response["body"])
     logger.debug(body)
     assert body["data"] == {
-        "created": "2020-04-12T12:00:01+00:00",
+        "created_at": "2020-04-12T12:00:01+00:00",
         "updated_at": "2020-04-12T12:00:01+00:00",
-        "noverde_unique_field": "foo",
         "rule": "noverde",
         "uuid": str(dynamo_document.uuid),
     }
@@ -64,7 +60,7 @@ def test_retrieve_{{cookiecutter.domain_slug}}_document(dynamo_document):
 
 def test_update_{{cookiecutter.domain_slug}}_document(dynamo_document):
     event = {
-        "body": json.dumps({"noverde_unique_field": "new data"}),
+        "body": json.dumps({"updated_at": "2020-04-12T12:00:01+00:00"}),
         "pathParameters": {"uuid": dynamo_document.uuid},
     }
     response = update(event, None)

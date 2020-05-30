@@ -14,6 +14,9 @@ from loguru import logger
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 import alembic.config
 
+from uuid import uuid4
+from faker import Faker
+
 from pytest_postgresql.janitor import DatabaseJanitor
 
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
@@ -22,8 +25,9 @@ from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFact
 {% endif %}
 from enterprise.types.enterprise_resources import EnterpriseResources
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
-from enterprise.models.{{cookiecutter.domain_slug}}_document import {{cookiecutter.domain_class}}Document
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_document import Noverde{{cookiecutter.domain_class}}Document
+from uuid import uuid4
+from faker import Faker
 {% endif %}
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 @pytest.fixture(scope="session", autouse=True)
@@ -98,7 +102,7 @@ def document_session():
     yield
 
     # Remove table
-    {{cookiecutter.domain_class}}Document.delete_table()
+    Noverde{{cookiecutter.domain_class}}Document.delete_table()
 {% endif %}
 {% if cookiecutter.database == "RDS" or cookiecutter.database == "Both" %}
 @pytest.fixture
@@ -112,8 +116,9 @@ def noverde_{{cookiecutter.domain_slug}}_model() -> Noverde{{cookiecutter.domain
 {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
 @pytest.fixture
 def new_{{cookiecutter.domain_slug}}_document_data():
+    fake = Faker("pt_BR")
     return {
-        "noverde_unique_field": "foo"
+        "uuid": uuid4()
     }
 
 @pytest.fixture

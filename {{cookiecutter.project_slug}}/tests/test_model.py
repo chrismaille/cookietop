@@ -5,16 +5,17 @@ import pytest
 from enterprise.rulemodels.noverde_{{cookiecutter.domain_slug}}_model import Noverde{{cookiecutter.domain_class}}Model
 from tests.factories.models import Noverde{{cookiecutter.domain_class}}ModelFactory
 
+from enterprise.helpers.get_uuid import get_uuid
+
 
 def test_save_model():
-    data = {"noverde_unique_field": "foo"}
+    data = {"uuid": get_uuid(as_string=True)}
     new_instance = Noverde{{cookiecutter.domain_class}}Model(**data)
     assert new_instance.id is None
     new_instance.save()
     assert new_instance.id is not None
 
-    test_instance = Noverde{{cookiecutter.domain_class}}Model.query().filter_by(id=new_instance.id).one()
-    assert test_instance.noverde_unique_field == "foo"
+    Noverde{{cookiecutter.domain_class}}Model.query().filter_by(id=new_instance.id).one()
 
 
 @pytest.mark.parametrize(
@@ -29,7 +30,7 @@ def test_create_model_from_factory(unique_field):
 
     It will run twice to ensure transaction are rollback after each test.
     """
-    Noverde{{cookiecutter.domain_class}}ModelFactory.create(id=1000, noverde_unique_field=unique_field)
+    Noverde{{cookiecutter.domain_class}}ModelFactory.create(id=1000)
     # fmt: off
     test_instance = (
         Noverde{{cookiecutter.domain_class}}Model.query()
@@ -37,7 +38,7 @@ def test_create_model_from_factory(unique_field):
         .one()
     )
     # fmt: on
-    assert test_instance.noverde_unique_field == unique_field
+    assert test_instance is not None
 
 
 def test_read_model(noverde_{{cookiecutter.domain_slug}}_model):

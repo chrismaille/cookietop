@@ -29,6 +29,7 @@ class Sherlock:
     schema: Optional[Type[Schema]] = None
     validated_data: Optional[Any] = None
     body_data: Optional[Dict[Any, Any]] = None
+    authorizer: Optional[Dict[Any, Any]] = None
 
     def get_validated_data_from_schema(self) -> None:
         """Do the validation of data from schema, if schema and body have info."""
@@ -74,6 +75,15 @@ class Sherlock:
         logger.debug(f"Schema from Index is: {schema.__name__}")
         return schema
 
+    def get_authorizer(self) -> None:
+        """Extract authorizer info, if it exists."""
+        request_context = self.event_data.get("requestContext") or {}
+        authorizer = request_context.get("authorizer")
+        self.authorizer = authorizer if authorizer else None
+
+        if self.authorizer:
+            logger.debug(f"Authorizer received: {self.authorizer}")
+
     def inspect(self) -> Request:
         """Inspect and return Request object.
 
@@ -81,6 +91,8 @@ class Sherlock:
         """
         self.get_body()
         self.get_validated_data_from_schema()
+        self.get_authorizer()
+
         return Request(
             validated_data=self.validated_data,
             original_body=self.event_data.get("body"),
@@ -89,4 +101,5 @@ class Sherlock:
             aws_context=self.context_data,
             path=self.event_data.get("pathParameters"),
             headers=self.event_data.get("headers"),
+            authorizer=self.authorizer,
         )

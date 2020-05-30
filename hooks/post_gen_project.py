@@ -18,7 +18,6 @@ manifest = {
         "tests/test_rule_document.py",
         "tests/test_{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/application/schemas/noverde_{{cookiecutter.domain_slug}}_document_schema.py",
-        "{{cookiecutter.project_slug}}/enterprise/models/{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/enterprise/rulemodels/noverde_{{cookiecutter.domain_slug}}_document.py",
         "{{cookiecutter.project_slug}}/interface/initializers/nosql.py",
     ],
@@ -37,6 +36,7 @@ manifest = {
     "step_functions": [
         "tests/test_step_functions.py",
         "{{cookiecutter.project_slug}}/interface/aws/step_functions.py",
+        "{{cookiecutter.project_slug}}/interface/aws/handler_step_function.py",
         "{{cookiecutter.project_slug}}/application/machines",
         "{{cookiecutter.project_slug}}/application/handlers/start_create_{{cookiecutter.domain_slug}}_machine.py",
     ],
