@@ -35,6 +35,7 @@ manifest = {
         "alembic.ini",
     ],
     "step_functions": [
+        "tests/test_step_functions.py",
         "{{cookiecutter.project_slug}}/interface/aws/step_functions.py",
         "{{cookiecutter.project_slug}}/application/machines",
         "{{cookiecutter.project_slug}}/application/handlers/start_create_{{cookiecutter.domain_slug}}_machine.py",
