@@ -57,7 +57,7 @@ elif database_choice == "RDS":
     exclude_files = manifest["dynamo"]
 
 if step_functions_choice != "yes":
-    exclude_files = manifest["step_functions"]
+    exclude_files += manifest["step_functions"]
 
 for string_path in exclude_files:
     path = Path().cwd().joinpath(string_path)
