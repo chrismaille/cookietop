@@ -20,9 +20,8 @@ def test_save_document(model_uuid):
 
     data = {
         "uuid": uuid.UUID(model_uuid),
-        "created": arrow.utcnow().datetime,
+        "created_at": arrow.utcnow().datetime,
         "rule": EnterpriseResources.noverde,
-        "noverde_unique_field": "foo",
     }
     new_instance = Noverde{{cookiecutter.domain_class}}Document(**data)
     new_instance.save()
@@ -43,8 +42,7 @@ def test_read_document(noverde_{{cookiecutter.domain_slug}}_document):
 
     assert new_instance.uuid == noverde_{{cookiecutter.domain_slug}}_document.uuid
     assert new_instance.rule == noverde_{{cookiecutter.domain_slug}}_document.rule
-    assert new_instance.created == noverde_{{cookiecutter.domain_slug}}_document.created
-    assert new_instance.noverde_unique_field is not None
+    assert new_instance.created_at == noverde_{{cookiecutter.domain_slug}}_document.created_at
 
     assert new_instance == noverde_{{cookiecutter.domain_slug}}_document
 
@@ -57,6 +55,6 @@ def test_fixed_time(new_{{cookiecutter.domain_slug}}_document_data):
         1. Save new record with freeze time.
     """
     new_service = Noverde{{cookiecutter.domain_class}}Document(**new_{{cookiecutter.domain_slug}}_document_data)
-    assert new_service.created == arrow.utcnow().datetime
-    assert new_service.created == arrow.get("2020-03-30 13:00:00").datetime
+    assert new_service.created_at == arrow.utcnow().datetime
+    assert new_service.created_at == arrow.get("2020-03-30 13:00:00").datetime
 {% endif %}

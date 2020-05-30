@@ -74,6 +74,9 @@ def handler_view(
                         "headers": headers,
                     }
                 else:
+                    ret.update({
+                        "headers": headers
+                    })
                     response = ret
 
                 return response

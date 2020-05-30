@@ -29,7 +29,7 @@ Globals:
   Api:
     Cors:
       AllowOrigin: "'*'"
-      AllowMethods: "'OPTIONS,POST,GET'"
+      AllowMethods: "'OPTIONS,POST,GET,DELETE'"
       AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Authorization'"
 
 Resources:
@@ -210,12 +210,39 @@ Resources:
             "Update {{cookiecutter.domain}}": {
               "Type": "Task",
               "Resource": "${Update{{cookiecutter.domain_class}}Instance.Arn}",
-              "Next": "Success"
+              "Next": "Success",
+              "Retry": [ {
+                 "ErrorEquals": [ "Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+                 "IntervalSeconds": 2,
+                 "MaxAttempts": 6,
+                 "BackoffRate": 2
+              }],
+              "Catch": [
+              {
+                  "ErrorEquals": [ "Lambda.Unknown" ],
+                  "Next": "Mark Fail",
+                  "ResultPath": "$.error"
+              }]
             },
             "Create new {{cookiecutter.domain}}": {
               "Type": "Task",
               "Resource": "${Create{{cookiecutter.domain_class}}Instance.Arn}",
-              "Next": "Success"
+              "Next": "Success",
+              "Retry": [ {
+                 "ErrorEquals": [ "Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+                 "IntervalSeconds": 2,
+                 "MaxAttempts": 6,
+                 "BackoffRate": 2
+              }],
+              "Catch": [
+              {
+                  "ErrorEquals": [ "Lambda.Unknown" ],
+                  "Next": "Mark Fail",
+                  "ResultPath": "$.error"
+              }]
+            },
+            "Mark Fail": {
+              "Type": "Failure"
             },
             "Success": {
               "Type": "Succeed"
@@ -296,7 +323,7 @@ Resources:
       AttributeDefinitions:
         - AttributeName: uuid
           AttributeType: S
-        - AttributeName: created
+        - AttributeName: created_at
           AttributeType: S
         - AttributeName: rule
           AttributeType: S
@@ -310,7 +337,7 @@ Resources:
       GlobalSecondaryIndexes:
         - IndexName: search_by_creation_date
             KeySchema:
-              - AttributeName: created
+              - AttributeName: created_at
                 KeyType: HASH
             Projection:
               ProjectionType: ALL

@@ -22,6 +22,7 @@ class Request:
         aws_context:    Original AWS Context
         path:           Path Parameters from AWS Context
         headers:        Header Parameters from AWS Context
+        authorizer:     Authorization Data from Profile
 
     Examples
     ========
@@ -76,3 +77,4 @@ class Request:
     body: Optional[Dict[Any, Any]] = None
     path: Optional[Dict[Any, Any]] = None
     headers: Optional[Dict[Any, Any]] = None
+    authorizer: Optional[Dict[Any, Any]] = None

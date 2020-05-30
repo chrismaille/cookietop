@@ -19,5 +19,8 @@ endpoint = ""
 [cors]
 allow_origin = "*"
 
+[noverde]
+topic = "noverde_events"
+
 [noverde.{{cookiecutter.domain_slug}}.settings]
 active = true

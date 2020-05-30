@@ -4,7 +4,10 @@ from typing import Any, Dict
 from aws_lambda_context import LambdaContext
 from loguru import logger
 
+from interface.aws.handler_step_function import handler_step
 
+
+@handler_step()
 def find_step(event: Dict[Any, Any], context: LambdaContext) -> Dict[Any, Any]:
     """Create {{cookiecutter.domain_class}} step.
 

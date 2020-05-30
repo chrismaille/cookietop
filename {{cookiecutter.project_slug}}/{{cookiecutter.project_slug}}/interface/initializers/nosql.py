@@ -65,7 +65,7 @@ class Base(Model):
     to PynamoDB Base class.
     """
 
-    created = UTCDateTimeAttribute(default=get_now)
+    created_at = UTCDateTimeAttribute(default=get_now)
     updated_at = UTCDateTimeAttribute(default=get_now)
 
     def __eq__(self, other):
@@ -92,12 +92,6 @@ class Base(Model):
         if self.validate():  # type: ignore
             self.updated_at = arrow.utcnow().datetime
             return super().save(**kwargs)
-
-    class Meta:
-        abstract = True
-        host = get_nosql_database_url()
-        read_capacity_units = settings["database.nosql.capacity.read"]
-        write_capacity_units = settings["database.nosql.capacity.write"]
 
 
 host = get_nosql_database_url()
