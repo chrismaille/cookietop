@@ -59,11 +59,11 @@ jobs:
           COOKIECUTTER_CONFIG: cookie_none.yml
           AWS_DEFAULT_REGION: us-east-1
       - name: Run Tests (Minimal install)
-          run: |
-            make ci
-          env:
-            COOKIECUTTER_CONFIG: cookie_minimal.yml
-            AWS_DEFAULT_REGION: us-east-1
+        run: |
+          make ci
+        env:
+          COOKIECUTTER_CONFIG: cookie_minimal.yml
+          AWS_DEFAULT_REGION: us-east-1
 
 
 
