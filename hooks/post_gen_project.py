@@ -34,10 +34,18 @@ manifest = {
         "migrations",
         "alembic.ini",
     ],
+    "step_functions": [
+        "tests/test_step_functions.py",
+        "{{cookiecutter.project_slug}}/interface/aws/step_functions.py",
+        "{{cookiecutter.project_slug}}/application/machines",
+        "{{cookiecutter.project_slug}}/application/handlers/start_create_{{cookiecutter.domain_slug}}_machine.py",
+    ],
 }
 
 database_choice = "{{ cookiecutter.database }}"
-logger.debug("database choose: {}".format(database_choice))
+step_functions_choice = "{{ cookiecutter.add_step_functions }}"
+logger.debug("Database selected: {}".format(database_choice))
+logger.debug("Add step functions: {}".format(step_functions_choice))
 
 exclude_files = []
 
@@ -48,9 +56,11 @@ elif database_choice == "DynamoDB (recommended)":
 elif database_choice == "RDS":
     exclude_files = manifest["dynamo"]
 
+if step_functions_choice != "yes":
+    exclude_files = manifest["step_functions"]
+
 for string_path in exclude_files:
     path = Path().cwd().joinpath(string_path)
-    # logger.debug(f"Removing {path}...")
     if path.is_dir():
         shutil.rmtree(path)
     else:

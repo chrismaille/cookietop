@@ -12,11 +12,11 @@ ARTIFACTS		:= \
 	./{{cookiecutter.project_slug}}/dependencies
 
 # External variables and his default values
-AWS_ACCOUNT_ID	?= $(shell aws sts get-caller-identity --query Account --output text)
 ENVIRONMENT		?= "development"
-S3_BUCKET		?= "noverde-"$(AWS_ACCOUNT_ID)"-{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
+S3_BUCKET		?= "noverde-{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)
 STACK_NAME		?= "{{cookiecutter.project_bucket}}-"$(ENVIRONMENT)"-stack"
 AWS_PROFILE		?= "default"
+AWS_REGION		?= "us-east-1"
 
 # Exported variables for subshells
 export PYTHONPATH := $(PWD)/{{cookiecutter.project_slug}}
@@ -39,6 +39,7 @@ show_config:
 	@echo "S3_BUCKET: $(S3_BUCKET)"
 	@echo "STACK_NAME: $(STACK_NAME)"
 	@echo "AWS_PROFILE: $(AWS_PROFILE)"
+	@echo "AWS_REGION: $(AWS_REGION)"
 
 .PHONY: autoenv
 # Install autoenv (optional)
@@ -67,10 +68,11 @@ build_dependencies:
 # for different profiles use AWS_PROFILE environment variable
 package: show_config build_dependencies
 	@rm -rf .aws-sam
-	@aws s3 mb s3://$(S3_BUCKET)
+	@aws --profile $(AWS_PROFILE) s3api create-bucket --bucket $(S3_BUCKET)
 	@poetry run sam package \
 		--output-template-file $(PACKAGE_FILE) \
-		--s3-bucket $(S3_BUCKET)
+		--s3-bucket $(S3_BUCKET) \
+		--profile $(AWS_PROFILE)
 
 .PHONY: deploy
 # Run `sam deploy` command
@@ -78,7 +80,9 @@ deploy: package
 	@poetry run sam deploy \
 		--template-file $(PACKAGE_FILE) \
 		--capabilities CAPABILITY_IAM \
-		--stack-name $(STACK_NAME)
+		--stack-name $(STACK_NAME) \
+		--profile $(AWS_PROFILE) \
+		--region $(AWS_REGION)
 
 	@rm -f ./{{cookiecutter.project_slug}}/env-*.toml
 	@rm -f ./{{cookiecutter.project_slug}}/packaged.yaml

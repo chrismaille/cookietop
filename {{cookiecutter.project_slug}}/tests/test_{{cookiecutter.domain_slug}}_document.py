@@ -55,6 +55,7 @@ def test_retrieve_{{cookiecutter.domain_slug}}_document(dynamo_document):
     logger.debug(body)
     assert body["data"] == {
         "created": "2020-04-12T12:00:01+00:00",
+        "updated_at": "2020-04-12T12:00:01+00:00",
         "noverde_unique_field": "foo",
         "rule": "noverde",
         "uuid": str(dynamo_document.uuid),

@@ -10,5 +10,6 @@
   "domain": "MyDomain",
   "domain_class": "{{ cookiecutter.domain.strip().replace(' ', '').title() }}",
   "domain_slug": "{{ cookiecutter.domain.lower().replace(' ', '_') }}",
-  "database": ["DynamoDB (recommended)", "RDS", "Both", "None"]
+  "database": ["DynamoDB (recommended)", "RDS", "Both", "None"],
+  "add_step_functions": ["yes", "no"]
 }

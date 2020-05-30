@@ -1,12 +1,16 @@
 {%- if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" -%}
 import os
 import sys
+import arrow
 
 from typing import Optional
 from loguru import logger
 from pynamodb.connection import Connection  # type: ignore
 from pynamodb.models import Model
+from pynamodb.attributes import UTCDateTimeAttribute
 from stela import settings
+
+from enterprise.helpers.get_now import get_now
 
 test_environment = "pytest" in sys.modules
 if test_environment:
@@ -61,6 +65,9 @@ class Base(Model):
     to PynamoDB Base class.
     """
 
+    created = UTCDateTimeAttribute(default=get_now)
+    updated_at = UTCDateTimeAttribute(default=get_now)
+
     def __eq__(self, other):
         return self.uuid == other.uuid  # type: ignore
 
@@ -83,6 +90,7 @@ class Base(Model):
         """Validate before save DynamoDB."""
         self.table_exists()
         if self.validate():  # type: ignore
+            self.updated_at = arrow.utcnow().datetime
             return super().save(**kwargs)
 
     class Meta:
