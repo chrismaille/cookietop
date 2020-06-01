@@ -1,5 +1,5 @@
 name: tests
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -64,10 +64,5 @@ jobs:
         env:
           COOKIECUTTER_CONFIG: cookie_minimal.yml
           AWS_DEFAULT_REGION: us-east-1
-      - name: Create Release
-        if: github.ref == 'refs/heads/master'
-        id: semantic
-        uses: cycjimmy/semantic-release-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+
 
