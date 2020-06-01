@@ -336,11 +336,11 @@ Resources:
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes:
         - IndexName: search_by_creation_date
-            KeySchema:
-              - AttributeName: created_at
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
+          KeySchema:
+            - AttributeName: created_at
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
   {% endif %}
   # IAM Roles
   LambdaExecutionRole:
