@@ -1,0 +1,65 @@
+name: deploy
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: 3.7
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v1
+      {% raw %}
+      - name: Send Message to Slack 🚀 - Start Deploy
+        if: github.ref == 'refs/heads/master'
+        uses: archive/github-actions-slack@v1.0.2
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_NOBOT_TOKEN }}
+          slack-channel: ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}
+          slack-text: ":arrow_forward: Iniciando Deploy do *${{ github.repository }}*"
+      - name: Deploy to Develop
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          mkdir -p $HOME/.aws
+          printf '[default]\naws_access_key_id=${{ secrets.DEVELOP_AWS_ACCESS_KEY_ID }}\naws_secret_access_key=${{ secrets.DEVELOP_AWS_SECRET_ACCESS_KEY }}\n' > $HOME/.aws/credentials
+          ENVIRONMENT=develop make deploy
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          mkdir -p $HOME/.aws
+          printf '[default]\naws_access_key_id=${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}\naws_secret_access_key=${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}\n' > $HOME/.aws/credentials
+          ENVIRONMENT=staging make deploy
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/master'
+        run: |
+          mkdir -p $HOME/.aws
+          printf '[default]\naws_access_key_id=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}\naws_secret_access_key=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}\n' > $HOME/.aws/credentials
+          ENVIRONMENT=production make deploy
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+      - name: Create Release
+        if: github.ref == 'refs/heads/master'
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+      - name: Send Message to Slack 🚀 - Finish Deploy
+        if: github.ref == 'refs/heads/master'
+        uses: archive/github-actions-slack@v1.0.2
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_NOBOT_TOKEN }}
+          slack-channel: ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}
+          slack-text: ":ok: Finalizado Deploy do *${{ github.repository }}* :rocket:"
+  {% endraw %}
