@@ -62,4 +62,4 @@ jobs:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_NOBOT_TOKEN }}
           slack-channel: ${{ secrets.SLACK_DEPLOY_CHANNEL_ID }}
           slack-text: ":ok: Finalizado Deploy do *${{ github.repository }}* :rocket:"
-  {% endraw %}
+{% endraw %}

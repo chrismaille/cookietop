@@ -138,7 +138,6 @@ Resources:
         Variables:
           CREATE_MACHINE_NAME: !GetAtt [ {{cookiecutter.domain_class}}CreateMachine , Name ]
 
-  {% if cookiecutter.add_step_functions == "yes" %}
   # Step Functions Handlers
   Find{{cookiecutter.domain_class}}Instance:
     Type: AWS::Serverless::Function
