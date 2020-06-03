@@ -26,6 +26,7 @@ Globals:
         {% if cookiecutter.database == "DynamoDB (recommended)" or cookiecutter.database == "Both" %}
         DATABASE_NOSQL_TABLE_NAME: "{{cookiecutter.project_slug}}-{% raw %}{{resolve:ssm:NoverdeEnvironment:1}}{% endraw %}-{{ cookiecutter.domain_class }}Document"
         {% endif %}
+        DEBUG: 'false'
   Api:
     Cors:
       AllowOrigin: "'*'"

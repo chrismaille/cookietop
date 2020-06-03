@@ -41,6 +41,20 @@ show_config:
 	@echo "AWS_PROFILE: $(AWS_PROFILE)"
 	@echo "AWS_REGION: $(AWS_REGION)"
 
+.PHONY: enable_debug
+# install ptvsd and configure local.json to enable debug mode
+enable_debug:
+	@pip3 install ptvsd -t ./{{cookiecutter.project_slug}} --upgrade
+	@sed -i 's/"DEBUG": "false"/"DEBUG": "true"/g' ./local.json
+	@echo "debug mode enabled on 0.0.0.0:5890"
+
+.PHONY: disable_debug
+# delete ptvsd folders and configure local.json to disable debug mode
+disable_debug:
+	@sed -i 's/"DEBUG": "true"/"DEBUG": "false"/g' ./local.json
+	@rm -rf ./{{cookiecutter.project_slug}}/ptvsd*
+	@echo "debug mode disabled"
+
 .PHONY: autoenv
 # Install autoenv (optional)
 autoenv:
