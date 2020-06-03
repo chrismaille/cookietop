@@ -11,6 +11,5 @@
 *  Refactor '...'
 *  Update '...'
 
-**Inform which Jira issue this code will resolve.**
 ## Resolves
 Resolves '...'

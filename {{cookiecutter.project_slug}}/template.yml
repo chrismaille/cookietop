@@ -51,6 +51,8 @@ Resources:
           Type: Api
           Properties:
             Path: /health
+            Auth:
+              Authorizer: NONE
             Method: get
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
@@ -119,6 +121,7 @@ Resources:
                 Caching: false
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
+  {% if cookiecutter.add_step_functions == "yes" %}
   StartCreate{{cookiecutter.domain_class}}Machine:
     Type: AWS::Serverless::Function
     Properties:

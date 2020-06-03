@@ -29,15 +29,15 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         run: |
           mkdir -p $HOME/.aws
-          printf '[default]\naws_access_key_id=${{ secrets.DEVELOP_AWS_ACCESS_KEY_ID }}\naws_secret_access_key=${{ secrets.DEVELOP_AWS_SECRET_ACCESS_KEY }}\n' > $HOME/.aws/credentials
-          ENVIRONMENT=develop make deploy
+          printf '[default]\naws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID_DEV }}\naws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}\n' > $HOME/.aws/credentials
+          ENVIRONMENT=development make deploy
         env:
           AWS_DEFAULT_REGION: us-east-1
       - name: Deploy to Staging
         if: github.ref == 'refs/heads/staging'
         run: |
           mkdir -p $HOME/.aws
-          printf '[default]\naws_access_key_id=${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}\naws_secret_access_key=${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}\n' > $HOME/.aws/credentials
+          printf '[default]\naws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID_STG }}\naws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY_STG }}\n' > $HOME/.aws/credentials
           ENVIRONMENT=staging make deploy
         env:
           AWS_DEFAULT_REGION: us-east-1
@@ -45,7 +45,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           mkdir -p $HOME/.aws
-          printf '[default]\naws_access_key_id=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}\naws_secret_access_key=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}\n' > $HOME/.aws/credentials
+          printf '[default]\naws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID_PRD }}\naws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY_PRD }}\n' > $HOME/.aws/credentials
           ENVIRONMENT=production make deploy
         env:
           AWS_DEFAULT_REGION: us-east-1
