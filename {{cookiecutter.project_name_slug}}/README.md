@@ -54,7 +54,7 @@ $ make ci
 
 # Format code
 $ make format
- 
+
 # Run Local server
 $ make serve
 

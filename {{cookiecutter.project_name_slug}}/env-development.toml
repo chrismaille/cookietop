@@ -11,4 +11,3 @@ endpoint = ""
 
 [cors]
 allow_origin = "*"
-
