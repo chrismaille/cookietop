@@ -1,0 +1,32 @@
+{
+  "Comment": "Demo Machine for {{cookiecutter.project_name}} Project",
+  "StartAt": "Find {{cookiecutter.model}}",
+  "States": {
+    "Find {{cookiecutter.model}}": {
+      "Type": "Task",
+      "Resource": "${Find{{cookiecutter.model_name_camel}}Arn}",
+      "Next": "Mark Success",
+      "Retry": [
+        {
+          "ErrorEquals": ["ReadTimeout", "Timeout", "States.Timeout", "Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "Mark Fail",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "Mark Fail": {
+      "Type": "Failure"
+    },
+    "Mark Success": {
+      "Type": "Succeed"
+    }
+  }
+}

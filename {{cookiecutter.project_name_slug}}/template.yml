@@ -1,0 +1,366 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: {{ cookiecutter.project_description }}
+
+Globals:
+  Function:
+    Runtime: python{{ cookiecutter.python_version }}
+    # Timeout: 3  # Default value
+    # MemorySize: 128  # Default value
+    Tracing: Active
+    Layers:
+      - Ref: {{cookiecutter.project_name_camel}}DepLayer
+    Environment:
+      Variables:
+        # Use file local.json to override these values in sam local start-api
+        {% raw %}
+        ENVIRONMENT: '{{resolve:ssm:CurrentEnvironment:1}}'
+        LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Logs/Level:1}}'
+        SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Endpoints/sentry:1}}'{% endraw %}
+        DATABASE_NOSQL_TABLE_NAME: "{{cookiecutter.model_name_slug}}-{% raw %}{{resolve:ssm:CurrentEnvironment:1}}{% endraw %}-{{ cookiecutter.model_name_camel }}Document"
+        DEBUG: 'false'
+  Api:
+    Cors:
+      AllowOrigin: "'*'"
+      AllowMethods: "'OPTIONS,POST,GET,DELETE'"
+      AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Authorization'"
+
+Resources:
+  # API Gateway Handlers
+  HealthCheck:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-HealthCheck
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.handlers.health.health_check
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        GetHealth:
+          Type: Api
+          Properties:
+            Path: /health
+            Auth:
+              Authorizer: NONE
+            Method: get
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+  Create{{cookiecutter.model_name_camel}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Create{{cookiecutter.model_name_camel}}
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.handlers.create_{{cookiecutter.model_name_slug}}.create
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Post{{cookiecutter.model_name_camel}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.model_name_slug}}s
+            Method: post
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+  Retrieve{{cookiecutter.model_name_camel}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Retrieve{{cookiecutter.model_name_camel}}
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.handlers.retrieve_{{cookiecutter.model_name_slug}}.retrieve
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Retrieve{{cookiecutter.model_name_camel}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.model_name_slug}}s/{uuid}
+            Method: get
+            RequestParameters:
+              method.request.path.uuid:
+                Required: true
+                Caching: false
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+  Update{{cookiecutter.model_name_camel}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Update{{cookiecutter.model_name_camel}}
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.handlers.update_{{cookiecutter.model_name_slug}}.update
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Update{{cookiecutter.model_name_camel}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.model_name_slug}}s/{uuid}
+            Method: put
+            RequestParameters:
+              method.request.path.uuid:
+                Required: true
+                Caching: false
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+  Delete{{cookiecutter.model_name_camel}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Delete{{cookiecutter.model_name_camel}}
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.handlers.delete_{{cookiecutter.model_name_slug}}.delete
+      Policies:
+        - AWSLambdaFullAccess
+      Events:
+        Delete{{cookiecutter.model_name_camel}}:
+          Type: Api
+          Properties:
+            Path: /{{cookiecutter.model_name_slug}}s/{uuid}
+            Method: delete
+            RequestParameters:
+              method.request.path.uuid:
+                Required: true
+                Caching: false
+            RestApiId:
+              Ref: {{cookiecutter.project_name_camel}}Api
+
+  {% if cookiecutter.add_step_functions == "yes" %}
+  StartStepMachine:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-StartDemoMachine
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.handlers.start_demo_machine.start_machine
+      Policies:
+        - AWSLambdaFullAccess
+      Role: !GetAtt [ LambdaHandleStepMachineRole , Arn ]
+      Environment:
+        Variables:
+          STEP_MACHINE_NAME: !GetAtt [ {{cookiecutter.model_name_camel}}DemoMachine , Name ]
+
+  # Step Functions Handlers
+  Find{{cookiecutter.model_name_camel}}Step:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-StepFunction-Find{{cookiecutter.model_name_camel}}Step
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: application.machines.demo.find_{{cookiecutter.model_name_slug}}_step.find_step
+      Policies:
+        - AWSLambdaFullAccess
+      Role: !GetAtt [ LambdaExecutionRole, Arn ]
+
+  # Step Function Machine
+  {{cookiecutter.model_name_camel}}DemoMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      StateMachineName: {{cookiecutter.model_name_camel}}-CreateMachineState
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt [ {{cookiecutter.model_name_camel}}CreateMachineLogGroup, Arn ]
+        IncludeExecutionData: true
+        Level: ALL
+      RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
+      StateMachineType: "EXPRESS"
+      DefinitionUri: state_machine/demo_machine.asl.json
+      DefinitionSubstitutions:
+        Find{{cookiecutter.model_name_camel}}Arn: !GetAtt Find{{cookiecutter.model_name_camel}}Step.Arn
+
+  # Step Function Log Group
+  {{cookiecutter.model_name_camel}}CreateMachineLogGroup:
+    Type: "AWS::Logs::LogGroup"
+    Properties:
+      RetentionInDays: 1
+  {% endif %}
+  # Lambda Layer Configuration
+  {{cookiecutter.project_name_camel}}DepLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: sam-{{cookiecutter.model_name_slug}}-dependencies
+      Description: Dependencies for sam app [{{cookiecutter.model_name_slug}}]
+      ContentUri: dependencies
+      CompatibleRuntimes:
+        - python3.7
+      LicenseInfo: 'MIT'
+
+  # Api Gateway Configuration
+  {{cookiecutter.project_name_camel}}Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: {{cookiecutter.project_name_camel}}Api
+      OpenApiVersion: "3.0.3"
+      TracingEnabled: true
+      StageName: v1
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: False
+        DefaultAuthorizer: RequestLambdaAuthorizer
+        Authorizers:
+          RequestLambdaAuthorizer:
+            FunctionArn:
+              Fn::ImportValue: profile-authorizer-arn
+            Identity:
+              ReauthorizeEvery: 300
+      GatewayResponses:
+        DEFAULT_4XX:
+          StatusCode: 400
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        DEFAULT_5XX:
+          StatusCode: 500
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        UNAUTHORIZED:
+          StatusCode: 401
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+        ACCESS_DENIED:
+          StatusCode: 403
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+
+  # DynamoDB Table
+  {{cookiecutter.model_name_camel}}Document:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: "{{cookiecutter.project_name_slug}}-{% raw %}{{resolve:ssm:CurrentEnvironment:1}}{% endraw %}-{{ cookiecutter.model_name_camel }}Document"
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      AttributeDefinitions:
+        - AttributeName: uuid
+          AttributeType: S
+        - AttributeName: created_at
+          AttributeType: S
+      # Good reads for Partition and Sort keys:
+      # https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+      # https://aws.amazon.com/pt/blogs/database/choosing-the-right-dynamodb-partition-key/
+      KeySchema:
+        - AttributeName: uuid
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: search_by_creation_date
+          KeySchema:
+            - AttributeName: created_at
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  # IAM Roles
+  LambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: AccessXRayFromLambda
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "xray:PutTraceSegments"
+                  - "xray:PutTelemetryRecords"
+                Effect: Allow
+                Resource: "*"
+        - PolicyName: LambdaWriteLogs
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Effect: Allow
+                Resource: "*"
+        - PolicyName: AccessDynamoDBFromLambda
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "dynamodb:Query"
+                  - "dynamodb:Scan"
+                  - "dynamodb:GetItem"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:UpdateItem"
+                  - "dynamodb:DeleteItem"
+                  - "dynamodb:DescribeTable"
+                Effect: Allow
+                Resource: "*"
+  {% if cookiecutter.add_step_functions == "yes" %}
+  StatesExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: HandleSQSMessages
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "sqs:ReceiveMessage"
+                  - "sqs:DeleteMessage"
+                  - "sqs:GetQueueAttributes"
+                Effect: Allow
+                Resource: "*"
+        - PolicyName: StatesExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource: "*"
+        - PolicyName: StatesAccessLogPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogDelivery"
+                  - "logs:GetLogDelivery"
+                  - "logs:UpdateLogDelivery"
+                  - "logs:DeleteLogDelivery"
+                  - "logs:ListLogDeliveries"
+                  - "logs:PutResourcePolicy"
+                  - "logs:DescribeResourcePolicies"
+                  - "logs:DescribeLogGroups"
+                Resource: "*"
+
+  LambdaHandleStepMachineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: HandleStateMachinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "states:ListStateMachines"
+                  - "states:StartExecution"
+                Effect: Allow
+                Resource: "arn:aws:states:*:*:*"
+{% endif %}

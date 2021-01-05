@@ -1,3 +1,0 @@
-default_context:
-  database: None
-  add_step_functions: no

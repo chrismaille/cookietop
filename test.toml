@@ -2,11 +2,6 @@ use_cookie_path = true
 
 [logger]
 level = "DEBUG"
-use_json_format = false
-
-[database.sql]
-url = "postgres://noverde:noverde@localhost/noverde_test_project_develop"
-echo = true
 
 [database.nosql]
 table_name = "cookie_test"
@@ -18,6 +13,3 @@ allow_origin = "*"
 
 [sentry]
 endpoint = ""
-
-[noverde.mydomain.settings]
-active = true

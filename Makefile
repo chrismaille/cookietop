@@ -1,5 +1,4 @@
-export PYTHONPATH			:= $(PWD)/noverde_test_project:$(PWD)/noverde_test_project/noverde_test_project:$(PWD)/unit_tests
-export COOKIECUTTER_CONFIG	?= ./cookie_both.yml
+export PYTHONPATH			:= $(PWD)/my_test_microservice:$(PWD)/my_test_microservice/my_test_microservice:$(PWD)/unit_tests
 
 first_install:
 	@git flow init -d
@@ -12,54 +11,34 @@ install:
 
 cookie:
 	@echo Running Cookiecutter...
-	@rm -rf ./noverde_test_project
+	@rm -rf ./my_test_microservice
 	@poetry run cookiecutter --no-input .
 
 test: cookie
-	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_slug}}
+	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_name_slug}}
 
 ci: cookie
-	@poetry run pytest --disable-warnings --flake8 --black --mypy --ignore=./{{cookiecutter.project_slug}} --ignore=alembic --ignore=migrations --ignore=hooks
+	@poetry run pytest --disable-warnings --flake8 --black --mypy --ignore=./{{cookiecutter.project_name_slug}} --ignore=hooks
 
 watch: cookie
-	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_slug}}
+	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_name_slug}}
 
 format:
 	@poetry run black .
 
-reload:
-	@echo Creating new test project on folder 'noverde_test_project' ...
-	@rm -rf ../noverde_test_project
+test_project:
+	@echo Creating new test project on folder 'my_test_microservice' ...
+	@cp -rf ../my_test_microservice/.idea /tmp/.idea 2>/dev/null || :
+	@rm -rf ../my_test_microservice
 	@poetry run cookiecutter --no-input . -o ..
 	@echo Removing test project virtualenv ...
-	@cd ../noverde_test_project && poetry env remove 3.7
-
-.PHONY: create_db
-# Create Database
-createdb:
-	@echo "Creating database cookiecutter_develop..."
-	@psql postgres -c "DROP DATABASE IF EXISTS cookiecutter_develop;"
-	@sleep 1
-	@psql postgres -c "CREATE DATABASE cookiecutter_develop;"
-
-.PHONY: revision
-# Create new Alembic Migration
-# Usage: make revision message="foo"
-revision:
-	@mkdir -p ./migrations/versions
-	@poetry run alembic revision --autogenerate -m "$(message)"
-
-.PHONY: migrate
-# Run Alembic Migrations
-migrate:
-	@poetry run alembic upgrade head
+	@cd ../my_test_microservice
+	@poetry env remove 3.8 /tmp/.idea 2>/dev/null || :
+	@cp -rf ../tmp/.idea /my_test_microservice/.idea /tmp/.idea 2>/dev/null || :
+	@poetry install
+	@git init && git add . && git commit -m "first commit"
 
 .PHONY: dynamodb
 # Run local DynamoDB
 dynamodb:
 	@docker-compose up -d dynamodb
-
-.PHONY: test_full_ci
-# Run make ci for all database options
-test_full_ci:
-	./full_ci_tests.sh

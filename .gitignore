@@ -133,4 +133,4 @@ dmypy.json
 .vscode/
 .idea/
 
-noverde_test_project/
+my_test_microservice/

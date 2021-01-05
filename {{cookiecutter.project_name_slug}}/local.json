@@ -1,0 +1,37 @@
+{
+  "HealthCheck": {
+    "ENVIRONMENT": "development",
+    "DEBUG": "false",
+    "LOGGER_LEVEL": "DEBUG",
+    "SENTRY_ENDPOINT": null,
+    "DATABASE_NOSQL_URL": "http://dynamodb:8000"
+  },
+  "Create{{cookiecutter.model_name_camel}}": {
+    "ENVIRONMENT": "development",
+    "DEBUG": "false",
+    "LOGGER_LEVEL": "DEBUG",
+    "SENTRY_ENDPOINT": null,
+    "DATABASE_NOSQL_URL": "http://dynamodb:8000"
+  },
+  "Update{{cookiecutter.model_name_camel}}": {
+    "ENVIRONMENT": "development",
+    "DEBUG": "false",
+    "LOGGER_LEVEL": "DEBUG",
+    "SENTRY_ENDPOINT": null,
+    "DATABASE_NOSQL_URL": "http://dynamodb:8000"
+  },
+  "Retrieve{{cookiecutter.model_name_camel}}": {
+    "ENVIRONMENT": "development",
+    "DEBUG": "false",
+    "LOGGER_LEVEL": "DEBUG",
+    "SENTRY_ENDPOINT": null,
+    "DATABASE_NOSQL_URL": "http://dynamodb:8000"
+  },
+  "Delete{{cookiecutter.model_name_camel}}": {
+    "ENVIRONMENT": "development",
+    "DEBUG": "false",
+    "LOGGER_LEVEL": "DEBUG",
+    "SENTRY_ENDPOINT": null,
+    "DATABASE_NOSQL_URL": "http://dynamodb:8000"
+  }
+}

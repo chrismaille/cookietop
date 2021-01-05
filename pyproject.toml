@@ -6,7 +6,7 @@ config_file_extension = "TOML"
 addopts = '--pydocstyle'
 
 [tool.black]
-target-version = ['py37']
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 (
@@ -23,39 +23,34 @@ exclude = '''
     | buck-out
     | build
     | dist
-    | alembic
     | node_modules
   )/
 )
 '''
 
 [tool.poetry]
-name = "noverde-cookiecutter"
+name = "cookietop"
 version = "0.1.0"
 description = "This project contains all boilerplate you need to create a new microservice."
-authors = ["Noverde <devs@noverde.com.br>"]
+authors = ["Chris Maillefaud <chrismaillefaud@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 arrow = "*"
 aws_lambda_context = "*"
 loguru = "*"
 marshmallow = "*"
 marshmallow_enum = "*"
-marshmallow-sqlalchemy = "*"
 marshmallow-pynamo-db = "*"
-python-json-logger = "*"
 pynamodb = "*"
 pynamodb-attributes = "*"
-psycopg2 = "*"
 sentry-sdk = "*"
-SQLAlchemy = "*"
 stela = "*"
 
 [tool.poetry.dev-dependencies]
-alembic = "*"
 flake8 = "*"
-aws-sam-cli = {version="*", markers="platform_system != 'Windows'"}
+aws-sam-cli = {version=">=0.52", markers="platform_system != 'Windows'"}
+boto3-stubs = "*"
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"
 freezegun = "*"
@@ -67,7 +62,6 @@ pytest-flake8 = "*"
 pytest-freezegun = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
-pytest-postgresql = "*"
 pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"
