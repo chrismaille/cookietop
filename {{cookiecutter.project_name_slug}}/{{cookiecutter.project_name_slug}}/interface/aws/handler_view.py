@@ -22,8 +22,10 @@ from pynamodb.exceptions import DoesNotExist
 initialize_sentry()
 
 
-def handler_view(
-    schema: Optional[Type[Schema]] = None, format_response: bool = True
+def view(
+    schema: Optional[Type[Schema]] = None,
+    format_response: bool = True,
+    raise_before_view: bool = True,
 ) -> Any:
     """Configure Handler View Decorator.
 
@@ -36,6 +38,7 @@ def handler_view(
 
     :param schema: Marshmallow Schema for POST
     :param format_response: Format response before send?
+    :param raise_before_view: Raise validation errors before call function?
     :return: Dict
     """
 
@@ -51,6 +54,10 @@ def handler_view(
                     event_data=event, context_data=context, schema=schema
                 )
                 request = sherlock.inspect()
+
+                # Raise before view if validation errors
+                if request.validation_errors and raise_before_view:
+                    raise ValidationError(request.validation_errors)
 
                 # Call Handler
                 args = (request,)

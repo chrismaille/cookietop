@@ -37,7 +37,7 @@ $ make ci
 ### Command List
 
 ```shell
-# Install application (first time)
+# First Install application
 $ make first_install
 
 # (Re)install application
@@ -58,7 +58,7 @@ $ make format
 # Run Local server
 $ make serve
 
-# Manual Deploy (check your permissions first)
+# Manual Deploy (check your AWS permissions first)
 $ make deploy
 ```
 

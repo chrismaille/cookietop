@@ -27,19 +27,18 @@ format:
 	@poetry run black .
 
 test_project:
-	@echo Creating new test project on folder 'my_test_microservice' ...
+	@echo ">>> Creating new test project on folder 'my_test_microservice' ..."
 	@cp -rf ../my_test_microservice/.idea /tmp/.idea 2>/dev/null || :
 	@rm -rf ../my_test_microservice
-	@echo Running Cookiecutter ...
+	@echo ">>> Running Cookiecutter ..."
 	@poetry run cookiecutter --no-input . -o ..
-	@echo Removing test project virtualenv ...
-	@cd ../my_test_microservice
-	@poetry env remove 3.8 /tmp/.idea 2>/dev/null || :
+	@echo ">>> Removing test project virtualenv ..."
+	@cd ../my_test_microservice && poetry env remove 3.8 2>/dev/null || :
 	@cp -rf ../tmp/.idea /my_test_microservice/.idea /tmp/.idea 2>/dev/null || :
-	@echo Install Dependencies ...
-	@poetry install
-	@echo Running Git ...
-	@git init && git add . && git commit -m "first commit"
+	@echo ">>> Install Dependencies ..."
+	@cd ../my_test_microservice && poetry install
+	@echo ">>> Running Git ..."
+	@cd ../my_test_microservice && git init && git add . && git commit -m "first commit"
 
 .PHONY: dynamodb
 # Run local DynamoDB

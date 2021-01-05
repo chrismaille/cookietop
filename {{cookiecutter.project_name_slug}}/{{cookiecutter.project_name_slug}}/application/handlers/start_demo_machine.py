@@ -4,12 +4,12 @@ from loguru import logger
 
 from application.types.handler_response import HandlerResponse
 from application.types.status_code import StatusCode
-from interface.aws.handler_view import handler_view
+from interface.aws.handler_view import view
 from interface.aws.request import Request
 from interface.aws.step_functions import StepMachineService
 
 
-@handler_view()
+@view()
 def start_machine(request: Request, **kwargs: Any) -> HandlerResponse:
     """Start Step Machine using request payload.
 

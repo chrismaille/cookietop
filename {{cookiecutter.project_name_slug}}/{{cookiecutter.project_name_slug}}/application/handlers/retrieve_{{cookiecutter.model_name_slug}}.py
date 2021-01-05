@@ -1,6 +1,6 @@
 from loguru import logger
 
-from interface.aws.handler_view import handler_view
+from interface.aws.handler_view import view
 from interface.aws.request import Request
 from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
@@ -14,7 +14,7 @@ from application.schemas.{{cookiecutter.model_name_slug}}_document_schema import
 )
 
 
-@handler_view()
+@view()
 def retrieve(request: Request, **kwargs: Any) -> HandlerResponse:
     """Retrieve {{cookiecutter.model_name_camel}}.
 

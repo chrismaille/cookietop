@@ -1,6 +1,6 @@
 from loguru import logger
 
-from interface.aws.handler_view import handler_view
+from interface.aws.handler_view import view
 from interface.aws.request import Request
 from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
@@ -11,11 +11,11 @@ from enterprise.models.{{cookiecutter.model_name_slug}}_document import (
 )
 
 
-@handler_view()
+@view()
 def delete(request: Request, **kwargs: Any) -> HandlerResponse:
     """Delete {{cookiecutter.model_name_camel}}.
 
-    :param: request: Sherlock instance
+    :param: request: Request instance
     :return: HandlerResponse Dict
     """
     logger.info(f"UUID received: {request.path['uuid']}")

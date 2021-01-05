@@ -1,6 +1,6 @@
 from loguru import logger
 
-from interface.aws.handler_view import handler_view
+from interface.aws.handler_view import view
 from interface.aws.request import Request
 from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
@@ -14,7 +14,7 @@ from application.schemas.{{cookiecutter.model_name_slug}}_document_schema import
 )
 
 
-@handler_view()
+@view()
 def update(request: Request, **kwargs: Any) -> HandlerResponse:
     """Update existing {{cookiecutter.model_name_camel}}.
 
@@ -32,7 +32,7 @@ def update(request: Request, **kwargs: Any) -> HandlerResponse:
     current_data = {{cookiecutter.model_name_camel}}DocumentSchema().dump(current_instance)
     logger.debug(f"Current data is: {current_data}")
 
-    # Validate and Update Data:
+    # Update Data:
     current_data.update(request.body)
     logger.debug(f"New data is: {current_data}")
     instance = {{cookiecutter.model_name_camel}}DocumentSchema().load(current_data)

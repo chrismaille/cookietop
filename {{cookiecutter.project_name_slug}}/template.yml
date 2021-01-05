@@ -13,7 +13,7 @@ Globals:
     Environment:
       Variables:
         # Use file local.json to override these values in sam local start-api
-        {% raw %}
+{% raw %}
         ENVIRONMENT: '{{resolve:ssm:CurrentEnvironment:1}}'
         LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Logs/Level:1}}'
         SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Endpoints/sentry:1}}'{% endraw %}
@@ -122,7 +122,7 @@ Resources:
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
 
-  {% if cookiecutter.add_step_functions == "yes" %}
+{% if cookiecutter.add_step_functions == "yes" %}
   StartStepMachine:
     Type: AWS::Serverless::Function
     Properties:
@@ -169,7 +169,7 @@ Resources:
     Type: "AWS::Logs::LogGroup"
     Properties:
       RetentionInDays: 1
-  {% endif %}
+{% endif %}
   # Lambda Layer Configuration
   {{cookiecutter.project_name_camel}}DepLayer:
     Type: AWS::Serverless::LayerVersion
@@ -296,7 +296,7 @@ Resources:
                   - "dynamodb:DescribeTable"
                 Effect: Allow
                 Resource: "*"
-  {% if cookiecutter.add_step_functions == "yes" %}
+{% if cookiecutter.add_step_functions == "yes" %}
   StatesExecutionRole:
     Type: "AWS::IAM::Role"
     Properties:

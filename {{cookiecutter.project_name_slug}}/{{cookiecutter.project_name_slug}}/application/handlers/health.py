@@ -2,13 +2,13 @@ from typing import Any
 
 from stela import settings
 
-from interface.aws.handler_view import handler_view
+from interface.aws.handler_view import view
 from interface.aws.request import Request
 from application.types.status_code import StatusCode
 from application.types.handler_response import HandlerResponse
 
 
-@handler_view()
+@view()
 def health_check(request: Request, **kwargs: Any) -> HandlerResponse:
     """Return application's health status.
 

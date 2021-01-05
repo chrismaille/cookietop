@@ -12,5 +12,5 @@ class HandlerResponse(TypedDict):
     This is similar to Typescript interface for the dict object.
     """
 
-    message: Dict[Any, Any]
+    message: Optional[Dict[Any, Any]]
     status_code: Optional[StatusCode]

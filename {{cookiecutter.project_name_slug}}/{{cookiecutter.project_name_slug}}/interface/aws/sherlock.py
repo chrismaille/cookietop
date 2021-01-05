@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from typing import Dict, Any, Optional, Type
+from typing import Dict, Any, Optional, Type, List
 
 from aws_lambda_context import LambdaContext
 from loguru import logger
@@ -11,30 +11,21 @@ from interface.aws.request import Request
 
 @dataclass
 class Sherlock:
-    """Do the validation of data schema.
-
-    Inputs are:
-
-        - event_data: receives a dict of any type (int, obj, list, float).
-        - schema: receives an optional schema.
-        - validated_data: receives an optional data of any type
-          (obj, list, float, int).
-        - body_data: receives an optional data of dict.
-    """
+    """Converts AWS request data in a Request-like object."""
 
     event_data: Dict[Any, Any]
     context_data: LambdaContext
     schema: Optional[Type[Schema]] = None
-    validated_data: Optional[Any] = None
+    validation_errors: Optional[Dict[str, List[str]]] = None
     body_data: Optional[Dict[Any, Any]] = None
     authorizer: Optional[Dict[Any, Any]] = None
 
-    def get_validated_data_from_schema(self) -> None:
+    def validate_body_data(self) -> None:
         """Do the validation of data from schema, if schema and body have info."""
         request_schema = self.get_schema()
         if self.body_data and request_schema:
-            logger.debug(f"Start creating object using {request_schema.__name__}...")
-            self.validated_data = request_schema().load(self.body_data)
+            logger.debug(f"Start validating data using {request_schema.__name__}...")
+            self.validation_errors = request_schema().validate(self.body_data)
 
     def get_body(self) -> None:
         """Do decode content from body, if body have info."""
@@ -65,11 +56,11 @@ class Sherlock:
         :return: Request instance
         """
         self.get_body()
-        self.get_validated_data_from_schema()
+        self.validate_body_data()
         self.get_authorizer()
 
         return Request(
-            validated_data=self.validated_data,
+            validation_errors=self.validation_errors,
             original_body=self.event_data.get("body"),
             body=self.body_data,
             aws_event=self.event_data,
@@ -77,4 +68,5 @@ class Sherlock:
             path=self.event_data.get("pathParameters"),
             headers=self.event_data.get("headers"),
             authorizer=self.authorizer,
+            schema=self.schema,
         )

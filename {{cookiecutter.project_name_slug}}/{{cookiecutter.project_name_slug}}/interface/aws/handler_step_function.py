@@ -15,7 +15,7 @@ from interface.initializers.sentry import initialize_sentry
 initialize_sentry()
 
 
-def handler_step(schema: Optional[Type[Schema]] = None) -> Any:
+def step(schema: Optional[Type[Schema]] = None) -> Any:
     """Configure Handler Step Functions Decorator.
 
     Every step receives the same Event, if you
