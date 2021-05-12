@@ -13,7 +13,7 @@ cookiecutter.project_name_slug }}/actions)
 
 ### Requirements
 
-* [Python3.8](https://www.python.org)
+* [Python{{ cookiecutter.python_version }}](https://www.python.org)
 * [AWS CLI](https://aws.amazon.com/cli/)
 * [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 * [Docker](https://www.docker.com)
