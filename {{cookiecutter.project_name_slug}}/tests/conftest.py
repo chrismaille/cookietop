@@ -9,7 +9,7 @@ from uuid import UUID, uuid4
 from pathlib import Path
 from typing import Any, Dict
 
-from enterprise.models.{{cookiecutter.model_name_slug}}_document import {{cookiecutter.model_name_camel}}Document
+from models import {{cookiecutter.model_name_camel}}Document
 
 
 @pytest.fixture(autouse=True)

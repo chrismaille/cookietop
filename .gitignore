@@ -130,7 +130,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-.vscode/
 .idea/
 
 my_test_microservice/
+poetry.lock
+tmp_project/

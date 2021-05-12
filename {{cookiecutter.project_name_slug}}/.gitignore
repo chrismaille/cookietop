@@ -148,13 +148,14 @@ requirements.txt
 .src/
 
 .aws-sam/
-{{cookiecutter.model_name_slug}}/*.toml
-{{cookiecutter.model_name_slug}}/template.yml
-{{cookiecutter.model_name_slug}}/requirements.txt
+{{cookiecutter.project_name_slug}}/*.toml
+{{cookiecutter.project_name_slug}}/template.yml
+{{cookiecutter.project_name_slug}}/requirements.txt
 packaged.yaml
 
-.vscode/
 .idea/
 
 node_modules/
 dependencies/
+
+app___vsctk___template.yaml

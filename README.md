@@ -22,20 +22,23 @@ microservice service with the following features:
 * Complete **Github Actions** configuration
 * Production ready with **Poetry**, **Black**, **MyPy**, **Flake**,
   **Docker** and **Pre-Commit** pre-configured.
+* VSCode Remote Development support
+* PyCharm Run/Debug support
 
-### How to use
 
 ```shell
-# Install Cookiecutter if you dont have.
-$ pip install -U --user cookiecutter
-# or sudo apt install cookiecutter
+# Clone this project
+$ git clone https://github.com/access55/django_cookie.git
 
-# Create your new Microservice
-$ python3 -m cookiecutter git@github.com:chrismaille/cookietop.git
+# Install project
+$ make install
 
-# Install and Test new Microservice
-$ make first_install
-$ make test
+# Run `make project` informing your target folder
+$ TARGET=/path/to/my_projects make project
+
+# Run `make config_project`
+$ cd /path/to/my_projects/new_project
+$ make first_config
 ```
 
 ### Cookietop Options
@@ -54,34 +57,4 @@ $ make test
 | Model Name Slug      | sneak_case for Model Name, which will used in modules and definitions      | my_model                   |
 | Add Step Functions   | Add Step Functions example code                                            | yes                        |
 
-### Developing the Microservice Project inside this Cookietop
-
-If you need to develop the microservice project inside this
-cookiecutter, the easiest way is creating a new Test Project and develop
-in there. For this, you can use this command:
-
-```shell
-$ make test_project
-```
-
-This command will create a directory called "my_test_microservice" in
-parent folder, with a project generated using this template, and with
-default options found in file "cookiecutter.json".
-
-### Makefile commands
-
-```shell
-# Run tests once (stop a first error)
-$ make test
-
-# Run tests in watch mode
-$ make watch
-
-# Format code
-$ make format
-
-# Run all CI tests
-$ make ci
-
-```
 

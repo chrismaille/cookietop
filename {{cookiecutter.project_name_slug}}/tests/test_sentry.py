@@ -2,7 +2,8 @@ from unittest.mock import ANY
 
 import pytest
 import toml
-from stela import settings, stela_reload
+from stela import settings
+from stela.utils import stela_reload
 
 from interface.initializers.sentry import initialize_sentry
 
@@ -12,19 +13,19 @@ def before_tests(monkeypatch):
     """Define environment before each test.
 
     This automatic fixture is used at module level:
-        * Before each test: set env SENTRY_ENDPOINT
-        * After each test: remove env SENTRY_ENDPOINT
+        * Before each test: set env PROJECT_SENTRY_DSN
+        * After each test: remove env PROJECT_SENTRY_DSN
 
     """
-    monkeypatch.setenv("SENTRY_ENDPOINT", "https://sentry.com/foo")
+    monkeypatch.setenv("PROJECT_SENTRY_DSN", "https://sentry.com/foo")
     stela_reload()
     yield
-    monkeypatch.delenv("SENTRY_ENDPOINT", raising=False)
+    monkeypatch.delenv("PROJECT_SENTRY_DSN", raising=False)
 
 
 def test_sentry_not_initialized(mocker, monkeypatch):
     """Test if Sentry is not initialized when endpoint is unavailable."""
-    monkeypatch.delenv("SENTRY_ENDPOINT")
+    monkeypatch.delenv("PROJECT_SENTRY_DSN")
     stela_reload()
     sentry_mock = mocker.patch("interface.initializers.sentry.sentry_sdk")
     initialize_sentry()

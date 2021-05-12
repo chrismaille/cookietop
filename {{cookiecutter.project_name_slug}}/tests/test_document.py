@@ -4,7 +4,7 @@ import arrow
 import pytest
 from pynamodb.exceptions import DoesNotExist
 
-from enterprise.models.{{cookiecutter.model_name_slug}}_document import {{cookiecutter.model_name_camel}}Document
+from models import {{cookiecutter.model_name_camel}}Document
 
 
 @pytest.mark.parametrize(

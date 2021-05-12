@@ -1,13 +1,18 @@
 version: "3.3"
 services:
   sam:
-    image: lambda_local/sam-cli-local
+    image: {{ cookiecutter.project_name_slug }}:dev
     build: .
+    env_file:
+      - .env
+    depends_on:
+      - dynamodb
+      - stepfunctions
     ports:
-      - "3001:3001"
+      - "3001:3000"
     volumes:
+      - .:/app
       - .:/var/opt:ro
-      - $HOME/.aws:/root/.aws:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
   stepfunctions:
     image: amazon/aws-stepfunctions-local

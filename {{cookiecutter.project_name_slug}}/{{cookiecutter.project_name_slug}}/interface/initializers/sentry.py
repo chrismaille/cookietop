@@ -13,11 +13,11 @@ def initialize_sentry() -> None:
     """Initialize Sentry monitoring.
 
     To enable Sentry, please define
-    settings "sentry.endpoint" or
+    settings "project.sentry_dsn" or
     environment SENTRY_ENDPOINT.
 
     """
-    endpoint = settings["sentry.endpoint"]
+    endpoint = settings["project.sentry_dsn"]
     if not endpoint:
         logger.warning("Sentry not initialized.")
         return
