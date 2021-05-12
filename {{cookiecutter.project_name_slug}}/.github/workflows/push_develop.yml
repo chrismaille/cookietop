@@ -1,0 +1,38 @@
+name: deploy
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  # Deploy for Development
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy (Develop)
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1.1.1
+        with:
+          python-version: {{ cookiecutter.python_version }}
+      - name: Setup Poetry
+        uses: Gr1N/setup-poetry@v1
+      - name: Deploy to Develop
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          make deploy
+        env:
+          ENVIRONMENT: development
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: {% raw %}${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}{% endraw %}
+  # Post-Deploy for Development
+  post_deploy_develop:
+    runs-on: ubuntu-latest
+    name: Post-Deploy (Develop)
+    needs: [ deploy_develop ]
+    steps:
+      - name: Run Health-Check
+        uses: wei/curl@master
+        with:
+          args: '-f --location --request OPTIONS {% raw %}${{secrets.SERVICE_URL_DEVELOP}}{% endraw %}/api/health -H "accept: application/json" -H "Origin: http://example.com"'
