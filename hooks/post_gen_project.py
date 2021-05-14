@@ -14,7 +14,7 @@ manifest = {
         "{{cookiecutter.project_name_slug}}/interface/aws/handler_step_function.py",
         "{{cookiecutter.project_name_slug}}/application/machines",
         "{{cookiecutter.project_name_slug}}/application/handlers/start_demo_machine.py",
-        "{{cookiecutter.project_name_slug}}/state_machine",
+        "state_machine",
     ],
 }
 

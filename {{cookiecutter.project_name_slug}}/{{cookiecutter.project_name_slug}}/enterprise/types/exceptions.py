@@ -1,2 +1,0 @@
-class EnterpriseValidationErrors(Exception):
-    pass

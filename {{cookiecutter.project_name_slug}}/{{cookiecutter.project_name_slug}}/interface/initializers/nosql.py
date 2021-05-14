@@ -6,10 +6,10 @@ from typing import Optional
 from loguru import logger
 from pynamodb.connection import Connection  # type: ignore
 from pynamodb.models import Model
-from pynamodb.attributes import UTCDateTimeAttribute
+from pynamodb.attributes import UTCDateTimeAttribute, DiscriminatorAttribute
 from stela import settings
 
-from enterprise.helpers.get_now import get_now
+from helpers.get_now import get_time_now
 
 test_environment = "pytest" in sys.modules
 if test_environment:
@@ -23,7 +23,7 @@ def get_table_name() -> str:
 
     :return: String
     """
-    table_name = settings["database.nosql.table_name"]
+    table_name = settings["project.table_name"]
     developing = get_nosql_database_url() is not None
     return "{{cookiecutter.model_name_slug}}_development" if developing else table_name
 
@@ -73,26 +73,31 @@ class Base(Model):
     to PynamoDB Base class.
     """
 
-    created_at = UTCDateTimeAttribute(default=get_now)
-    updated_at = UTCDateTimeAttribute(default=get_now)
+    created_at = UTCDateTimeAttribute(default=get_time_now)
+    updated_at = UTCDateTimeAttribute(default=get_time_now)
+    cls = DiscriminatorAttribute()
 
     def __eq__(self, other):
         return self.uuid == other.uuid  # type: ignore
 
-    def table_exists(self) -> None:
+    @classmethod
+    def table_exists(cls) -> None:
         """Check if Table exists.
 
         Running only in Development.
         :return: None
         """
-        environment = os.getenv("ENVIRONMENT", "development")
-        if environment == "development":
-            if not self.exists():
+        environment = os.getenv("ENVIRONMENT", "develop")
+        logger.debug(
+            f"Check if table {cls.Meta.table_name} on '{environment}' exists..."
+        )
+        if environment == "develop":
+            if not cls.exists():
                 logger.warning(
-                    f"Table {self.Meta.table_name} in {environment} "  # type: ignore
+                    f"Table {cls.Meta.table_name} in {environment} "  # type: ignore
                     f"does not exist. Creating..."
                 )
-                self.create_table(wait=True)
+                cls.create_table(wait=True)
 
     def save(self, **kwargs):
         """Validate before save DynamoDB."""
@@ -122,6 +127,6 @@ class Base(Model):
     class Meta:
         table_name = get_table_name()
         host = get_nosql_database_url()
-        read_capacity_units = settings["database.nosql.capacity.read"]
-        write_capacity_units = settings["database.nosql.capacity.write"]
+        read_capacity_units = settings["project.capacity.read"]
+        write_capacity_units = settings["project.capacity.write"]
         connection = connection

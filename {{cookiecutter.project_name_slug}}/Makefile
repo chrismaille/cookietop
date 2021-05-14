@@ -9,7 +9,11 @@ ARTIFACTS		:= \
 	./{{cookiecutter.project_name_slug}}/.aws-sam \
 	./{{cookiecutter.project_name_slug}}/.pytest_cache \
 	./{{cookiecutter.project_name_slug}}/.coverage \
-	./{{cookiecutter.project_name_slug}}/dependencies
+	./{{cookiecutter.project_name_slug}}/dependencies \
+	./{{cookiecutter.project_name_slug}}/template.yml \
+	./{{cookiecutter.project_name_slug}}/requirements.txt \
+	./{{cookiecutter.project_name_slug}}/pyproject.toml \
+	./app__vsctk__template.yaml
 
 # External variables and his default values
 ENVIRONMENT		?= "development"
@@ -41,15 +45,15 @@ show_config:
 
 .PHONY: build
 # Run SAM build command
+# Need requirements in profile folder for AWS Toolkit plugin works
 build: build_dependencies
 	@rm -rf .aws-sam
-	# Need requirements in profile folder for AWS Toolkit plugin works
-	@poetry export --without-hashes -f requirements.txt -o ./{{cookiecutter.project_name_slug}}/requirements.txt
-	@sam build
+	@poetry export --without-hashes --dev -f requirements.txt -o ./{{cookiecutter.project_name_slug}}/requirements.txt
+	@sam build -u
 
 .PHONY: build_dependencies
 # Build dependencies for SAM operations
-build_dependencies:
+build_dependencies: clean requirements
 	@mkdir -p ./dependencies/python
 	@poetry export --without-hashes -f requirements.txt -o ./dependencies/python/requirements.txt
 	@cp *.toml ./{{cookiecutter.project_name_slug}}
@@ -60,69 +64,84 @@ build_dependencies:
 package: show_config build_dependencies
 	@rm -rf .aws-sam
 	@aws s3api create-bucket --bucket $(S3_BUCKET) 1> /dev/null
-	@poetry run sam package \
+	@sam package \
 		--output-template-file $(PACKAGE_FILE) \
 		--s3-bucket $(S3_BUCKET)
 
 .PHONY: deploy
 # Run `sam deploy` command
 deploy: package
-	@poetry run sam deploy \
+	@sam deploy \
 		--template-file $(PACKAGE_FILE) \
 		--capabilities CAPABILITY_IAM \
 		--stack-name $(STACK_NAME) \
 		--region $(AWS_REGION)
 
-	@rm -f ./{{cookiecutter.project_name_slug}}/env-*.toml
 	@rm -f ./{{cookiecutter.project_name_slug}}/pyproject.toml
 	@rm -f ./{{cookiecutter.project_name_slug}}/packaged.yaml
-
-.PHONY: first_install
-# Runs setup operations for first install
-first_install:
-	@poetry install
-	@poetry run pre-commit install
-	@docker network create lambda-local &
 
 .PHONY: install
 # Install application
 install:
 	@poetry install
+	@poetry run pre-commit install -f
+	@docker network create lambda-local &
 
 .PHONY: serve
 # Runs local API via SAM client
 serve: build_dependencies
-	@rm -rf .aws-sam
-	@poetry run sam local start-api --debug -n local.json --docker-network lambda-local
+	@sam local start-api --host 0.0.0.0 --debug -n local.json --docker-network lambda-local
 
 .PHONY: watch
 # Runs pytest in watch mode
 watch:
-	@poetry run ptw -c -w -n --ignore=dependencies
+	@ptw -c -w -n --ignore=dependencies
 
 .PHONY: test
 # Runs pytest stopping at first error
 test:
-	@poetry run pytest -x  --disable-warnings --ignore=dependencies
+	@pytest -x  --disable-warnings --ignore=dependencies
 
 .PHONY: ci
 # Runs pytest for full testing
 ci:
-	@poetry run pytest --disable-warnings --flake8 --cov=./{{cookiecutter.project_name_slug}} --black --mypy --pydocstyle --ignore=dependencies
+	@pytest --disable-warnings --flake8 --cov=./{{cookiecutter.project_name_slug}} --black --mypy --ignore=dependencies
 
 .PHONY: format
-# Format code using pre-commit and black
+# Format code using Black
 format:
-	@poetry run pre-commit run --all-files
-	@poetry run black .
+	@black .
+
+.PHONY: precommit
+# Run Pre-Commit inside Container.
+pre-commit:
+	@echo "Running Pre-Commit..."
+	@pre-commit install -f
+	@pre-commit run --all
 
 .PHONY: clean
 # Clear created artifacts
 clean:
-	@poetry run pre-commit uninstall
 	@rm -rf $(ARTIFACTS)
 
 .PHONY: dynamodb
 # Run local DynamoDB
 dynamodb:
 	@docker-compose up -d dynamodb
+
+.PHONY: config_project
+# Automate first install
+config_project:
+	@echo ">>> Removing Python {{cookiecutter.python_version}} virtualenv if exists..."
+	@poetry env remove {{cookiecutter.python_version}} 2>/dev/null || :
+	@echo ">>> Install Dependencies ..."
+	@poetry install
+	@echo ">>> Running Git ..."
+	@git init && git add . && git commit -m "chore(cookie): first commit"
+	@echo ">>> Opening VSCode..."
+	@cp local.env .env && code .
+
+.PHONY: update
+# Update poetry.lock
+update:
+	@poetry update

@@ -9,10 +9,10 @@ from sentry_sdk import capture_exception  # type: ignore
 from aws_lambda_context import LambdaContext
 from stela import settings
 
-from enterprise.types.exceptions import EnterpriseValidationErrors
+from helpers.exceptions import EnterpriseValidationErrors
 from interface.aws.sherlock import Sherlock
-from application.types.status_code import StatusCode
-from application.types.handler_response import HandlerResponse
+from helpers.status_code import StatusCode
+from helpers.handler_response import HandlerResponse
 from interface.initializers.sentry import initialize_sentry
 from pynamodb.exceptions import DoesNotExist
 
@@ -47,7 +47,7 @@ def view(
         def wrapper(
             event: Dict[str, Any], context: LambdaContext, *args: Any, **kwargs: Any
         ) -> Any:
-            headers = {"Access-Control-Allow-Origin": settings["cors.allow_origin"]}
+            headers = {"Access-Control-Allow-Origin": settings["project.allow_origin"]}
             try:
                 # Inspect and generate request object.
                 sherlock = Sherlock(

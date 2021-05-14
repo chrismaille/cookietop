@@ -4,17 +4,15 @@ import arrow
 import pytest
 
 from loguru import logger
-from enterprise.helpers.get_uuid import get_uuid
+from helpers.get_uuid import get_uuid
 
-from application.handlers.create_{{cookiecutter.model_name_slug}} import create
-from application.handlers.retrieve_{{cookiecutter.model_name_slug}} import retrieve
-from application.handlers.update_{{cookiecutter.model_name_slug}} import update
-from application.handlers.delete_{{cookiecutter.model_name_slug}} import delete
-from application.schemas.{{cookiecutter.model_name_slug}}_document_schema import (
-    {{cookiecutter.model_name_camel}}DocumentSchema,
-)
+from handlers.create_{{cookiecutter.model_name_slug}} import create
+from handlers.retrieve_{{cookiecutter.model_name_slug}} import retrieve
+from handlers.update_{{cookiecutter.model_name_slug}} import update
+from handlers.delete_{{cookiecutter.model_name_slug}} import delete
+from schemas import {{cookiecutter.model_name_camel}}DocumentSchema
 
-from enterprise.models.{{cookiecutter.model_name_slug}}_document import {{cookiecutter.model_name_camel}}Document
+from models import {{cookiecutter.model_name_camel}}Document
 
 
 @pytest.fixture
@@ -50,8 +48,8 @@ def test_retrieve_{{cookiecutter.model_name_slug}}_document(dynamo_document):
     body = json.loads(response["body"])
     logger.debug(body)
     assert body["data"] == {
-        "created_at": "2020-04-12T12:00:01+00:00",
-        "updated_at": "2020-04-12T12:00:01+00:00",
+        "createdAt": "2020-04-12T12:00:01+00:00",
+        "updatedAt": "2020-04-12T12:00:01+00:00",
         "uuid": str(dynamo_document.uuid),
     }
 

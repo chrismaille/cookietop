@@ -1,6 +1,16 @@
 [tool.stela]
-default_environment = "test"
-config_file_extension = "TOML"
+use_environment_layers = true
+default_environment = "develop"
+show_logs = false
+
+[environment]
+project.log_level = "INFO"
+project.capacity.read = 1
+project.capacity.write = 1
+project.sentry_dsn = ""
+project.allow_origin = "*"
+project.name = "my_test_microservice"
+project.table_name = "MyTestMicroservice-develop-MyModelDocument"
 
 [tool.pytest]
 addopts = '--pydocstyle'
@@ -28,6 +38,15 @@ exclude = '''
 )
 '''
 
+[tool.semantic_release]
+version_variable = [
+    "pyproject.toml:version"
+]
+branch = "main"
+upload_to_pypi = false
+upload_to_release = true
+build_command = "python -m pip install -U poetry && poetry build"
+
 [tool.poetry]
 name = "cookietop"
 version = "0.1.0"
@@ -40,16 +59,19 @@ arrow = "*"
 aws_lambda_context = "*"
 loguru = "*"
 marshmallow = "*"
-marshmallow_enum = "*"
 marshmallow-pynamo-db = "*"
+marshmallow_enum = "*"
 pynamodb = "*"
 pynamodb-attributes = "*"
 sentry-sdk = "*"
 stela = "*"
+typing_extensions = "*"
+stringcase = "*"
+PyJWT = "*"
+cookiecutter = "*"
 
 [tool.poetry.dev-dependencies]
-flake8 = "*"
-aws-sam-cli = {version=">=0.52", markers="platform_system != 'Windows'"}
+boto3 = "*"
 boto3-stubs = "*"
 black = {version = "*", allow-prereleases = true}
 factory_boy = "*"
@@ -62,7 +84,6 @@ pytest-flake8 = "*"
 pytest-freezegun = "*"
 pytest-mock = "*"
 pytest-mypy = "*"
-pytest-pydocstyle = "*"
 pytest-watch = "*"
 pytest-xdist ="*"
 wheel = "*"

@@ -9,13 +9,13 @@ jobs:
         python-version: [3.8]
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.3.4
       - name: Setup Python
-        uses: actions/setup-python@v1.1.1
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: 3.8
       - name: Setup Poetry
-        uses: Gr1N/setup-poetry@v1
+        uses: Gr1N/setup-poetry@v4
       - name: Setup DynamoDB Local
         uses: rrainn/dynamodb-action@v2.0.0
         with:

@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 from aws_lambda_context import LambdaContext
 
-from application.handlers.start_demo_machine import start_machine
+from handlers.start_demo_machine import start_machine
 from interface.aws import step_functions
 
 

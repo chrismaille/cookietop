@@ -15,9 +15,9 @@ Globals:
         # Use file local.json to override these values in sam local start-api
 {% raw %}
         ENVIRONMENT: '{{resolve:ssm:CurrentEnvironment:1}}'
-        LOGGER_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Logs/Level:1}}'
-        SENTRY_ENDPOINT: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Endpoints/sentry:1}}'{% endraw %}
-        DATABASE_NOSQL_TABLE_NAME: "{{cookiecutter.model_name_slug}}-{% raw %}{{resolve:ssm:CurrentEnvironment:1}}{% endraw %}-{{ cookiecutter.model_name_camel }}Document"
+        PROJECT_LOG_LEVEL: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Logs/Level:1}}'
+        PROJECT_SENTRY_DSN: '{{resolve:ssm:/{% endraw %}{{cookiecutter.project_name_camel}}{% raw %}/Endpoints/sentry:1}}'{% endraw %}
+        PROJECT_TABLE_NAME: "{{cookiecutter.project_name_camel}}-{% raw %}{{resolve:ssm:CurrentEnvironment:1}}{% endraw %}-{{ cookiecutter.model_name_camel }}Document"
         DEBUG: 'false'
   Api:
     Cors:
@@ -32,7 +32,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-HealthCheck
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.handlers.health.health_check
+      Handler: handlers.health.health_check
       Policies:
         - AWSLambdaFullAccess
       Events:
@@ -50,7 +50,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Create{{cookiecutter.model_name_camel}}
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.handlers.create_{{cookiecutter.model_name_slug}}.create
+      Handler: handlers.create_{{cookiecutter.model_name_slug}}.create
       Policies:
         - AWSLambdaFullAccess
       Events:
@@ -66,7 +66,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Retrieve{{cookiecutter.model_name_camel}}
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.handlers.retrieve_{{cookiecutter.model_name_slug}}.retrieve
+      Handler: handlers.retrieve_{{cookiecutter.model_name_slug}}.retrieve
       Policies:
         - AWSLambdaFullAccess
       Events:
@@ -86,7 +86,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Update{{cookiecutter.model_name_camel}}
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.handlers.update_{{cookiecutter.model_name_slug}}.update
+      Handler: handlers.update_{{cookiecutter.model_name_slug}}.update
       Policies:
         - AWSLambdaFullAccess
       Events:
@@ -106,7 +106,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Delete{{cookiecutter.model_name_camel}}
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.handlers.delete_{{cookiecutter.model_name_slug}}.delete
+      Handler: handlers.delete_{{cookiecutter.model_name_slug}}.delete
       Policies:
         - AWSLambdaFullAccess
       Events:
@@ -121,6 +121,14 @@ Resources:
                 Caching: false
             RestApiId:
               Ref: {{cookiecutter.project_name_camel}}Api
+  Authorize{{cookiecutter.model_name_camel}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-Authorize{{cookiecutter.model_name_camel}}
+      CodeUri: {{cookiecutter.project_name_slug}}
+      Handler: handlers.authorize_{{cookiecutter.model_name_slug}}.authorize
+      Policies:
+        - AWSLambdaFullAccess
 
 {% if cookiecutter.add_step_functions == "yes" %}
   StartStepMachine:
@@ -128,7 +136,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-ApiGateway-StartDemoMachine
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.handlers.start_demo_machine.start_machine
+      Handler: handlers.start_demo_machine.start_machine
       Policies:
         - AWSLambdaFullAccess
       Role: !GetAtt [ LambdaHandleStepMachineRole , Arn ]
@@ -142,7 +150,7 @@ Resources:
     Properties:
       FunctionName: {{cookiecutter.project_name_camel}}-StepFunction-Find{{cookiecutter.model_name_camel}}Step
       CodeUri: {{cookiecutter.project_name_slug}}
-      Handler: application.machines.demo.find_{{cookiecutter.model_name_slug}}_step.find_step
+      Handler: machines.demo.find_{{cookiecutter.model_name_slug}}_step.find_step
       Policies:
         - AWSLambdaFullAccess
       Role: !GetAtt [ LambdaExecutionRole, Arn ]
@@ -178,7 +186,7 @@ Resources:
       Description: Dependencies for sam app [{{cookiecutter.model_name_slug}}]
       ContentUri: dependencies
       CompatibleRuntimes:
-        - python3.7
+        - python{{ cookiecutter.python_version }}
       LicenseInfo: 'MIT'
 
   # Api Gateway Configuration
@@ -191,11 +199,13 @@ Resources:
       StageName: v1
       Auth:
         AddDefaultAuthorizerToCorsPreflight: False
-        DefaultAuthorizer: RequestLambdaAuthorizer
+        DefaultAuthorizer: LambdaRequestAuthorizer
         Authorizers:
-          RequestLambdaAuthorizer:
+          LambdaRequestAuthorizer:
             FunctionArn:
-              Fn::ImportValue: profile-authorizer-arn
+              Fn::GetAtt:
+                - Authorize{{cookiecutter.model_name_camel}}
+                - Arn
             Identity:
               ReauthorizeEvery: 300
       GatewayResponses:
@@ -228,7 +238,7 @@ Resources:
   {{cookiecutter.model_name_camel}}Document:
     Type: "AWS::DynamoDB::Table"
     Properties:
-      TableName: "{{cookiecutter.project_name_slug}}-{% raw %}{{resolve:ssm:CurrentEnvironment:1}}{% endraw %}-{{ cookiecutter.model_name_camel }}Document"
+      TableName: "{{cookiecutter.project_name_camel}}-{% raw %}{{resolve:ssm:CurrentEnvironment:1}}{% endraw %}-{{ cookiecutter.model_name_camel }}Document"
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
       AttributeDefinitions:
