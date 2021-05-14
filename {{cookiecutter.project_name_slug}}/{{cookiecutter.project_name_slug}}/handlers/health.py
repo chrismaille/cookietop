@@ -32,7 +32,7 @@ def health_check(request: Request, **kwargs: Any) -> HandlerResponse:
             "status": "OK",
             "project": settings["project.name"],
             "environment": settings.stela_options.current_environment,
-            "datetime": arrow.utcnow().isoformat()
+            "datetime": arrow.utcnow().isoformat(),
         },
         "status_code": StatusCode.OK,
     }

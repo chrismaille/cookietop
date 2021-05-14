@@ -4,7 +4,7 @@ import arrow
 import pytest
 
 from loguru import logger
-from enterprise.helpers.get_uuid import get_uuid
+from helpers.get_uuid import get_uuid
 
 from handlers.create_{{cookiecutter.model_name_slug}} import create
 from handlers.retrieve_{{cookiecutter.model_name_slug}} import retrieve
@@ -48,8 +48,8 @@ def test_retrieve_{{cookiecutter.model_name_slug}}_document(dynamo_document):
     body = json.loads(response["body"])
     logger.debug(body)
     assert body["data"] == {
-        "created_at": "2020-04-12T12:00:01+00:00",
-        "updated_at": "2020-04-12T12:00:01+00:00",
+        "createdAt": "2020-04-12T12:00:01+00:00",
+        "updatedAt": "2020-04-12T12:00:01+00:00",
         "uuid": str(dynamo_document.uuid),
     }
 

@@ -13,4 +13,4 @@ def get_time_now(as_string: bool = False) -> Union[str, datetime]:
     :return: datetime object
     """
     now = arrow.utcnow()
-    return now.iso_format() if as_string else now.datetime
+    return now.iso_format() if as_string else now.datetime  # type: ignore

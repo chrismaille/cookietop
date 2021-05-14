@@ -1,5 +1,7 @@
 export PYTHONPATH			:= $(PWD)/my_test_microservice:$(PWD)/my_test_microservice/my_test_microservice:$(PWD)/unit_tests
 
+export CURRENT_DIR := $(pwd)
+
 first_install:
 	@git flow init -d
 	@poetry install
@@ -16,14 +18,14 @@ update:
 cookie:
 	@echo Removing test folder...
 	@rm -rf ./my_test_microservice
-	@echo Running Cookiecutter...
+	@echo "Running Cookiecutter in folder ${CURRENT_DIR}..."
 	@poetry run cookiecutter --no-input .
 
 test: cookie
 	@poetry run pytest --disable-warnings --ignore=./{{cookiecutter.project_name_slug}}
 
 ci: cookie
-	@poetry run pytest --disable-warnings --flake8 --black --mypy --ignore=./{{cookiecutter.project_name_slug}} --ignore=hooks
+	@poetry run pytest -vv --disable-warnings --flake8 --black --mypy --ignore=./{{cookiecutter.project_name_slug}} --ignore=hooks
 
 watch: cookie
 	@poetry run ptw -c -w -n --ignore=./{{cookiecutter.project_name_slug}}

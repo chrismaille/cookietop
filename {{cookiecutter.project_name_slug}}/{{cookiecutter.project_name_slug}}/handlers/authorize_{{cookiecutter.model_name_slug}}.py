@@ -14,9 +14,8 @@ def authorize(request: Request, **kwargs: Any) -> HandlerResponse:
     Default code will always allow requests.
 
     """
-    token = request.aws_event.get("authorizationToken")
+    # token = request.aws_event.get("authorizationToken")
     method_arn = request.aws_event.get("methodArn")
 
     policy = PolicyGenerator(principal_id="user", resource=method_arn)
     return policy.build(Effect.ALLOW)
-

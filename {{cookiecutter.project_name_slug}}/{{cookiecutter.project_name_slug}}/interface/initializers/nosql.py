@@ -88,7 +88,9 @@ class Base(Model):
         :return: None
         """
         environment = os.getenv("ENVIRONMENT", "develop")
-        logger.debug(f"Check if table {cls.Meta.table_name} on '{environment}' exists...")
+        logger.debug(
+            f"Check if table {cls.Meta.table_name} on '{environment}' exists..."
+        )
         if environment == "develop":
             if not cls.exists():
                 logger.warning(

@@ -18,6 +18,7 @@ def test_health_check():
         "body": json.dumps(
             {
                 "status": "OK",
+                "project": settings["project.name"],
                 "environment": settings.stela_options.current_environment,
                 "datetime": arrow.utcnow().isoformat(),
             }

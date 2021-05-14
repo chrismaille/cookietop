@@ -39,7 +39,7 @@ def new_{{cookiecutter.model_name_slug}}_document_data() -> Dict[str, UUID]:
 
 
 @pytest.fixture
-def {{cookiecutter.model_name_slug}}_document(new_{{cookiecutter.model_name_slug}}_document_data) -> {{cookiecutter.model_name_camel}}Document:
+def {{cookiecutter.model_name_slug}}_document(new_{{cookiecutter.model_name_slug}}_document_data: Dict[Any, Any]) -> {{cookiecutter.model_name_camel}}Document:
     """Return {{cookiecutter.model_name_camel}}Document Fixture.
 
     :return: {{cookiecutter.model_name_camel}}Document instance
@@ -56,7 +56,7 @@ def load_fixture(filename: str) -> Dict[Any, Any]:
     :return: Dict
     """
     if settings.get("use_cookie_path", False):
-        base_path = os.environ.get("PYTHONPATH").split(":")[0]
+        base_path = os.environ.get("PYTHONPATH", "").split(":")[0]
     else:
         base_path = str(Path().cwd())
     file_path = Path().joinpath(base_path, "tests", "fixtures", filename)

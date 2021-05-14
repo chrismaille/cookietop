@@ -68,6 +68,7 @@ stela = "*"
 typing_extensions = "*"
 stringcase = "*"
 PyJWT = "*"
+cookiecutter = "*"
 
 [tool.poetry.dev-dependencies]
 boto3 = "*"
