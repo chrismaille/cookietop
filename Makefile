@@ -10,9 +10,13 @@ install:
 	@poetry run pre-commit install -f
 	@rm -rf ./src
 
+update:
+	@poetry update
+
 cookie:
-	@echo Running Cookiecutter...
+	@echo Removing test folder...
 	@rm -rf ./my_test_microservice
+	@echo Running Cookiecutter...
 	@poetry run cookiecutter --no-input .
 
 test: cookie
